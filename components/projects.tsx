@@ -8,10 +8,10 @@ const projects = [
   {
     thumbnailDark: "/images/For Projects Placeholder Cards/Frame 2mp4.webp",
     thumbnailLight: "/images/For Projects Placeholder Cards/Frame 5_webp.webp",
-    title: "This Site",
-    href: "https://github.com/charlieramus/charlieramus.com",
-    external: true,
-    description: "Personal portfolio designed and built from scratch featuring photography, writing, and graphic design.",
+    title: "Web Projects",
+    href: "/web-projects",
+    external: false,
+    description: "Sites and web experiences designed and built from scratch.",
     tags: ["Next.js", "TypeScript", "Tailwind"],
   },
   {

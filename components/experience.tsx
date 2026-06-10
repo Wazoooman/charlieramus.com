@@ -5,15 +5,15 @@ const entries = [
     // CUSTOMIZE: date range string
     dates: "2026 — Present",
     // CUSTOMIZE: position name
-    title: "Developer",
+    title: "Shadow Startup",
     // CUSTOMIZE: company or org name
-    org: "Querryn (Early Development)",
+    org: "",
     // CUSTOMIZE: org link URL, set "" to hide arrow icon
-    href: "https://github.com/charlieramus/Querryn",
+    href: "",
     // CUSTOMIZE: reference links, or set to []
-    links: [{ label: "Github", href: "https://github.com/charlieramus/Querryn" }],
+    links: [{ label: "Github", href: "https://github.com/charlieramus/Summer-Project-V1-" }],
     // CUSTOMIZE: 2-4 sentence description of what you did and learned
-    description: "Responsibilities span full product development including architecture, feature design, DOM analysis logic, a curated credibility scoring system cross-referencing 60+ institutional domains, and UI design.",
+    description: "An app for door-to-door salespeople to optimize their work... Built for salesman or enterpises",
     // CUSTOMIZE: skill tag strings
     tags: ["JavaScript, Chrome Extensions, Branding, Product Design"],
   },
@@ -30,7 +30,7 @@ const entries = [
     // CUSTOMIZE: reference links, or set to []
     links: [],
     // CUSTOMIZE: 2-4 sentence description of what you did and learned
-    description: "Built an architecture community. Designed and shared original architectural builds grabbing 300,000+ interactions, created tutorial content, and engaged a community of fellow builders. Operated solo across all functions, architectural design, content production, community engagement, and audience growth.",
+    description: "Built an architecture community. Designed and shared original architectural builds grabbing 300,000+ interactions, created tutorial content, and engaged a community of fellow builders.",
     // CUSTOMIZE: skill tag strings
     tags: ["Community Building, Online Content Creation, Figma (Software), 3D Modeling "],
   },
@@ -47,7 +47,7 @@ const entries = [
     // CUSTOMIZE: reference links, or set to []
     links: [],
     // CUSTOMIZE: 2-4 sentence description of what you did and learned
-    description: "Independent photographer focused on landscape, outdoor, and documentary photography across the Colorado Front Range & Various traveling experiences. Maintain dedicated photography presence on Instagram showcasing recent work and documentary photography. Photo credit in Boulder Reporting Lab coverage of regional wildfires.",
+    description: "Independent photographer focused on landscape, outdoor, and documentary photography across the Colorado Front Range & Various traveling excursions.",
     // CUSTOMIZE: skill tag strings
     tags: ["Photography, Videography, Adobe Lightroom, Visual Storytelling"],
   },

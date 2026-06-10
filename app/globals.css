@@ -116,3 +116,20 @@ body {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+@keyframes lbEnterForward {
+  from { opacity: 0; transform: rotate(-4deg) scale(0.97); }
+  to   { opacity: 1; transform: rotate(0deg) scale(1); }
+}
+@keyframes lbEnterBackward {
+  from { opacity: 0; transform: rotate(4deg) scale(0.97); }
+  to   { opacity: 1; transform: rotate(0deg) scale(1); }
+}
+@keyframes lbExitForward {
+  from { opacity: 1; transform: rotate(0deg) scale(1); }
+  to   { opacity: 0; transform: rotate(4deg) scale(0.97); }
+}
+@keyframes lbExitBackward {
+  from { opacity: 1; transform: rotate(0deg) scale(1); }
+  to   { opacity: 0; transform: rotate(-4deg) scale(0.97); }
+}

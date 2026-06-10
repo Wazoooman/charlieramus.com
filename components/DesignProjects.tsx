@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import CarouselLightbox from "./CarouselLightbox";
 
 // PEEK=24 means each side shows 24% of the carousel = ~50% of the center slide width.
 // 2×24 + 48 + 2×2 = 100. STEP = 48 + 4 = 52.
@@ -54,7 +55,17 @@ const projects = [
   },
 ];
 
-function Slide({ src, title, j }: { src: string; title: string; j: number }) {
+function Slide({
+  src,
+  title,
+  j,
+  onClick,
+}: {
+  src: string;
+  title: string;
+  j: number;
+  onClick?: () => void;
+}) {
   const [tall, setTall] = useState(false);
   return (
     <div
@@ -64,6 +75,8 @@ function Slide({ src, title, j }: { src: string; title: string; j: number }) {
         marginInline: `${GAP}%`,
         ...(tall && { height: "clamp(330px, 57vh, 630px)" }),
       }}
+      onClick={onClick}
+      className={onClick ? "cursor-pointer" : undefined}
     >
       <img
         src={src}
@@ -78,7 +91,15 @@ function Slide({ src, title, j }: { src: string; title: string; j: number }) {
   );
 }
 
-function Carousel({ images, title }: { images: string[]; title: string }) {
+function Carousel({
+  images,
+  title,
+  onSlideClick,
+}: {
+  images: string[];
+  title: string;
+  onSlideClick?: (index: number) => void;
+}) {
   const n = images.length;
   // Bookend with clones so the wrap-around peek works seamlessly
   const extended = [images[n - 1], ...images, images[0]];
@@ -145,9 +166,18 @@ function Carousel({ images, title }: { images: string[]; title: string }) {
           }}
           onTransitionEnd={onTransitionEnd}
         >
-          {extended.map((src, j) => (
-            <Slide key={j} src={src} title={title} j={j} />
-          ))}
+          {extended.map((src, j) => {
+            const realIdx = j === 0 ? n - 1 : j === n + 1 ? 0 : j - 1;
+            return (
+              <Slide
+                key={j}
+                src={src}
+                title={title}
+                j={j}
+                onClick={onSlideClick ? () => onSlideClick(realIdx) : undefined}
+              />
+            );
+          })}
         </div>
       </div>
 
@@ -175,36 +205,60 @@ function Carousel({ images, title }: { images: string[]; title: string }) {
 }
 
 export default function DesignProjects() {
+  const [lightbox, setLightbox] = useState<{
+    images: string[];
+    index: number;
+  } | null>(null);
+
   return (
-    <div className="flex flex-col">
-      {projects.map((project, i) => (
-        <div key={i}>
-          {i > 0 && <hr className="border-[#272727] mb-12" />}
+    <>
+      <div className="flex flex-col">
+        {projects.map((project, i) => (
+          <div key={i}>
+            {i > 0 && <hr className="border-[#272727] mb-12" />}
 
-          <div className="flex items-baseline justify-between mb-3">
-            <h2 className="text-xl font-bold">{project.title}</h2>
-            <span className="text-[13px] text-[#717171] ml-4 shrink-0">{project.date}</span>
-          </div>
-
-          {project.description && (
-            <p className="text-[14px] text-[#717171] leading-[1.7] max-w-[65ch] mb-6">
-              {project.description}
-            </p>
-          )}
-
-          {project.images.length > 1 ? (
-            <Carousel images={project.images} title={project.title} />
-          ) : (
-            <div className="mb-12">
-              <img
-                src={project.images[0]}
-                alt={`${project.title} 1`}
-                className="max-h-80 w-auto object-contain rounded-sm"
-              />
+            <div className="flex items-baseline justify-between mb-3">
+              <h2 className="text-xl font-bold">{project.title}</h2>
+              <span className="text-[13px] text-[#717171] ml-4 shrink-0">{project.date}</span>
             </div>
-          )}
-        </div>
-      ))}
-    </div>
+
+            {project.description && (
+              <p className="text-[14px] text-[#717171] leading-[1.7] max-w-[65ch] mb-6">
+                {project.description}
+              </p>
+            )}
+
+            {project.images.length > 1 ? (
+              <Carousel
+                images={project.images}
+                title={project.title}
+                onSlideClick={(slideIdx) =>
+                  setLightbox({ images: project.images, index: slideIdx })
+                }
+              />
+            ) : (
+              <div
+                className="mb-12 cursor-pointer inline-block"
+                onClick={() => setLightbox({ images: project.images, index: 0 })}
+              >
+                <img
+                  src={project.images[0]}
+                  alt={`${project.title} 1`}
+                  className="max-h-80 w-auto object-contain rounded-sm"
+                />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {lightbox && (
+        <CarouselLightbox
+          images={lightbox.images}
+          initialIndex={lightbox.index}
+          onClose={() => setLightbox(null)}
+        />
+      )}
+    </>
   );
 }
