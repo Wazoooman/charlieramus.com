@@ -5,7 +5,7 @@ const entries = [
     // CUSTOMIZE: date range string
     dates: "2026 — Present",
     // CUSTOMIZE: position name
-    title: "Shadow Startup",
+    title: "Stealth Startup",
     // CUSTOMIZE: company or org name
     org: "",
     // CUSTOMIZE: org link URL, set "" to hide arrow icon
