@@ -26,9 +26,9 @@ const webProjects: WebProject[] = [
     skills: ["HTML", "CSS", "Figma"],
     // Screenshots live in public/images/web/ — reference them as "/images/web/<filename>.webp"
     screenshots: [
-      "/images/WELandscape/Screenshot 2026-06-10 040846_webp.webp",
-      "/images/WELandscape/Screenshot 2026-06-10 040855_webp.webp",
-      "/images/WELandscape/Screenshot 2026-06-10 040911_webp.webp",
+      "/images/WELandscape/Screenshot-2026-06-10-040846_webp.webp",
+      "/images/WELandscape/Screenshot-2026-06-10-040855_webp.webp",
+      "/images/WELandscape/Screenshot-2026-06-10-040911_webp.webp",
     ],
   },
   {
@@ -38,9 +38,9 @@ const webProjects: WebProject[] = [
       "Personal portfolio designed and built from scratch. Two-column fixed sidebar layout with dark and light mode, cursor glow tracking, photography gallery with print inquiry flow and a writing section.",
     skills: ["Next.js", "TypeScript", "Tailwind", "Figma"],
     screenshots: [
-      "/images/This Site/Screenshot 2026-06-10 040649_webp.webp",
-      "/images/This Site/Screenshot 2026-06-10 040701_webp.webp",
-      "/images/This Site/Screenshot 2026-06-10 040724_webp.webp",
+      "/images/This-Site/Screenshot-2026-06-10-040649_webp.webp",
+      "/images/This-Site/Screenshot-2026-06-10-040701_webp.webp",
+      "/images/This-Site/Screenshot-2026-06-10-040724_webp.webp",
     ],
   },
 

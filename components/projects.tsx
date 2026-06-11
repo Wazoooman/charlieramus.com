@@ -6,8 +6,8 @@ import { useEffect, useState } from "react";
 
 const projects = [
   {
-    thumbnailDark: "/images/For Projects Placeholder Cards/Frame 2mp4.webp",
-    thumbnailLight: "/images/For Projects Placeholder Cards/Frame 5_webp.webp",
+    thumbnailDark: "/images/For-Projects-Placeholder-Cards/Frame-2mp4.webp",
+    thumbnailLight: "/images/For-Projects-Placeholder-Cards/Frame-5_webp.webp",
     title: "Web Projects",
     href: "/web-projects",
     external: false,
@@ -15,8 +15,8 @@ const projects = [
     tags: ["Next.js", "TypeScript", "Tailwind"],
   },
   {
-    thumbnailDark: "/images/For Projects Placeholder Cards/Frame 1mp4.webp",
-    thumbnailLight: "/images/For Projects Placeholder Cards/Frame 4_webp.webp",
+    thumbnailDark: "/images/For-Projects-Placeholder-Cards/Frame-1mp4.webp",
+    thumbnailLight: "/images/For-Projects-Placeholder-Cards/Frame-4_webp.webp",
     title: "Graphic Design Portfolio",
     href: "/design",
     external: false,

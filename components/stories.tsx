@@ -7,19 +7,19 @@ const stories = [
     year: "2026",
     title: "When Bigger Means More Biased: How Scale Transforms LLMs into Confident Amplifiers of Majority Perspectives",
     slug: "article-two",
-    thumbnail: "/images/Article 2_webp.webp",
+    thumbnail: "/images/Article-2_webp.webp",
   },
   {
     year: "2026",
     title: "The Third Rotation",
     slug: "article-three",
-    thumbnail: "/images/Article 3_webp.webp",
+    thumbnail: "/images/Article-3_webp.webp",
   },
   {
     year: "2025",
     title: "The Architecture of Self-Justification: How Pride Disguises Moral Failure",
     slug: "article-one",
-    thumbnail: "/images/Article 1_webp.webp",
+    thumbnail: "/images/Article-1_webp.webp",
   },
 ];
 
