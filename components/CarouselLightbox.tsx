@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 type Props = {
@@ -103,26 +104,35 @@ export default function CarouselLightbox({
       >
         {/* Outgoing image — absolute overlay, plays exit animation, removes itself when done */}
         {outSrc && (
-          <img
+          <div
             key={`out-${animKey}`}
-            src={outSrc}
-            alt=""
             aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-contain rounded-lg pointer-events-none"
+            className="absolute inset-0 pointer-events-none"
             style={{ animation: exitAnim }}
             onAnimationEnd={() => setOutSrc(null)}
-          />
+          >
+            <Image
+              src={outSrc}
+              alt=""
+              fill
+              className="object-contain rounded-lg"
+            />
+          </div>
         )}
 
         {/* Incoming image — plays enter animation on each navigation */}
-        <img
+        <Image
           key={`in-${animKey}`}
           src={images[index]}
           alt={`Screenshot ${index + 1} of ${images.length}`}
+          width={1600}
+          height={900}
           className="block rounded-lg"
           style={{
             maxWidth: "90vw",
             maxHeight: "85vh",
+            width: "auto",
+            height: "auto",
             objectFit: "contain",
             animation: animKey > 0 ? enterAnim : "none",
           }}

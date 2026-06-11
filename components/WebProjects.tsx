@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 
 const webProjects = [
@@ -56,11 +57,12 @@ export default function WebProjects() {
           className="flex gap-5 -mx-3 px-3 py-3 rounded-lg hover:bg-[rgba(255,255,255,0.04)] transition-colors duration-200"
         >
           {/* Thumbnail */}
-          <div className="w-22 h-16.5 shrink-0 rounded-sm overflow-hidden bg-[#1e1e1e]">
-            <img
+          <div className="relative w-22 h-16.5 shrink-0 rounded-sm overflow-hidden bg-[#1e1e1e]">
+            <Image
               src={project.thumbnail}
               alt={project.title}
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
             />
           </div>
 

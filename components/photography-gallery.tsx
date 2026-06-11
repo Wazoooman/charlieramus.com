@@ -231,7 +231,7 @@ export default function PhotographyGallery() {
             ) : (
               <button
                 onClick={() => setLightboxIdx(idx)}
-                className="relative block w-full overflow-hidden focus:outline-none"
+                className="relative block w-full overflow-hidden focus:outline-none bg-[#141414]"
                 style={{ aspectRatio: String(photo.ratio) }}
               >
                 <Image
@@ -240,7 +240,10 @@ export default function PhotographyGallery() {
                   fill
                   className="object-cover hover:brightness-90 transition-[filter] duration-200 cursor-pointer"
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
-                  priority={idx < 6}
+                  priority={idx < 4}
+                  {...(photo.blurDataURL
+                    ? { placeholder: "blur", blurDataURL: photo.blurDataURL }
+                    : {})}
                 />
               </button>
             )}

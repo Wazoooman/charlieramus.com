@@ -1,8 +1,8 @@
 /**
  * sync-gallery.mjs
  *
- * Reads public/photos/gallery.json, measures each image, and writes
- * data/photos.ts — the generated file photography-gallery.tsx imports.
+ * Reads public/photos/gallery.json, measures each image, generates a
+ * blur placeholder via plaiceholder, and writes data/photos.ts.
  *
  * Run with: npm run sync-gallery
  */
@@ -11,6 +11,7 @@ import { readFileSync, writeFileSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import { imageSize } from "image-size";
+import { getPlaiceholder } from "plaiceholder";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, "..");
@@ -20,35 +21,51 @@ const outputPath = join(root, "data", "photos.ts");
 
 const entries = JSON.parse(readFileSync(galleryPath, "utf8"));
 
-const photos = entries.map((entry, i) => {
-  const code = String(i + 1).padStart(4, "0");
-  const imgPath = join(photosDir, entry.file);
+const photos = await Promise.all(
+  entries.map(async (entry, i) => {
+    const code = String(i + 1).padStart(4, "0");
+    const imgPath = join(photosDir, entry.file);
 
-  let ratio = 1.5; // fallback if dimensions can't be read
-  try {
-    const buf = readFileSync(imgPath);
-    const { width, height } = imageSize(buf);
-    ratio = Math.round((width / height) * 1000) / 1000;
-  } catch {
-    console.warn(`  ⚠ Could not read dimensions for ${entry.file} — defaulting to 1.5`);
-  }
+    let ratio = 1.5;
+    let blurDataURL = null;
 
-  return {
-    src: `/photos/${entry.file}`,
-    alt: entry.caption,
-    ratio,
-    placeholder: false,
-    code,
-    caption: entry.caption,
-  };
-});
+    try {
+      const buf = readFileSync(imgPath);
+      const { width, height } = imageSize(buf);
+      ratio = Math.round((width / height) * 1000) / 1000;
+
+      try {
+        const { base64 } = await getPlaiceholder(buf, { size: 10 });
+        blurDataURL = base64;
+      } catch {
+        console.warn(`  ⚠ Could not generate blur for ${entry.file}`);
+      }
+    } catch {
+      console.warn(`  ⚠ Could not read ${entry.file} — defaulting to ratio 1.5`);
+    }
+
+    return {
+      src: `/photos/${entry.file}`,
+      alt: entry.caption,
+      ratio,
+      code,
+      caption: entry.caption,
+      blurDataURL,
+    };
+  })
+);
 
 const lines = photos.map((p) => {
-  const escaped = JSON.stringify(p.caption).replace(/\\/g, "\\\\");
-  return (
-    `  { src: ${JSON.stringify(p.src)}, alt: ${JSON.stringify(p.alt)},` +
-    ` ratio: ${p.ratio}, placeholder: false, code: "${p.code}", caption: ${escaped} }`
-  );
+  const parts = [
+    `src: ${JSON.stringify(p.src)}`,
+    `alt: ${JSON.stringify(p.alt)}`,
+    `ratio: ${p.ratio}`,
+    `placeholder: false`,
+    `code: ${JSON.stringify(p.code)}`,
+    `caption: ${JSON.stringify(p.caption)}`,
+  ];
+  if (p.blurDataURL) parts.push(`blurDataURL: ${JSON.stringify(p.blurDataURL)}`);
+  return `  { ${parts.join(", ")} }`;
 });
 
 const output = `// AUTO-GENERATED — do not edit directly.
@@ -61,6 +78,7 @@ export type Photo = {
   placeholder: boolean;
   caption?: string;
   code?: string;
+  blurDataURL?: string;
 };
 
 export const photos: Photo[] = [

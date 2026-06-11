@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 
 const stories = [
@@ -34,10 +35,12 @@ export default function Stories() {
             className="flex items-center gap-5 py-5 -mx-3 px-3 rounded-lg hover:bg-[rgba(0,0,0,0.06)] dark:hover:bg-[rgba(255,255,255,0.04)] transition-colors duration-200"
             onClick={() => sessionStorage.setItem("articleReferrer", "home")}
           >
-            <img
+            <Image
               src={story.thumbnail}
               alt=""
-              className="w-20 h-20 shrink-0 rounded-sm object-cover"
+              width={80}
+              height={80}
+              className="shrink-0 rounded-sm object-cover"
             />
             <div className="min-w-0">
               <p className="text-[12px] text-muted mb-1">{story.year}</p>
