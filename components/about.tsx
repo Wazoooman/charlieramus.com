@@ -3,7 +3,7 @@ export default function About() {
     <section id="about" className="py-20 px-10 md:px-16">
       <div className="max-w-[560px] space-y-5 text-[15px] leading-[1.7] text-fg">
         <p>
-          I&apos;m a high school sophomore in Boulder who builds
+          I&apos;m a high school junior in Boulder who builds
           software, creates content, and plenty more. I taught myself web development and Python, ship projects on GitHub,
           and have launched a few e-commerce stores (none took off in true honesty), but they&apos;ve been great teachers about
           business as much as coding.

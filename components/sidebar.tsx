@@ -162,7 +162,7 @@ export default function Sidebar() {
             </p>
             {/* CUSTOMIZE: role line — 1 line, medium weight */}
             <p className="text-[14px] font-medium text-fg mt-8">
-              High School Sophomore · Builder
+              High School Junior · Builder
             </p>
             {/* CUSTOMIZE: 1-2 sentence description, casual plain language */}
             <p className="text-[13px] text-muted mt-2 leading-[1.6]">
