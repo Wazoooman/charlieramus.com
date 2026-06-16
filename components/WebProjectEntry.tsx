@@ -19,19 +19,6 @@ export type WebProject = {
 
 const webProjects: WebProject[] = [
   {
-    name: "WELandscape Co.",
-    url: "https://welandscapeco.com",
-    description:
-      "A clean marketing site for a Boulder-based lawn care and landscaping business. Built to communicate services and pricing clearly, with a simple quote request flow. Designed partially in Figma.",
-    skills: ["HTML", "CSS", "Figma"],
-    // Screenshots live in public/images/web/ — reference them as "/images/web/<filename>.webp"
-    screenshots: [
-      "/images/WELandscape/Screenshot-2026-06-10-040846_webp.webp",
-      "/images/WELandscape/Screenshot-2026-06-10-040855_webp.webp",
-      "/images/WELandscape/Screenshot-2026-06-10-040911_webp.webp",
-    ],
-  },
-  {
     name: "charlieramus.com",
     url: "https://charlieramus.com",
     description:
@@ -44,25 +31,35 @@ const webProjects: WebProject[] = [
     ],
   },
 
-  // CUSTOMIZE: new project slot — copy, uncomment, and fill in all fields
-  // {
-  //   name: "",               // CUSTOMIZE: project name
-  //   url: "",                // CUSTOMIZE: live site URL
-  //   description: "",        // CUSTOMIZE: 2-4 sentence description
-  //   skills: [],             // CUSTOMIZE: skill pill strings
-  //   // Screenshots live in public/images/web/ — reference them as "/images/web/<filename>.webp"
-  //   screenshots: [],        // CUSTOMIZE: 2-3 webp paths
-  // },
+  // CUSTOMIZE: new project — replace the placeholder values below with the real details
+  {
+    name: "Personal Journal", // CUSTOMIZE: project name
+    url: "https://github.com/charlieramus/MyLifeInARepo", // CUSTOMIZE: live site URL
+    description:
+      "A quick journal for documenting my life and thoughts. It tracks my garmin sleepscore, along with my mesured time sleeping. It also mesures my basic financials and serves as a place to write down my thoughts and document what I'm working on.  ", // CUSTOMIZE
+    skills: ["Data Analytics", "Customer side UI"], // CUSTOMIZE: skill pill strings
+    // Screenshots live in public/images/web/ — reference them as "/images/web/<filename>.webp"
+    // Placeholder images below — swap for 3 real screenshots (16:10, WebP, max 200KB each)
+    screenshots: [
+      "/images/PersonalJournal/Screenshot%202026-06-15%20171428.webp",
+      "/images/PersonalJournal/Screenshot%202026-06-15%20171446.webp",
+      "/images/PersonalJournal/Screenshot%202026-06-15%20171451.webp",
+    ],
+  },
 
-  // CUSTOMIZE: new project slot — copy, uncomment, and fill in all fields
-  // {
-  //   name: "",               // CUSTOMIZE: project name
-  //   url: "",                // CUSTOMIZE: live site URL
-  //   description: "",        // CUSTOMIZE: 2-4 sentence description
-  //   skills: [],             // CUSTOMIZE: skill pill strings
-  //   // Screenshots live in public/images/web/ — reference them as "/images/web/<filename>.webp"
-  //   screenshots: [],        // CUSTOMIZE: 2-3 webp paths
-  // },
+  {
+    name: "WELandscape Co.",
+    url: "https://welandscapeco.com",
+    description:
+      "A clean marketing site for a Boulder-based lawn care and landscaping business. Built to communicate services and pricing clearly, with a simple quote request flow. Designed partially in Figma.",
+    skills: ["HTML", "CSS", "Figma"],
+    // Screenshots live in public/images/web/ — reference them as "/images/web/<filename>.webp"
+    screenshots: [
+      "/images/WELandscape/Screenshot-2026-06-10-040846_webp.webp",
+      "/images/WELandscape/Screenshot-2026-06-10-040855_webp.webp",
+      "/images/WELandscape/Screenshot-2026-06-10-040911_webp.webp",
+    ],
+  },
 ];
 
 function WebProjectEntry({
