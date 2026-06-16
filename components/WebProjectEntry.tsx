@@ -41,9 +41,9 @@ const webProjects: WebProject[] = [
     // Screenshots live in public/images/web/ — reference them as "/images/web/<filename>.webp"
     // Placeholder images below — swap for 3 real screenshots (16:10, WebP, max 200KB each)
     screenshots: [
-      "/images/PersonalJournal/Screenshot%202026-06-15%20171428.webp",
-      "/images/PersonalJournal/Screenshot%202026-06-15%20171446.webp",
-      "/images/PersonalJournal/Screenshot%202026-06-15%20171451.webp",
+      "/images/PersonalJournal/Screenshot-2026-06-15-171428.webp",
+      "/images/PersonalJournal/Screenshot-2026-06-15-171446.webp",
+      "/images/PersonalJournal/Screenshot-2026-06-15-171451.webp",
     ],
   },
 
@@ -110,7 +110,7 @@ function WebProjectEntry({
           {project.screenshots.map((src, i) => (
             <div
               key={i}
-              className="flex-1 aspect-[8/5] rounded-md overflow-hidden cursor-pointer transition-opacity duration-150 hover:opacity-85"
+              className="flex-1 aspect-8/5 rounded-md overflow-hidden cursor-pointer transition-opacity duration-150 hover:opacity-85"
               onClick={() => onScreenshotClick(i)}
             >
               <img
