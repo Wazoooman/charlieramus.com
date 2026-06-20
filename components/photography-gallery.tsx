@@ -235,7 +235,7 @@ export default function PhotographyGallery() {
                 style={{ aspectRatio: String(photo.ratio) }}
               >
                 <Image
-                  src={photo.src}
+                  src={photo.thumb}
                   alt={photo.alt}
                   fill
                   className="object-cover hover:brightness-90 transition-[filter] duration-200 cursor-pointer"
