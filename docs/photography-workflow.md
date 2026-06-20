@@ -50,6 +50,12 @@ YYYYMMDD-CAMERAID_WebP.webp        e.g. 20260412-IMGL5331-2_WebP.webp
 Spaces and odd characters can break the URL, so stick to letters, numbers,
 hyphens, and underscores.
 
+> ⚠️ **Spaces are the #1 cause of "works locally, broken in production."**
+> Watch especially for a **trailing space before `.webp`** (e.g. `Frame 1 .webp`)
+> — these often sneak in from Figma/Frame exports. The local dev server tolerates
+> them, but Cloudflare Pages strips/normalizes whitespace on deploy, so the live
+> file 404s. Rename to remove every space *before* you add it to `gallery.json`.
+
 ---
 
 ## Stage 2 — Drop it in and register it
@@ -187,4 +193,5 @@ add a line, sync.
 | Photo missing from the page | Filename in `gallery.json` doesn't match the file in `public/photos/` exactly (check capitalization). |
 | `⚠ Could not read <file>` warning | The file isn't a valid image, or isn't in `public/photos/`. |
 | Photo broken in production but fine locally | You forgot to `git add public/photos/thumbs/` — commit the whole `public/photos/` folder. |
+| Photo loads locally but 404s in production (spaces in the filename) | The filename has a space (especially a **trailing space before `.webp`**, e.g. `Frame 1 .webp`). The local dev server serves it fine, but Cloudflare Pages normalizes/strips whitespace in filenames on deploy, so the requested URL no longer matches the deployed file. Rename the file to remove all spaces (use `git mv` for both the full image **and** its `thumbs/` copy), update the `file` entry in `gallery.json` to match, then re-run `npm run sync-gallery`. |
 | Page feels slow / crashes on phone | Re-run `npm run sync-gallery`; the downscale guard will shrink any oversized full image. |
