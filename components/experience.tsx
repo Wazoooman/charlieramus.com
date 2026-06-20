@@ -20,23 +20,6 @@ const entries = [
   // --- ENTRY 2: copy structure above ---
   {
     // CUSTOMIZE: date range string
-    dates: "2025 — Present",
-    // CUSTOMIZE: position name
-    title: "Content Creator & Builder",
-    // CUSTOMIZE: company or org name
-    org: "",
-    // CUSTOMIZE: org link URL, set "tas" to hide arrow icon
-    href: "",
-    // CUSTOMIZE: reference links, or set to []
-    links: [],
-    // CUSTOMIZE: 2-4 sentence description of what you did and learned
-    description: "Built an architecture community. Designed and shared original architectural builds grabbing 300,000+ interactions, created tutorial content, and engaged a community of fellow builders.",
-    // CUSTOMIZE: skill tag strings
-    tags: ["Community Building, Online Content Creation, Figma (Software), 3D Modeling "],
-  },
-  // --- ENTRY 3: copy structure above ---
-  {
-    // CUSTOMIZE: date range string
     dates: "2026 — Present",
     // CUSTOMIZE: position name
     title: "Liberty Puzzles TA & Media Manager (Seasonal)",
@@ -50,6 +33,23 @@ const entries = [
     description: "Puzzle assembly and customer support for a high-end puzzle company. Managed social media accounts, created content, and engaged with the puzzle community.",
     // CUSTOMIZE: skill tag strings
     tags: ["Photography, Videography, Adobe Lightroom, Visual Storytelling, Exacto knives (Lol)"],
+  },
+  // --- ENTRY 3: copy structure above ---
+  {
+    // CUSTOMIZE: date range string
+    dates: "2025 — Present",
+    // CUSTOMIZE: position name
+    title: "Content Creator & Builder",
+    // CUSTOMIZE: company or org name
+    org: "",
+    // CUSTOMIZE: org link URL, set "tas" to hide arrow icon
+    href: "",
+    // CUSTOMIZE: reference links, or set to []
+    links: [],
+    // CUSTOMIZE: 2-4 sentence description of what you did and learned
+    description: "Built an architecture community. Designed and shared original architectural builds grabbing 300,000+ interactions, created tutorial content, and engaged a community of fellow builders.",
+    // CUSTOMIZE: skill tag strings
+    tags: ["Community Building, Online Content Creation, Figma (Software), 3D Modeling "],
   },
 ];
 
