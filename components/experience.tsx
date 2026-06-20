@@ -11,11 +11,11 @@ const entries = [
     // CUSTOMIZE: org link URL, set "" to hide arrow icon
     href: "",
     // CUSTOMIZE: reference links, or set to []
-    links: [{ label: "Github", href: "https://github.com/charlieramus/Summer-Project-V1-" }],
+    links: [{ label: "Github", href: "https://github.com/charlieramus/ostiara" }],
     // CUSTOMIZE: 2-4 sentence description of what you did and learned
     description: "An app for door-to-door salespeople to optimize their work... Built for salesman or enterpises",
     // CUSTOMIZE: skill tag strings
-    tags: ["JavaScript, Chrome Extensions, Branding, Product Design"],
+    tags: ["JavaScript, Auth, Branding, Algorithims, UI/UX Design, Database Management"],
   },
   // --- ENTRY 2: copy structure above ---
   {
@@ -37,19 +37,19 @@ const entries = [
   // --- ENTRY 3: copy structure above ---
   {
     // CUSTOMIZE: date range string
-    dates: "2021 — Present",
+    dates: "2026 — Present",
     // CUSTOMIZE: position name
-    title: "Independent Photographer & Videographer",
+    title: "Liberty Puzzles TA & Media Manager (Seasonal)",
     // CUSTOMIZE: company or org name
-    org: "",
+    org: "Liberty Puzzles",
     // CUSTOMIZE: org link URL, set "" to hide arrow icon
-    href: "",
+    href: "https://libertypuzzles.com/pages/about-us",
     // CUSTOMIZE: reference links, or set to []
     links: [],
     // CUSTOMIZE: 2-4 sentence description of what you did and learned
-    description: "Independent photographer focused on landscape, outdoor, and documentary photography across the Colorado Front Range & Various traveling excursions.",
+    description: "Puzzle assembly and customer support for a high-end puzzle company. Managed social media accounts, created content, and engaged with the puzzle community.",
     // CUSTOMIZE: skill tag strings
-    tags: ["Photography, Videography, Adobe Lightroom, Visual Storytelling"],
+    tags: ["Photography, Videography, Adobe Lightroom, Visual Storytelling, Exacto knives (Lol)"],
   },
 ];
 
