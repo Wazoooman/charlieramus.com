@@ -4,6 +4,7 @@ import "./globals.css";
 import Providers from "@/components/providers";
 import CursorGlow from "@/components/cursor-glow";
 import ThemeToggle from "@/components/theme-toggle";
+import FathersDayModal from "@/components/fathers-day-modal";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -50,6 +51,7 @@ export default function RootLayout({
         <Providers>
           <CursorGlow />
           <ThemeToggle />
+          <FathersDayModal />
           {children}
         </Providers>
       </body>
