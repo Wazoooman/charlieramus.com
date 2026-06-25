@@ -30,7 +30,7 @@ const entries = [
     // CUSTOMIZE: reference links, or set to []
     links: [],
     // CUSTOMIZE: 2-4 sentence description of what you did and learned
-    description: "Puzzle assembly and customer support for a high-end puzzle company. Managed social media accounts, created content, and engaged with the puzzle community.",
+    description: "Puzzle assembly and customer tours for a high-end puzzle company. Managed social media accounts, created content, and engaged with the puzzle community.",
     // CUSTOMIZE: skill tag strings
     tags: ["Photography, Videography, Adobe Lightroom, Visual Storytelling, Exacto knives (Lol)"],
   },
