@@ -87,8 +87,69 @@ html {
 body {
   background: var(--bg);
   color: var(--fg);
+  font-family: var(--font-sans);
   font-size: 15px;
   line-height: 1.7;
+}
+
+/* ── Shared primitives (reused by Logs 04+) ──────────────────────────────── */
+
+/* Display family helper — Fraunces, optical sizing on. */
+.serif {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-optical-sizing: auto;
+}
+
+/* Mono micro-label — section kickers, meta, timeline years. */
+.label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+
+/* Fluid display type scale. Fraunces + clamp() for layout-shift-free sizing. */
+.display-xl {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-size: clamp(2.75rem, 6vw + 1rem, 5.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+.display-lg {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-size: clamp(2rem, 4vw + 1rem, 3.5rem);
+  line-height: 1;
+  letter-spacing: -0.015em;
+}
+.display-md {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-size: clamp(1.5rem, 2vw + 1rem, 2.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+.display-sm {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-size: clamp(1.25rem, 1.2vw + 1rem, 1.6rem);
+  line-height: 1.15;
+}
+
+/* Dashboard card shell — the primitive Log 04's panels are built on. */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
 }
 
 .article-body {
@@ -100,8 +161,9 @@ body {
 .article-body h2,
 .article-body h3,
 .article-body h4 {
-  font-family: var(--font-sans);
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
   margin-top: 2rem;
   margin-bottom: 1rem;
 }
@@ -200,3 +262,20 @@ body {
 .fd-card-out { animation: fdCardOut 0.28s ease forwards; }
 .fd-confetti { top: -5vh; animation-name: fdConfetti; animation-timing-function: linear; animation-iteration-count: infinite; }
 .fd-note { font-family: Georgia, "Times New Roman", serif; font-style: italic; }
+
+/* Global motion guard — later logs add scatter/spin/scroll motion; honor the
+   user's reduced-motion preference everywhere by neutralizing animation,
+   transition, and smooth-scroll. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

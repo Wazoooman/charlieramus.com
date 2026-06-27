@@ -72,11 +72,12 @@ Establish the shared primitives later logs reuse, in `app/globals.css`.
 - Add `@media (prefers-reduced-motion: reduce)` global guard for later motion.
 
 # Stage 3 Report
-- [ ] `.label`, display scale, `.panel` primitive added
-- [ ] `.article-body` headings retargeted to display font, still legible
-- [ ] Existing keyframes / `.scrollbar-hide` preserved
-- [ ] `prefers-reduced-motion` global guard in place
-- Issues:
+- [x] `.label` (Space Mono, 11px, uppercase, `.14em`, `--muted`), fluid display scale (`.display-xl/-lg/-md/-sm` via `clamp()`), `.serif` family helper, and `.panel` primitive (`--panel` fill, `1px --border`, `0.75rem` radius, `1.5rem` padding) added
+- [x] `.article-body` headings retargeted `var(--font-sans)` → `var(--font-display)` (weight 600, `-0.01em`); body copy kept on its readable serif; still legible
+- [x] Existing keyframes (lightbox `lbEnter/Exit*`, Father's Day `fd*`) and `.scrollbar-hide` preserved untouched
+- [x] `prefers-reduced-motion: reduce` global guard added — neutralizes animation/transition durations + smooth-scroll for everyone
+- [x] `body` now explicitly sets `font-family: var(--font-sans)` (was relying on the `font-sans` utility on `<body>`; belt-and-suspenders so unstyled flashes can't pick up a UA serif)
+- Issues: none.
 
 ---
 
@@ -91,7 +92,7 @@ Lock the foundation before any feature log builds on it.
   the three-zone architecture, and the illustration-system contract (Log 02).
 
 # Stage 4 Report
-- [ ] `npm run build` clean (no errors / unknown-utility warnings)
-- [ ] Existing pages render correctly under new tokens + fonts, both modes
-- [ ] `DESIGN.md` written as the design source of truth
-- Issues:
+- [x] `npm run build` clean — compiles in ~3s, all 14 routes generate, zero errors, no Tailwind unknown-utility warnings
+- [x] Existing pages render correctly under new tokens + fonts, both modes — verified via headless browse: light resolves to cream `rgb(244,243,238)`, dark to charcoal; all 3 next/font variable classes present on `<html>`; theme toggle flips cleanly with no white flash; no console errors; nothing unstyled. (Hero heading still uses its old component font — expected; components are retargeted to `.display-*`/`.serif` in Logs 05+.)
+- [x] `DESIGN.md` written — palette + section colors + per-mode tuning, type pairing + scale, spacing/shape, three-zone architecture, illustration-system contract (Log 02), build/verification notes
+- Issues: none. Foundation is locked; feature logs can build on it.
