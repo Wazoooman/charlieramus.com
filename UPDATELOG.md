@@ -1,3 +1,5 @@
+# Completed 
+
 # WEB PROJECTS PAGE — FULL REVAMP
 > Stage 1, then fill in the Stage 1 Report before moving to Stage 2."
 
