@@ -89,10 +89,29 @@ career-card expand-to-fullscreen interaction. Depends on Logs V3, V5.
 - Sync active-dot state to scroll position.
 
 # Stage 3 Report
-- [ ] Arrow buttons page through panels; dots jump to a panel
-- [ ] Active dot tracks scroll position
-- [ ] Native scroll still works; controls usable on touch/short screens
-- Issues:
+- [x] Arrow buttons page through panels; dots jump to a panel — a control bar
+  below the row (`[‹] • • • • • [›]`) in `components/dashboard.tsx`. Prev/Next
+  call `scrollToIndex(active ∓ 1)` (clamped, `disabled` at the ends); each dot is
+  a `size-7` tap target wrapping a `size-2.5` visual dot and calls
+  `scrollToIndex(i)`. `scrollToIndex` scrolls the row to `panel.offsetLeft - paddingLeft`
+  (smooth, or instant under reduced-motion). Verified live: Next×2 from About →
+  Highlighted Work; clicking each dot (About…Exploring) jumps to and selects that
+  panel, at 1280 **and** 375.
+- [x] Active dot tracks scroll position — rAF-throttled `onScroll` handler picks
+  the `[data-panel]` whose left edge is closest to `scrollLeft` and sets `active`
+  (drives `aria-selected` + the section-color fill/scale on the dot). Fixed the
+  end-of-row case where the last panels shared one scroll position and their dots
+  could never activate: a resize-aware **trailing spacer**
+  (`clientWidth − lastPanelWidth − pad`) lets every panel reach start-alignment,
+  so all five dots are distinct and selectable (confirmed Exploring/Side
+  Projects/About each resolve to their own dot).
+- [x] Native scroll still works; controls usable on touch/short screens — the row
+  keeps `overflow-x-auto snap-x snap-mandatory` with the styled `.dashboard-scroll`
+  bar; the controls are additive. Arrows are `size-10` (40px) and dots `size-7`
+  (28px) hit areas — comfortable on touch. Verified all 5 panels reachable via
+  dots at 375×812 with **no** horizontal page overflow, zero console errors.
+- Issues: none. The trailing spacer is `aria-hidden` and excluded from panel
+  indexing/active-detection via the `[data-panel]` selector.
 
 ---
 
@@ -105,11 +124,32 @@ career-card expand-to-fullscreen interaction. Depends on Logs V3, V5.
   Esc / backdrop / close button to collapse back. Lock body scroll while open.
 
 # Stage 4 Report
-- [ ] Clicking a career entry expands it to fullscreen in-place (no navigation)
-- [ ] Expanded view shows extended detail + interactions
-- [ ] Esc/backdrop/close collapses; body scroll locked while open
-- [ ] Animation smooth both directions, respects reduced-motion
-- Issues:
+- [x] Clicking a career entry expands it to fullscreen in-place (no navigation) —
+  each timeline entry is now a real `<button>` that calls `openEntry(i, e)`,
+  captures the click-origin center, and sets `expanded=i`. A `fixed inset-0
+  z-50` overlay (`role="dialog" aria-modal`) renders a centered `.panel` card —
+  no route change. The card grows from the clicked entry: inline `--dx/--dy`
+  (dampened offset from the entry to viewport center) bias the `dashCardIn`
+  keyframe's start transform, so it appears to "explode" out of the card.
+- [x] Expanded view shows extended detail + interactions — collapsed cards clamp
+  the description (`line-clamp-2`) and show a hover/focus "View details ↗" hint;
+  the overlay shows the **full** description, the org as a real link (when
+  `href`), all reference links (`Link2`), the mono date, and all tag chips.
+  Verified: title "Stealth Startup", GitHub link, full body, and tags all render.
+- [x] Esc/backdrop/close collapses; body scroll locked while open — `closeModal`
+  is wired to the close `X` button, a backdrop click, and the `Escape` key; an
+  effect sets `document.body.style.overflow = "hidden"` on open and restores it
+  on close. Verified live: open → `body.overflow = "hidden"`; Esc → dialog gone,
+  overflow restored to `""`.
+- [x] Animation smooth both directions, respects reduced-motion — `dashOverlayIn/Out`
+  + `dashCardIn/Out` keyframes in `app/globals.css` (cubic-bezier grow in, scale-back
+  out). Close keeps the card mounted for the exit (260ms) then unmounts; under
+  `prefers-reduced-motion` the unmount delay drops to 0 (read via `matchMedia`)
+  and the global reduced-motion guard neutralizes the keyframes.
+- Issues: the data has no separate "long" description or media, so the overlay
+  reuses the single `description` with more room + the links/tags that are
+  de-emphasized (org as text, links hidden) in the collapsed card — this also
+  keeps the collapsed card a valid `<button>` with no nested interactives.
 
 ---
 
@@ -120,7 +160,24 @@ career-card expand-to-fullscreen interaction. Depends on Logs V3, V5.
   traps focus and returns it on close. ARIA labels on nav controls.
 
 # Stage 5 Report
-- [ ] Every panel reachable via dots/arrows on small screens
-- [ ] Full keyboard operability; focus trap + restore on overlay
-- [ ] ARIA labels on controls; tab order sane
-- Issues:
+- [x] Every panel reachable via dots/arrows on small screens — verified at
+  375×812: clicking each of the 5 dots scrolls to and selects its panel, prev/next
+  page through, and there is no horizontal page overflow
+  (`scrollWidth === clientWidth`). Hit targets are touch-sized (arrows 40px, dots
+  28px).
+- [x] Full keyboard operability; focus trap + restore on overlay — career entries
+  are native `<button>`s (focusable, Enter/Space activate) with a
+  `focus-visible` cobalt outline; nav arrows/dots are buttons too. On open, focus
+  moves to the close button (verified `activeElement` = "Close"); `Tab`/`Shift+Tab`
+  cycle within the overlay (`trapTab` wraps first↔last focusable); on close, focus
+  returns to the triggering entry (`prevFocusRef` captures `e.currentTarget` at
+  open, so restore is reliable regardless of pointer/keyboard activation).
+- [x] ARIA labels on controls; tab order sane — arrows `aria-label="Previous/Next
+  panel"` (`disabled` at ends), dots `role="tab"` + `aria-label="Go to {label}
+  panel"` + `aria-selected`, dot group `role="tablist"`; overlay is
+  `role="dialog" aria-modal="true"` labelled by the `#career-modal-title`
+  heading; the trailing spacer is `aria-hidden`. Tab order follows DOM:
+  panels → controls, and within the modal close → links in reading order.
+- Issues: none. `npm run build` clean (TypeScript passes, 15 routes incl. the
+  `/preview` harness). Verified live in dark + light, both desktop and mobile,
+  zero console errors.

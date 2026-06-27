@@ -299,6 +299,30 @@ body {
   background: var(--muted);
 }
 
+/* Career-card expand-to-fullscreen overlay (Stage 4). The card grows from the
+   clicked entry: per-element --dx/--dy (set inline) bias the start transform
+   toward the click origin. The global reduced-motion guard neutralizes these. */
+@keyframes dashOverlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes dashOverlayOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes dashCardIn {
+  from { opacity: 0; transform: translate(var(--dx, 0), var(--dy, 0)) scale(0.86); }
+  to { opacity: 1; transform: translate(0, 0) scale(1); }
+}
+@keyframes dashCardOut {
+  from { opacity: 1; transform: translate(0, 0) scale(1); }
+  to { opacity: 0; transform: translate(var(--dx, 0), var(--dy, 0)) scale(0.92); }
+}
+.dash-overlay-in { animation: dashOverlayIn 0.2s ease forwards; }
+.dash-overlay-out { animation: dashOverlayOut 0.24s ease forwards; }
+.dash-card-in { animation: dashCardIn 0.34s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.dash-card-out { animation: dashCardOut 0.24s ease forwards; }
+
 /* ── Flower illustration system (Log V4) ─────────────────────────────────── */
 
 /* Absolute decorative layer; sits behind content in a position:relative parent.
