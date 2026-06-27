@@ -17,10 +17,18 @@ edits. Each illustration spins 180° on hover. Depends on Log V3 tokens.
 - Seed with placeholder flower SVGs so the system is testable before final art.
 
 # Stage 1 Report
-- [ ] `public/illustrations/` created with seed assets
-- [ ] Naming convention documented in folder README
-- [ ] Both `.svg` and `.webp` confirmed present and loadable
-- Issues:
+- [x] `public/illustrations/` created with seed assets — 8 placeholder flowers
+  (`illustration-1.svg`…`illustration-6.svg`, `illustration-7.webp`,
+  `illustration-8.webp`), procedurally generated from the DESIGN.md palette
+  (ink outlines, transparent bg, ~square 200/400px), varied petal counts/colors.
+- [x] Naming convention documented in folder README
+  (`public/illustrations/README.md`: naming rule, supported formats, square
+  aspect, transparent bg, palette guidance, 7–10 target).
+- [x] Both `.svg` and `.webp` confirmed present and loadable — SVGs render as
+  flowers; `.webp` files produced via `sharp` (density 300 → 400×400, q90) and
+  visually verified (valid transparent WebP).
+- Issues: none. `sharp` already present in `node_modules` (Next image opt), so
+  no new dependency. Generator was a one-off script (run + removed), not checked in.
 
 ---
 
@@ -34,10 +42,17 @@ edits. Each illustration spins 180° on hover. Depends on Log V3 tokens.
 - Call only from server components so `fs` never ships to the client.
 
 # Stage 2 Report
-- [ ] `lib/illustrations.ts` reads + filters + numerically sorts the folder
-- [ ] Empty/missing folder returns `[]` without error
-- [ ] `fs` access stays server-side (no client bundle leakage)
-- Issues:
+- [x] `lib/illustrations.ts` reads + filters + numerically sorts the folder —
+  `getIllustrationPaths()` uses `fs.readdirSync`, filters by
+  `/^illustration-(\d+)\.(svg|webp)$/i`, sorts on the numeric `<n>` (not string,
+  so `illustration-10` sorts after `-9`), returns `/illustrations/...` paths.
+  Verified output: 1.svg…6.svg then 7.webp, 8.webp in order.
+- [x] Empty/missing folder returns `[]` without error — `readdirSync` wrapped in
+  try/catch; missing dir → `[]`. Verified against a non-existent folder.
+- [x] `fs` access stays server-side (no client bundle leakage) — file starts with
+  `import "server-only"` (Next 16 provides this internally + type decls, no npm
+  install needed), so importing it into a client component is a build-time error.
+- Issues: none. `npx tsc --noEmit` clean.
 
 ---
 

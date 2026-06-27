@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" fill="none">
+<path d="M 100 100 C 70 69.6, 82 30, 100 24 C 118 30, 130 69.6, 100 100 Z" fill="#6FC5E8" stroke="#141414" stroke-width="3" stroke-linejoin="round" transform="rotate(0 100 100)"/>
+<path d="M 100 100 C 70 69.6, 82 30, 100 24 C 118 30, 130 69.6, 100 100 Z" fill="#6FC5E8" stroke="#141414" stroke-width="3" stroke-linejoin="round" transform="rotate(51.42857142857143 100 100)"/>
+<path d="M 100 100 C 70 69.6, 82 30, 100 24 C 118 30, 130 69.6, 100 100 Z" fill="#6FC5E8" stroke="#141414" stroke-width="3" stroke-linejoin="round" transform="rotate(102.85714285714286 100 100)"/>
+<path d="M 100 100 C 70 69.6, 82 30, 100 24 C 118 30, 130 69.6, 100 100 Z" fill="#6FC5E8" stroke="#141414" stroke-width="3" stroke-linejoin="round" transform="rotate(154.28571428571428 100 100)"/>
+<path d="M 100 100 C 70 69.6, 82 30, 100 24 C 118 30, 130 69.6, 100 100 Z" fill="#6FC5E8" stroke="#141414" stroke-width="3" stroke-linejoin="round" transform="rotate(205.71428571428572 100 100)"/>
+<path d="M 100 100 C 70 69.6, 82 30, 100 24 C 118 30, 130 69.6, 100 100 Z" fill="#6FC5E8" stroke="#141414" stroke-width="3" stroke-linejoin="round" transform="rotate(257.14285714285717 100 100)"/>
+<path d="M 100 100 C 70 69.6, 82 30, 100 24 C 118 30, 130 69.6, 100 100 Z" fill="#6FC5E8" stroke="#141414" stroke-width="3" stroke-linejoin="round" transform="rotate(308.57142857142856 100 100)"/>
+<circle cx="100" cy="100" r="22" fill="#1B2BD6" stroke="#141414" stroke-width="3"/>
+</svg>
