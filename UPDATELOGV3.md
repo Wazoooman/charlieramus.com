@@ -28,12 +28,12 @@ keeping the existing variable names so nothing downstream breaks.
 - Tune `--sky`/`--marigold` per mode if contrast needs it (sky reads darker on cream).
 
 # Stage 1 Report
-- [ ] `:root` + `.dark` updated; existing variable names preserved (no downstream breakage)
-- [ ] `--panel` / `--border` added for both modes
-- [ ] Section palette + semantic `--c-*` aliases added
-- [ ] `@theme inline` exposes all new tokens as Tailwind utilities
-- [ ] Contrast checked: section colors legible as text/borders on both `--bg` values
-- Issues:
+- [x] `:root` + `.dark` updated; existing variable names preserved (`--bg/--fg/--muted/--rule/--surface/--orange/--accent` all kept — no downstream breakage)
+- [x] `--panel` / `--border` added for both modes (light `#fbfaf6` / `#e3e1da`, dark `#1a1a1a` / `#2a2a2a`)
+- [x] Section palette + semantic `--c-*` aliases added (`--c-experience/-work/-photo/-writing/-design` → cobalt/red/sky/marigold/pink)
+- [x] `@theme inline` exposes all new tokens as Tailwind utilities (`bg-panel`, `border-border`, `text-cobalt`, `text-c-experience`, …)
+- [x] Contrast checked: section colors tuned per mode for legibility (see Issues)
+- Issues: Per-mode tuning beyond the spec's sky/marigold note was needed for legibility as text/borders. Light mode: `--sky` darkened `#6fc5e8`→`#2f9cc9`, `--marigold` darkened `#f7b500`→`#c2890c`, `--pink` deepened `#f58fb5`→`#e86ca0`. Dark mode: `--cobalt` brightened `#1b2bd6`→`#4f61e8` (raw cobalt is dark-on-dark on charcoal). Bright brand values are retained in the mode where they read well. If later logs need the bright hues for backgrounds/illustration in *both* modes, add `-bright` variant tokens then.
 
 ---
 
@@ -50,11 +50,11 @@ Swap the single Inter setup in `app/layout.tsx` for the new pairing using
 - Set body to `--font-sans`. Confirm `display: "swap"` and subsetting are on.
 
 # Stage 2 Report
-- [ ] Fraunces, Space Mono, (Inter/Geist) loaded via `next/font/google`
-- [ ] Font CSS variables wired on `<html>` and into `@theme inline`
-- [ ] `display: swap` + latin subset confirmed; no FOUT/CLS in dev
-- [ ] Old standalone Inter import cleaned up if replaced
-- Issues:
+- [x] Fraunces, Space Mono, Inter loaded via `next/font/google` (kept Inter for body per spec)
+- [x] Font CSS variables wired on `<html>` (`--font-fraunces`, `--font-space-mono`, `--font-inter`) and mapped in `@theme inline` (`--font-display`, `--font-mono`, `--font-sans`)
+- [x] `display: "swap"` set on all three; `subsets: ["latin"]` on all three (self-hosted, no external request); `npm run build` clean, no CLS
+- [x] No old standalone Inter import to remove — Inter retained as body; added Fraunces/Space Mono alongside it
+- Issues: Fraunces is a variable font — next/font rejects `axes` together with an explicit `weight` array ("Axes can only be defined for variable fonts when the weight property is nonexistent or set to `variable`"). Dropped the `weight: ["400","600","900"]` and left it variable; the variable face covers the full 400–900 range the type scale needs while keeping the `opsz` optical-size axis on. Space Mono (non-variable) keeps its explicit `["400","700"]`.
 
 ---
 

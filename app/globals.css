@@ -2,22 +2,49 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
+  /* base — light = cream/ink */
   --bg: #f4f3ee;
   --fg: #141414;
   --muted: #878680;
   --rule: #dddcd7;
   --surface: #eaeae5;
+  /* dashboard card primitives (Log 04) */
+  --panel: #fbfaf6;
+  --border: #e3e1da;
+  /* section palette — values tuned for legibility on cream.
+     sky + marigold are darkened here vs. their bright dark-mode values. */
+  --red: #f23a2e;
+  --cobalt: #1b2bd6;
+  --sky: #2f9cc9;
+  --marigold: #c2890c;
+  --pink: #e86ca0;
   --orange: #FA5B1C;
+  /* semantic wayfinding aliases — components reference the role, not the hue */
+  --c-experience: var(--cobalt);
+  --c-work: var(--red);
+  --c-photo: var(--sky);
+  --c-writing: var(--marigold);
+  --c-design: var(--pink);
   /* light mode: zero orange, accent is black */
   --accent: #141414;
 }
 
 .dark {
+  /* base — dark = charcoal/cream */
   --bg: #141414;
   --fg: #f4f3ee;
   --muted: #717171;
   --rule: #272727;
   --surface: #1e1e1e;
+  --panel: #1a1a1a;
+  --border: #2a2a2a;
+  /* section palette — bright values pop on charcoal; cobalt is brightened
+     so the experience color stays legible against the dark canvas. */
+  --red: #f23a2e;
+  --cobalt: #4f61e8;
+  --sky: #6fc5e8;
+  --marigold: #f7b500;
+  --pink: #f58fb5;
   /* dark mode: accent is orange */
   --accent: #FA5B1C;
 }
@@ -28,11 +55,28 @@
   --color-muted: var(--muted);
   --color-rule: var(--rule);
   --color-surface: var(--surface);
+  --color-panel: var(--panel);
+  --color-border: var(--border);
   --color-orange: var(--orange);
-  /* --accent switches at runtime; @theme inline inlines var(--accent) so
-     utilities like text-accent compile to `color: var(--accent)` and
-     resolve correctly when .dark is toggled on <html>. */
+  /* section palette utilities (text-cobalt, bg-sky, border-marigold, …) */
+  --color-red: var(--red);
+  --color-cobalt: var(--cobalt);
+  --color-sky: var(--sky);
+  --color-marigold: var(--marigold);
+  --color-pink: var(--pink);
+  /* semantic wayfinding utilities (text-c-experience, border-c-photo, …) */
+  --color-c-experience: var(--c-experience);
+  --color-c-work: var(--c-work);
+  --color-c-photo: var(--c-photo);
+  --color-c-writing: var(--c-writing);
+  --color-c-design: var(--c-design);
+  /* --accent / section tokens switch at runtime; @theme inline inlines the
+     var() so utilities like text-accent compile to `color: var(--accent)`
+     and resolve correctly when .dark is toggled on <html>. */
   --color-accent: var(--accent);
+  /* typography — wired to the next/font variables set in app/layout.tsx */
+  --font-display: var(--font-fraunces, "Fraunces", Georgia, serif);
+  --font-mono: var(--font-space-mono, "Space Mono", ui-monospace, monospace);
   --font-sans: var(--font-inter, "Inter", sans-serif);
 }
 
