@@ -162,6 +162,31 @@ body {
   padding: 1.5rem;
 }
 
+/* Halftone / dithered motif — Charlie's photographer signature (Log V7, Zone C).
+   A sky-colored dot screen laid over photo thumbnails. CSS-only: a tiled
+   radial-gradient (no image filters), so it stays cheap even across many small
+   previews. The dots `screen`-blend with the photo, then fade on tile hover to
+   reveal the crisp image. The host element must be `position:relative`. */
+.halftone::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(var(--sky) 1.3px, transparent 1.5px);
+  background-size: 6px 6px;
+  mix-blend-mode: screen;
+  opacity: 0.5;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.group:hover .halftone::after {
+  opacity: 0.14;
+}
+@media (prefers-reduced-motion: reduce) {
+  .halftone::after {
+    transition: none;
+  }
+}
+
 .article-body {
   font-family: Georgia, "Times New Roman", serif;
   font-size: 17px;

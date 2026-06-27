@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import type { ReactNode } from "react";
-import { stories } from "@/data/stories";
+import { getAllArticles } from "@/lib/articles";
 import { photos } from "@/data/photos";
 
 /**
@@ -24,6 +24,9 @@ import { photos } from "@/data/photos";
 
 /** Latest few photo thumbnails for the photography tile preview. */
 const previewPhotos = photos.slice(0, 4);
+
+/** First 4-digit year in an article's display date, for the mono label. */
+const yearOf = (date: string) => date.match(/\d{4}/)?.[0] ?? "";
 
 /** Shared tile chrome: a section-colored top rule, mono label, and lift-on-hover.
  *  `tone` selects the wayfinding color used for the rule, dot, label, and arrow. */
@@ -107,6 +110,11 @@ function SectionTile({
 }
 
 export default function Bento() {
+  // Real content source (Stage 4): articles come from content/articles/*.mdx via
+  // lib/articles.ts, sorted newest-first — nothing about writing is hardcoded.
+  const articles = getAllArticles();
+  const latest = articles[0];
+
   return (
     <section id="explore" className="px-6 py-20 md:px-16">
       {/* Content is centered in a ~1080px column (like the mockup's `.zoneC`),
@@ -130,7 +138,7 @@ export default function Bento() {
           className="contents"
           aria-label="Photography"
         >
-          <TileShell className="border-t-c-photo sm:col-span-2 sm:row-span-2 lg:col-span-2">
+          <TileShell className="border-t-c-photo sm:col-span-2 lg:col-span-2 lg:row-span-2">
             <header className="mb-4 flex items-center gap-2.5">
               <span className="size-2 shrink-0 rounded-full bg-c-photo" />
               <span className="label text-c-photo">Photography</span>
@@ -140,12 +148,13 @@ export default function Bento() {
               Birds, mountains, and machines — from Boulder snowstorms to the
               Icelandic coast. My signature medium.
             </p>
-            {/* 2×2 thumbnail preview. The halftone motif lands here in Stage 3. */}
+            {/* 2×2 thumbnail preview, each under the sky halftone screen
+                (Stage 3) — Charlie's photographer signature, fades on hover. */}
             <div className="mb-4 grid grid-cols-2 gap-2">
               {previewPhotos.map((photo) => (
                 <div
                   key={photo.src}
-                  className="relative aspect-square overflow-hidden rounded-md bg-surface"
+                  className="halftone relative aspect-square overflow-hidden rounded-md bg-surface"
                 >
                   <Image
                     src={photo.thumb}
@@ -178,9 +187,11 @@ export default function Bento() {
           href="/writing"
           className="sm:col-span-2"
         >
-          <p className="mb-4 line-clamp-2 border-l-2 border-c-writing/40 pl-3 text-[13px] italic leading-normal text-fg">
-            “{stories[0].title}”
-          </p>
+          {latest && (
+            <p className="mb-4 line-clamp-2 border-l-2 border-c-writing/40 pl-3 text-[13px] italic leading-normal text-fg">
+              “{latest.title}”
+            </p>
+          )}
         </SectionTile>
 
         {/* ── Web Projects (red) + Design (pink) — a pair of square tiles ── */}
@@ -204,7 +215,7 @@ export default function Bento() {
           {[
             { value: "300k+", label: "Impressions reached" },
             { value: `${photos.length}`, label: "Photographs published" },
-            { value: `${stories.length}`, label: "Essays written" },
+            { value: `${articles.length}`, label: "Essays written" },
             { value: "6", label: "Threads to explore" },
           ].map((stat) => (
             <div key={stat.label} className="flex flex-col">
@@ -221,23 +232,29 @@ export default function Bento() {
             <span className="label text-c-writing">Latest writing</span>
           </header>
           <ul className="flex flex-1 flex-col divide-y divide-rule">
-            {stories.map((story) => (
-              <li key={story.slug}>
+            {articles.map((article) => (
+              <li key={article.slug}>
                 <Link
-                  href={`/writing/${story.slug}`}
+                  href={`/writing/${article.slug}`}
                   className="group/item flex items-center gap-4 py-3 first:pt-0"
                 >
-                  <Image
-                    src={story.thumbnail}
-                    alt=""
-                    width={56}
-                    height={56}
-                    className="size-14 shrink-0 rounded-sm object-cover"
-                  />
+                  {article.headerImage ? (
+                    <Image
+                      src={article.headerImage}
+                      alt=""
+                      width={56}
+                      height={56}
+                      className="size-14 shrink-0 rounded-sm object-cover"
+                    />
+                  ) : (
+                    <div className="size-14 shrink-0 rounded-sm bg-surface" />
+                  )}
                   <div className="min-w-0">
-                    <p className="label mb-1 text-c-writing">{story.year}</p>
+                    <p className="label mb-1 text-c-writing">
+                      {yearOf(article.date)}
+                    </p>
                     <h4 className="line-clamp-2 text-[13px] font-medium leading-snug text-fg group-hover/item:text-accent">
-                      {story.title}
+                      {article.title}
                     </h4>
                   </div>
                 </Link>

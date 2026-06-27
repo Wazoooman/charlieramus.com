@@ -79,9 +79,23 @@ sizes and rhythm, no monotony). Depends on Logs V3, V6.
 - CSS-driven (dot pattern/blend) or pre-processed asset; keep it performant.
 
 # Stage 3 Report
-- [ ] Halftone treatment applied to photo tile/previews, on-brand both modes
-- [ ] No performance hit (no heavy filters on large images)
-- Issues:
+- [x] **Halftone treatment applied to photo tile/previews, on-brand both modes.**
+  New `.halftone` utility in `app/globals.css`: an `::after` overlay that tiles a
+  sky-colored `radial-gradient` dot (`background-size: 6px 6px`) and
+  `mix-blend-mode: screen`s it over the image, then fades (`opacity .5 → .14`) on
+  tile hover to reveal the crisp photo. Applied to each of the four thumbnails in
+  the Photography anchor (`halftone` added to the `relative … overflow-hidden`
+  container). Because the dot color is the `--sky` token, it auto-tunes per mode
+  (darker `#2f9cc9` screened on cream, bright `#6fc5e8` on charcoal) — verified
+  live at 1440 (light) and 390 (dark): dots read clearly over the photos in both.
+- [x] **No performance hit (no heavy filters on large images).** The motif is a
+  pure CSS tiled gradient + one composited blend layer per thumbnail — no
+  `filter:`/`backdrop-filter:` and no extra image requests. Only the four small
+  preview thumbs carry it (not full-res gallery images). Hover transition is
+  guarded under `prefers-reduced-motion: reduce`.
+- Issues: none. (`mix-blend-mode: screen` needs the host to be `position:relative`
+  so the dots blend with the photo, not the page — the thumbnail containers
+  already were.)
 
 ---
 
@@ -92,9 +106,24 @@ sizes and rhythm, no monotony). Depends on Logs V3, V6.
 - All arrows/cards/links resolve to the correct destination.
 
 # Stage 4 Report
-- [ ] Previews sourced from real content, not hardcoded
-- [ ] All links/redirects resolve correctly
-- Issues:
+- [x] **Previews sourced from real content, not hardcoded.** Replaced the curated
+  `data/stories.ts` import with `getAllArticles()` from `lib/articles.ts`, which
+  reads `content/articles/*.mdx` (gray-matter frontmatter) and sorts newest-first.
+  The **Latest writing** list now maps the real articles — `headerImage`
+  thumbnail, year parsed from the `date` frontmatter via `yearOf()`, link
+  `/writing/<slug>` — the Writing-tile pull-quote shows `articles[0].title` (the
+  genuine latest essay), and the "Essays written" stat is `articles.length`. Photo
+  previews + the "Photographs" stat already come from `data/photos.ts`. Only
+  `300k+` impressions and `6 threads` remain literal (no dataset exists for them).
+- [x] **All links/redirects resolve correctly.** Build emits the three article
+  routes (`/writing/article-one|two|three`); every tile/arrow points at a real
+  destination — Photography→`/photography`, Writing→`/writing`,
+  Web Projects→`/web-projects`, Design→`/design`, Gear→`/gear`, each
+  latest-writing row→`/writing/<slug>`, Contact→`mailto:`. No dead tiles; `npm run
+  build` clean (15 routes).
+- Issues: article header images are the wide `…-header_webp.webp` assets; in the
+  56px square preview they're `object-cover`-cropped, which is fine. A `headerImage`
+  fallback (`bg-surface` block) is wired in case a future article omits one.
 
 ---
 
@@ -104,6 +133,18 @@ sizes and rhythm, no monotony). Depends on Logs V3, V6.
 - No overflow; tap targets adequate on mobile.
 
 # Stage 5 Report
-- [ ] Grid reflows 4→2→1 without breakage
-- [ ] Hierarchy + section colors preserved at all sizes
-- Issues:
+- [x] **Grid reflows 4→2→1 without breakage.** `grid-cols-1 sm:grid-cols-2
+  lg:grid-cols-4`: one column on phones, two on tablets, four on desktop. Scoped
+  the Photography anchor's `row-span-2` to the 4-col breakpoint only
+  (`sm:col-span-2 lg:col-span-2 lg:row-span-2`) so it doesn't force an over-tall
+  full-width block at the 2-col stage. Measured `scrollWidth === innerWidth` (no
+  horizontal overflow) at 1440, 800, and 390.
+- [x] **Hierarchy + section colors preserved at all sizes.** The Photography
+  anchor stays the dominant tile (full row at ≤2-col, the big L-anchor at 4-col);
+  the stats band collapses 4→2 cols but keeps its emphasis; every tile keeps its
+  wayfinding top-rule + dot + label color through all breakpoints (verified light
+  desktop, dark mobile). Tap targets are full-tile links plus `py-3` list rows
+  (≥44px); the Contact CTA spans full width on mobile.
+- Issues: the in-row tiles still stretch to the tallest sibling (the noted bento
+  negative space from Stage 2). It reads as deliberate at every width, so left
+  as-is rather than forcing equal content heights.
