@@ -1,0 +1,985 @@
+[33mcommit 8b19ba821cab1f31f69b0a557be5e0ccc69f4a6c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: [1;31mCharlie Ramus[m <Charlie.ramus12@gmail.com>
+Date:   Fri Jun 26 20:34:45 2026 -0600
+
+    revert
+
+[1mdiff --git a/UPDATELOGV5.md b/UPDATELOGV5.md[m
+[1mindex 0bbb938..b7579d5 100644[m
+[1m--- a/UPDATELOGV5.md[m
+[1m+++ b/UPDATELOGV5.md[m
+[36m@@ -23,28 +23,7 @@[m [mbroken maze.[m
+ - The front-door fork and the escape-hatch chip must work on touch.[m
+ [m
+ # Stage 1 Report[m
+[31m-- [x] **Guided layout below the touch breakpoint**: `components/explore/use-is-mobile.ts`[m
+[31m-  tracks `(max-width: 700px)` via `useSyncExternalStore` (SSR + first paint return[m
+[31m-  `false`, so the server always renders the crawlable desktop desk — no hydration[m
+[31m-  mismatch). `<Desk>` switches to `components/explore/guided-desk.tsx` on small[m
+[31m-  viewports: the same `public/explore/desk.webp` as a hero, then the interactive[m
+[31m-  objects as a **vertical list of tappable sticker-cards** (the desk's white[m
+[31m-  die-cut sticker aesthetic — dot, label, peel corner). No drag/aim targets;[m
+[31m-  ambient decoration is dropped. Verified live at 390px: `.cr-guided` shows,[m
+[31m-  `.cr-desk-stage` is gone, 8 cards render.[m
+[31m-- [x] **Same `<Stage>`, one content path**: each guided card calls the same[m
+[31m-  `onOpen(id)` as the desktop object, so it opens the **exact same** rich[m
+[31m-  per-section view. There is no second content surface.[m
+[31m-- [x] **Touch targets ≥44px**: each `.cr-guided-card` measures 77px tall (verified[m
+[31m-  in-browser); the stage's `← Put it back` control is bumped to `min-height: 44px`[m
+[31m-  on mobile.[m
+[31m-- [x] **Full-screen stage on mobile**: under `@media (max-width: 700px)` the[m
+[31m-  `.cr-panel` fills the viewport (`100dvh`, `border-radius: 0`, safe-area padding).[m
+[31m-  Verified: tapping a card produced a 390×844 panel with `radius=0`.[m
+[31m-- [x] **Fork + escape-hatch on touch**: the front-door fork (`mode-fork.tsx`) is[m
+[31m-  already responsive (`flex-col sm:flex-row`) and its pick handlers fire on tap[m
+[31m-  (not just `mouseenter`) — both cards verified visible/tappable on `/` at 390px.[m
+[31m-  The escape-hatch `<ModeChip>` is a real `<Link>` and stays tappable.[m
+[32m+[m[32m- [ ] _Pending implementation._[m
+ [m
+ ---[m
+ [m
+[36m@@ -65,39 +44,7 @@[m [mbroken maze.[m
+   could trap bots or no-JS users).[m
+ [m
+ # Stage 2 Report[m
+[31m-- [x] **Keyboard + focus trap + return-focus**: `components/explore/stage.tsx` now[m
+[31m-  remembers the triggering element on open, **traps Tab/Shift+Tab** inside the[m
+[31m-  dialog (wrapping first↔last, with the panel itself as a safe anchor), closes on[m
+[31m-  `Escape`, and **returns focus to the desk object** that opened it (still mounted[m
+[31m-  behind the overlay). Verified live: after opening Writing, focus was inside[m
+[31m-  `.cr-panel`; after `Escape`, focus landed back on the `Writing` `<button>` (desk)[m
+[31m-  / the `Photography` card (mobile). Visible focus ring and logical Tab order were[m
+[31m-  already in place from PART 1/3.[m
+[31m-- [x] **Screen readers**: the panel is a labelled dialog (`role="dialog"`,[m
+[31m-  `aria-modal="true"`, `aria-labelledby="cr-panel-title"` — confirmed in the live[m
+[31m-  DOM); interactive objects keep their sticker text as the accessible name; ambient[m
+[31m-  items stay `aria-hidden`. The guided cards' decorative dot/chevron/peel are[m
+[31m-  `aria-hidden`.[m
+[31m-- [x] **`prefers-reduced-motion`**: the new guided-card deal entrance is gated two[m
+[31m-  ways — `usePrefersReducedMotion()` drops the `cr-deal` class + per-item delay in[m
+[31m-  `guided-desk.tsx`, and the CSS `@media (prefers-reduced-motion: reduce)` block[m
+[31m-  now also forces `.cr-guided-card` to its static end-state (alongside the existing[m
+[31m-  stage/deal/term/unroll collapses).[m
+[31m-- [x] **SEO — simple routes stay the indexed source**: `/explore` is a JS-driven[m
+[31m-  alternate of content that already lives on the simple routes, so its metadata now[m
+[31m-  sets `robots: { index: false, follow: true }` and `alternates: { canonical: "/" }`[m
+[31m-  — crawlers are kept on the canonical pages and there's no duplicate-content[m
+[31m-  competition. Added `metadataBase` to the root layout so the canonical resolves[m
+[31m-  absolutely. Verified in served HTML: `/explore` →[m
+[31m-  `<meta name="robots" content="noindex, follow">` + `<link rel="canonical"[m
+[31m-  href="https://charlieramus.com">`; `/` and `/writing` are **unchanged**[m
+[31m-  (`index, follow`, no canonical). No `sitemap.{ts,xml}`/`robots.txt` exists in the[m
+[31m-  project, so there were no sitemap expectations to break; the canonical was set[m
+[31m-  per-page (not globally) so the simple routes don't inherit a wrong canonical.[m
+[31m-- [x] **Client-only redirect**: the saved-`creative` redirect[m
+[31m-  (`components/creative-redirect.tsx`) remains a client-only `router.replace` that[m
+[31m-  runs only after JS + storage are available — bots and no-JS users keep the[m
+[31m-  canonical simple site. Left as-is after this review.[m
+[32m+[m[32m- [ ] _Pending implementation._[m
+ [m
+ ---[m
+ [m
+[36m@@ -114,31 +61,4 @@[m [mbroken maze.[m
+ - Confirm the simple site is untouched in behavior and performance.[m
+ [m
+ # Stage 3 Report[m
+[31m-- [x] **Only the desk photo loads eagerly**: confirmed in the served `/explore`[m
+[31m-  head — exactly **one** `as="image"` preload, `public/explore/desk.webp`[m
+[31m-  (`fetchPriority="high"`). The hero photo in the guided mobile layout reuses the[m
+[31m-  same asset.[m
+[31m-- [x] **Per-view lazy-loading + code-split**: `stage.tsx` now imports all eight[m
+[31m-  rich views via `next/dynamic`, so each view (and its heavy bits — the lightbox,[m
+[31m-  grid images, MDX bodies) is split into its own chunk that loads **on open**, not[m
+[31m-  on desk load, with a lightweight "Opening…" fallback. The desk shell ships[m
+[31m-  without them.[m
+[31m-- [x] **No bloat to the simple site**: the desk/stage/views are imported **only**[m
+[31m-  inside the `/explore` tree (`desk.tsx` → `stage.tsx` → views) — grep confirms no[m
+[31m-  simple-site component references them — so they never entered the simple site's[m
+[31m-  bundle. The dynamic split further keeps them out of the desk's initial chunk.[m
+[31m-- [x] **`next build` — clean**: succeeds with **zero warnings**; `/explore` still[m
+[31m-  prerenders as **static** (`○`), and every simple route (`/`, `/writing`,[m
+[31m-  `/photography`, `/gear`, `/design`, `/web-projects`, `/blog`, …) is unchanged.[m
+[31m-  `npx tsc --noEmit` and `eslint` on all touched files are clean.[m
+[31m-- [x] **QA (desktop + mobile, headless Chromium)**: desktop 1280px — desk photo +[m
+[31m-  all 8 objects render, no console errors, Writing opens a centered dialog, Escape[m
+[31m-  closes and returns focus. Mobile 390px — guided list of 8 cards (77px tall),[m
+[31m-  hero photo, free-roam desk suppressed; tapping a card opens a 390×844 full-screen[m
+[31m-  panel; close returns focus to the card. Front-door fork tappable at 390px on `/`.[m
+[31m-  (Reduced-motion is covered by CSS + the JS hook; live media-emulation through CDP[m
+[31m-  didn't propagate to the page's `matchMedia`, so that one path is verified by[m
+[31m-  code/CSS inspection rather than a live toggle.)[m
+[31m-- [x] **Simple site untouched**: behavior and metadata of the canonical routes are[m
+[31m-  unchanged; the only shared-layer edit (`metadataBase` in the root layout) adds no[m
+[31m-  visible output and only enables the per-page `/explore` canonical to resolve.[m
+[32m+[m[32m- [ ] _Pending implementation._[m
+[1mdiff --git a/app/explore/page.tsx b/app/explore/page.tsx[m
+[1mindex 9ae002a..6099efc 100644[m
+[1m--- a/app/explore/page.tsx[m
+[1m+++ b/app/explore/page.tsx[m
+[36m@@ -9,12 +9,6 @@[m [mexport const metadata: Metadata = {[m
+   title: "Explore",[m
+   description:[m
+     "Charlie Ramus's portfolio as an explorable desk — pick something up and look closer.",[m
+[31m-  // /explore is a JS-driven alternate presentation of content that already[m
+[31m-  // lives on the simple routes (the single source of truth). Keep crawlers on[m
+[31m-  // those canonical pages: point the canonical at the home and don't index the[m
+[31m-  // desk itself, so there's no duplicate-content competition.[m
+[31m-  alternates: { canonical: "/" },[m
+[31m-  robots: { index: false, follow: true },[m
+ };[m
+ [m
+ /**[m
+[1mdiff --git a/app/globals.css b/app/globals.css[m
+[1mindex 376132b..b8c1e21 100644[m
+[1m--- a/app/globals.css[m
+[1m+++ b/app/globals.css[m
+[36m@@ -970,147 +970,6 @@[m [mbody {[m
+   .cr-xp-dates { width: auto; }[m
+ }[m
+ [m
+[31m-/* ═══════════════════════════════════════════════════════════════════════[m
+[31m-   GUIDED MOBILE LAYOUT — the desk becomes a hero photo + a tappable list of[m
+[31m-   sticker-cards. Rendered (by <Desk>) only below the touch breakpoint, so the[m
+[31m-   styles don't need a media guard; the full-screen stage tweaks below do.[m
+[31m-   ═══════════════════════════════════════════════════════════════════════ */[m
+[31m-.cr-guided {[m
+[31m-  padding: 84px 18px 56px;[m
+[31m-  max-width: 560px;[m
+[31m-  margin: 0 auto;[m
+[31m-}[m
+[31m-.cr-guided-hero {[m
+[31m-  position: relative;[m
+[31m-  border-radius: 14px;[m
+[31m-  overflow: hidden;[m
+[31m-  box-shadow: 0 24px 50px -28px rgba(20, 10, 0, 0.7);[m
+[31m-}[m
+[31m-.cr-guided-photo {[m
+[31m-  display: block;[m
+[31m-  width: 100%;[m
+[31m-  height: auto;[m
+[31m-  user-select: none;[m
+[31m-  -webkit-user-drag: none;[m
+[31m-}[m
+[31m-.cr-guided-hint {[m
+[31m-  position: absolute;[m
+[31m-  left: 0;[m
+[31m-  right: 0;[m
+[31m-  bottom: 0;[m
+[31m-  margin: 0;[m
+[31m-  padding: 22px 14px 12px;[m
+[31m-  font-size: 13px;[m
+[31m-  font-weight: 600;[m
+[31m-  color: #fff;[m
+[31m-  text-align: center;[m
+[31m-  background: linear-gradient(transparent, rgba(20, 12, 4, 0.6));[m
+[31m-}[m
+[31m-.cr-guided-list {[m
+[31m-  list-style: none;[m
+[31m-  margin: 18px 0 0;[m
+[31m-  padding: 0;[m
+[31m-  display: flex;[m
+[31m-  flex-direction: column;[m
+[31m-  gap: 10px;[m
+[31m-}[m
+[31m-.cr-guided-card {[m
+[31m-  position: relative;[m
+[31m-  width: 100%;[m
+[31m-  min-height: 60px; /* ≥44px touch target */[m
+[31m-  display: flex;[m
+[31m-  align-items: center;[m
+[31m-  gap: 14px;[m
+[31m-  padding: 14px 16px;[m
+[31m-  border: 1px solid rgba(0, 0, 0, 0.06);[m
+[31m-  border-radius: 14px;[m
+[31m-  background: #fff;[m
+[31m-  box-shadow: 0 10px 22px -16px rgba(20, 10, 0, 0.6);[m
+[31m-  cursor: pointer;[m
+[31m-  font: inherit;[m
+[31m-  color: #1a1a1a;[m
+[31m-  text-align: left;[m
+[31m-  overflow: hidden;[m
+[31m-  transition: transform 0.16s ease, box-shadow 0.16s ease;[m
+[31m-}[m
+[31m-.cr-guided-card:active {[m
+[31m-  transform: scale(0.99);[m
+[31m-}[m
+[31m-.cr-guided-card:focus-visible {[m
+[31m-  outline: none;[m
+[31m-  box-shadow: 0 0 0 3px var(--orange), 0 10px 22px -16px rgba(20, 10, 0, 0.6);[m
+[31m-}[m
+[31m-.cr-guided-dot {[m
+[31m-  width: 12px;[m
+[31m-  height: 12px;[m
+[31m-  border-radius: 50%;[m
+[31m-  background: var(--orange);[m
+[31m-  flex: none;[m
+[31m-}[m
+[31m-.cr-guided-meta {[m
+[31m-  display: flex;[m
+[31m-  flex-direction: column;[m
+[31m-  gap: 1px;[m
+[31m-  min-width: 0;[m
+[31m-}[m
+[31m-.cr-guided-label {[m
+[31m-  font-weight: 700;[m
+[31m-  font-size: 16px;[m
+[31m-  letter-spacing: -0.01em;[m
+[31m-}[m
+[31m-.cr-guided-section {[m
+[31m-  font-size: 11px;[m
+[31m-  letter-spacing: 0.14em;[m
+[31m-  text-transform: uppercase;[m
+[31m-  color: var(--muted);[m
+[31m-}[m
+[31m-.cr-guided-chev {[m
+[31m-  margin-left: auto;[m
+[31m-  font-size: 18px;[m
+[31m-  color: var(--muted);[m
+[31m-  flex: none;[m
+[31m-}[m
+[31m-.cr-guided-peel {[m
+[31m-  position: absolute;[m
+[31m-  right: -2px;[m
+[31m-  bottom: -2px;[m
+[31m-  width: 16px;[m
+[31m-  height: 16px;[m
+[31m-  background: linear-gradient(135deg, #fff 45%, #d9d4c8);[m
+[31m-  border-radius: 0 0 12px 0;[m
+[31m-  box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.08);[m
+[31m-}[m
+[31m-[m
+[31m-/* Full-screen stage on phones: the zoom panel fills the viewport so the rich[m
+[31m-   views get all the room, and controls stay large/tappable. */[m
+[31m-@media (max-width: 700px) {[m
+[31m-  .cr-stage {[m
+[31m-    align-items: stretch;[m
+[31m-    justify-content: stretch;[m
+[31m-    backdrop-filter: none;[m
+[31m-  }[m
+[31m-  .cr-panel,[m
+[31m-  .cr-panel-wide {[m
+[31m-    width: 100%;[m
+[31m-    max-width: 100%;[m
+[31m-    max-height: 100dvh;[m
+[31m-    height: 100dvh;[m
+[31m-    border-radius: 0;[m
+[31m-  }[m
+[31m-  .cr-panel-top {[m
+[31m-    padding: 16px 18px;[m
+[31m-    /* keep the close control comfortably above the notch / on-screen edges */[m
+[31m-    padding-top: max(16px, env(safe-area-inset-top));[m
+[31m-  }[m
+[31m-  .cr-back {[m
+[31m-    min-height: 44px;[m
+[31m-    padding: 10px 16px;[m
+[31m-  }[m
+[31m-  .cr-panel-body {[m
+[31m-    padding: 18px 16px max(18px, env(safe-area-inset-bottom));[m
+[31m-  }[m
+[31m-}[m
+[31m-[m
+ @media (prefers-reduced-motion: reduce) {[m
+   .cr-stage, .cr-panel { animation: none !important; }[m
+   .cr-obj { transition: none !important; }[m
+[36m@@ -1118,5 +977,4 @@[m [mbody {[m
+   .cr-term-type,[m
+   .cr-unroll { animation: none !important; opacity: 1 !important; transform: none !important; }[m
+   .cr-tile { opacity: 1 !important; transform: none !important; transition: none !important; }[m
+[31m-  .cr-guided-card { animation: none !important; opacity: 1 !important; transform: none !important; }[m
+ }[m
+[1mdiff --git a/app/layout.tsx b/app/layout.tsx[m
+[1mindex 35bd8a2..f02cbea 100644[m
+[1m--- a/app/layout.tsx[m
+[1m+++ b/app/layout.tsx[m
+[36m@@ -15,7 +15,6 @@[m [mconst inter = Inter({[m
+ });[m
+ [m
+ export const metadata: Metadata = {[m
+[31m-  metadataBase: new URL("https://charlieramus.com"),[m
+   title: {[m
+     default: "Charlie Ramus",[m
+     template: "%s | Charlie Ramus",[m
+[1mdiff --git a/components/explore/desk.tsx b/components/explore/desk.tsx[m
+[1mindex c663bb0..f7cc325 100644[m
+[1m--- a/components/explore/desk.tsx[m
+[1m+++ b/components/explore/desk.tsx[m
+[36m@@ -4,9 +4,7 @@[m [mimport Link from "next/link";[m
+ import type { DeskObject } from "@/data/desk";[m
+ import DeskStage from "@/components/explore/desk-stage";[m
+ import DeskObjectView from "@/components/explore/desk-object";[m
+[31m-import GuidedDesk from "@/components/explore/guided-desk";[m
+ import Stage from "@/components/explore/stage";[m
+[31m-import { useIsMobile } from "@/components/explore/use-is-mobile";[m
+ [m
+ /** An article surfaced in the Writing view — server-rendered body included. */[m
+ export type DeskArticle = {[m
+[36m@@ -34,20 +32,12 @@[m [mexport default function Desk({[m
+   articles: DeskArticle[];[m
+ }) {[m
+   const [openId, setOpenId] = useState<string | null>(null);[m
+[31m-  const isMobile = useIsMobile();[m
+ [m
+   const openObject = useMemo([m
+     () => objects.find((o) => o.id === openId) ?? null,[m
+     [objects, openId],[m
+   );[m
+ [m
+[31m-  // The guided list only carries the interactive objects (ambient items are[m
+[31m-  // decoration and were never tappable), in the same reading/Tab order.[m
+[31m-  const interactive = useMemo([m
+[31m-    () => objects.filter((o) => o.kind !== "ambient"),[m
+[31m-    [objects],[m
+[31m-  );[m
+[31m-[m
+   const handleOpen = useCallback((id: string) => setOpenId(id), []);[m
+   const handleClose = useCallback(() => setOpenId(null), []);[m
+ [m
+[36m@@ -70,20 +60,16 @@[m [mexport default function Desk({[m
+         </Link>[m
+       </header>[m
+ [m
+[31m-      {isMobile ? ([m
+[31m-        <GuidedDesk objects={interactive} onOpen={handleOpen} />[m
+[31m-      ) : ([m
+[31m-        <DeskStage>[m
+[31m-          {objects.map((object) => ([m
+[31m-            <DeskObjectView[m
+[31m-              key={object.id}[m
+[31m-              object={object}[m
+[31m-              onOpen={handleOpen}[m
+[31m-              cards={object.section === "writing" ? writingCards : undefined}[m
+[31m-            />[m
+[31m-          ))}[m
+[31m-        </DeskStage>[m
+[31m-      )}[m
+[32m+[m[32m      <DeskStage>[m
+[32m+[m[32m        {objects.map((object) => ([m
+[32m+[m[32m          <DeskObjectView[m
+[32m+[m[32m            key={object.id}[m
+[32m+[m[32m            object={object}[m
+[32m+[m[32m            onOpen={handleOpen}[m
+[32m+[m[32m            cards={object.section === "writing" ? writingCards : undefined}[m
+[32m+[m[32m          />[m
+[32m+[m[32m        ))}[m
+[32m+[m[32m      </DeskStage>[m
+ [m
+       <Stage object={openObject} onClose={handleClose} articles={articles} />[m
+     </div>[m
+[1mdiff --git a/components/explore/guided-desk.tsx b/components/explore/guided-desk.tsx[m
+[1mdeleted file mode 100644[m
+[1mindex d556995..0000000[m
+[1m--- a/components/explore/guided-desk.tsx[m
+[1m+++ /dev/null[m
+[36m@@ -1,76 +0,0 @@[m
+[31m-"use client";[m
+[31m-import Image from "next/image";[m
+[31m-import type { DeskObject } from "@/data/desk";[m
+[31m-import {[m
+[31m-  DESK_PHOTO_HEIGHT,[m
+[31m-  DESK_PHOTO_SRC,[m
+[31m-  DESK_PHOTO_WIDTH,[m
+[31m-} from "@/data/desk";[m
+[31m-import { usePrefersReducedMotion } from "@/components/explore/use-reduced-motion";[m
+[31m-[m
+[31m-/**[m
+[31m- * The mobile / touch layout. The free-roam desk needs precise aiming at small,[m
+[31m- * rotated targets, which is hostile on a phone — so below the breakpoint the[m
+[31m- * desk becomes a **guided** experience: the same desk photo as a hero, then the[m
+[31m- * same interactive objects as a vertical list of big, tappable sticker-cards[m
+[31m- * (the desk's white die-cut sticker aesthetic, scaled up to a ≥44px target).[m
+[31m- * Each card opens the exact same shared <Stage> view as the desktop object, so[m
+[31m- * there is no second content path. Ambient items are dropped (they were pure[m
+[31m- * decoration and never interactive).[m
+[31m- */[m
+[31m-export default function GuidedDesk({[m
+[31m-  objects,[m
+[31m-  onOpen,[m
+[31m-}: {[m
+[31m-  objects: DeskObject[];[m
+[31m-  onOpen: (id: string) => void;[m
+[31m-}) {[m
+[31m-  const reduced = usePrefersReducedMotion();[m
+[31m-[m
+[31m-  return ([m
+[31m-    <div className="cr-guided">[m
+[31m-      <div className="cr-guided-hero">[m
+[31m-        <Image[m
+[31m-          src={DESK_PHOTO_SRC}[m
+[31m-          alt="Charlie's desk, shot from above"[m
+[31m-          width={DESK_PHOTO_WIDTH}[m
+[31m-          height={DESK_PHOTO_HEIGHT}[m
+[31m-          priority[m
+[31m-          fetchPriority="high"[m
+[31m-          sizes="100vw"[m
+[31m-          className="cr-guided-photo"[m
+[31m-        />[m
+[31m-        <p className="cr-guided-hint">Tap something to look closer.</p>[m
+[31m-      </div>[m
+[31m-[m
+[31m-      <ul className="cr-guided-list">[m
+[31m-        {objects.map((object, i) => ([m
+[31m-          <li key={object.id}>[m
+[31m-            <button[m
+[31m-              type="button"[m
+[31m-              onClick={() => onOpen(object.id)}[m
+[31m-              className={`cr-guided-card${reduced ? "" : " cr-deal"}`}[m
+[31m-              style={reduced ? undefined : { animationDelay: `${i * 45}ms` }}[m
+[31m-            >[m
+[31m-              <span[m
+[31m-                className="cr-guided-dot"[m
+[31m-                style={object.inkDot ? { background: "#1a1a1a" } : undefined}[m
+[31m-                aria-hidden="true"[m
+[31m-              />[m
+[31m-              <span className="cr-guided-meta">[m
+[31m-                <span className="cr-guided-label">{object.label}</span>[m
+[31m-                {object.section ? ([m
+[31m-                  <span className="cr-guided-section">{object.section}</span>[m
+[31m-                ) : null}[m
+[31m-              </span>[m
+[31m-              <span className="cr-guided-chev" aria-hidden="true">[m
+[31m-                →[m
+[31m-              </span>[m
+[31m-              <span className="cr-guided-peel" aria-hidden="true" />[m
+[31m-            </button>[m
+[31m-          </li>[m
+[31m-        ))}[m
+[31m-      </ul>[m
+[31m-    </div>[m
+[31m-  );[m
+[31m-}[m
+[1mdiff --git a/components/explore/stage.tsx b/components/explore/stage.tsx[m
+[1mindex 86d9f44..241aaad 100644[m
+[1m--- a/components/explore/stage.tsx[m
+[1m+++ b/components/explore/stage.tsx[m
+[36m@@ -1,22 +1,16 @@[m
+ "use client";[m
+ import { useEffect, useRef } from "react";[m
+ import { createPortal } from "react-dom";[m
+[31m-import dynamic from "next/dynamic";[m
+ import type { DeskObject, DeskSection } from "@/data/desk";[m
+ import type { DeskArticle } from "@/components/explore/desk";[m
+[31m-[m
+[31m-// Each rich view is code-split into its own chunk that only loads when its[m
+[31m-// object is opened — so the heavy per-view content (lightbox, images, MDX) is[m
+[31m-// fetched on open, not on desk load, and never ships with the desk shell.[m
+[31m-const loading = () => <p className="cr-panel-blurb">Opening…</p>;[m
+[31m-const WritingView = dynamic(() => import("@/components/explore/views/writing-view"), { loading });[m
+[31m-const PhotographyView = dynamic(() => import("@/components/explore/views/photography-view"), { loading });[m
+[31m-const ProjectsView = dynamic(() => import("@/components/explore/views/projects-view"), { loading });[m
+[31m-const ExperienceView = dynamic(() => import("@/components/explore/views/experience-view"), { loading });[m
+[31m-const GearView = dynamic(() => import("@/components/explore/views/gear-view"), { loading });[m
+[31m-const DesignView = dynamic(() => import("@/components/explore/views/design-view"), { loading });[m
+[31m-const ArchitectureView = dynamic(() => import("@/components/explore/views/architecture-view"), { loading });[m
+[31m-const ContactView = dynamic(() => import("@/components/explore/views/contact-view"), { loading });[m
+[32m+[m[32mimport WritingView from "@/components/explore/views/writing-view";[m
+[32m+[m[32mimport PhotographyView from "@/components/explore/views/photography-view";[m
+[32m+[m[32mimport ProjectsView from "@/components/explore/views/projects-view";[m
+[32m+[m[32mimport ExperienceView from "@/components/explore/views/experience-view";[m
+[32m+[m[32mimport GearView from "@/components/explore/views/gear-view";[m
+[32m+[m[32mimport DesignView from "@/components/explore/views/design-view";[m
+[32m+[m[32mimport ArchitectureView from "@/components/explore/views/architecture-view";[m
+[32m+[m[32mimport ContactView from "@/components/explore/views/contact-view";[m
+ [m
+ type Props = {[m
+   /** The open object, or null when the stage is closed. */[m
+[36m@@ -39,52 +33,12 @@[m [mexport default function Stage({ object, onClose, articles }: Props) {[m
+   const panelRef = useRef<HTMLDivElement>(null);[m
+   const open = object !== null;[m
+ [m
+[31m-  // Escape to close + lock body scroll + trap focus while open, and return[m
+[31m-  // focus to the triggering desk object on close.[m
+[32m+[m[32m  // Escape to close + lock body scroll while open + focus the panel.[m
+   useEffect(() => {[m
+     if (!open) return;[m
+[31m-[m
+[31m-    // Remember what had focus (the desk object that opened us) so we can hand[m
+[31m-    // focus back when the stage closes.[m
+[31m-    const trigger = document.activeElement as HTMLElement | null;[m
+[31m-[m
+[31m-    const getFocusable = (): HTMLElement[] => {[m
+[31m-      const panel = panelRef.current;[m
+[31m-      if (!panel) return [];[m
+[31m-      return Array.from([m
+[31m-        panel.querySelectorAll<HTMLElement>([m
+[31m-          'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])',[m
+[31m-        ),[m
+[31m-      ).filter((el) => el.offsetParent !== null || el === document.activeElement);[m
+[31m-    };[m
+[31m-[m
+     const onKey = (e: KeyboardEvent) => {[m
+[31m-      if (e.key === "Escape") {[m
+[31m-        onClose();[m
+[31m-        return;[m
+[31m-      }[m
+[31m-      if (e.key !== "Tab") return;[m
+[31m-      // Keep Tab inside the dialog.[m
+[31m-      const focusable = getFocusable();[m
+[31m-      if (focusable.length === 0) {[m
+[31m-        e.preventDefault();[m
+[31m-        panelRef.current?.focus();[m
+[31m-        return;[m
+[31m-      }[m
+[31m-      const first = focusable[0];[m
+[31m-      const last = focusable[focusable.length - 1];[m
+[31m-      const active = document.activeElement;[m
+[31m-      if (e.shiftKey) {[m
+[31m-        if (active === first || active === panelRef.current) {[m
+[31m-          e.preventDefault();[m
+[31m-          last.focus();[m
+[31m-        }[m
+[31m-      } else if (active === last) {[m
+[31m-        e.preventDefault();[m
+[31m-        first.focus();[m
+[31m-      }[m
+[32m+[m[32m      if (e.key === "Escape") onClose();[m
+     };[m
+[31m-[m
+     document.addEventListener("keydown", onKey);[m
+     const prevOverflow = document.body.style.overflow;[m
+     document.body.style.overflow = "hidden";[m
+[36m@@ -92,11 +46,6 @@[m [mexport default function Stage({ object, onClose, articles }: Props) {[m
+     return () => {[m
+       document.removeEventListener("keydown", onKey);[m
+       document.body.style.overflow = prevOverflow;[m
+[31m-      // Restore focus to the desk object that was open (it's still mounted[m
+[31m-      // behind the overlay), so keyboard users land back where they were.[m
+[31m-      if (trigger && typeof trigger.focus === "function") {[m
+[31m-        trigger.focus();[m
+[31m-      }[m
+     };[m
+   }, [open, onClose]);[m
+ [m
+[1mdiff --git a/components/explore/use-is-mobile.ts b/components/explore/use-is-mobile.ts[m
+[1mdeleted file mode 100644[m
+[1mindex 890c0d2..0000000[m
+[1m--- a/components/explore/use-is-mobile.ts[m
+[1m+++ /dev/null[m
+[36m@@ -1,28 +0,0 @@[m
+[31m-"use client";[m
+[31m-import { useSyncExternalStore } from "react";[m
+[31m-[m
+[31m-/**[m
+[31m- * Tracks a small-viewport (touch/phone) breakpoint. Like the reduced-motion[m
+[31m- * hook, SSR + first paint return `false` (desktop) and reconcile on the client,[m
+[31m- * so the server always renders the crawlable desktop desk and there is no[m
+[31m- * hydration mismatch. The desk uses this to switch to the guided mobile layout.[m
+[31m- */[m
+[31m-export function useIsMobile(): boolean {[m
+[31m-  return useSyncExternalStore(subscribe, getSnapshot, () => false);[m
+[31m-}[m
+[31m-[m
+[31m-// Below this width the free-roam desk's drag/aim targets get too small; we hand[m
+[31m-// off to the guided list instead.[m
+[31m-const QUERY = "(max-width: 700px)";[m
+[31m-[m
+[31m-function subscribe(callback: () => void): () => void {[m
+[31m-  if (typeof window === "undefined" || !window.matchMedia) return () => {};[m
+[31m-  const mql = window.matchMedia(QUERY);[m
+[31m-  mql.addEventListener("change", callback);[m
+[31m-  return () => mql.removeEventListener("change", callback);[m
+[31m-}[m
+[31m-[m
+[31m-function getSnapshot(): boolean {[m
+[31m-  if (typeof window === "undefined" || !window.matchMedia) return false;[m
+[31m-  return window.matchMedia(QUERY).matches;[m
+[31m-}[m
+
+[33mcommit f817c54eeee5c6624f85eaa50b3cf91c724c62e1[m
+Author: [1;31mCharlie Ramus[m <Charlie.ramus12@gmail.com>
+Date:   Fri Jun 26 19:21:35 2026 -0600
+
+    updatelogv5
+
+[1mdiff --git a/UPDATELOGV5.md b/UPDATELOGV5.md[m
+[1mindex b7579d5..0bbb938 100644[m
+[1m--- a/UPDATELOGV5.md[m
+[1m+++ b/UPDATELOGV5.md[m
+[36m@@ -23,7 +23,28 @@[m [mbroken maze.[m
+ - The front-door fork and the escape-hatch chip must work on touch.[m
+ [m
+ # Stage 1 Report[m
+[31m-- [ ] _Pending implementation._[m
+[32m+[m[32m- [x] **Guided layout below the touch breakpoint**: `components/explore/use-is-mobile.ts`[m
+[32m+[m[32m  tracks `(max-width: 700px)` via `useSyncExternalStore` (SSR + first paint return[m
+[32m+[m[32m  `false`, so the server always renders the crawlable desktop desk — no hydration[m
+[32m+[m[32m  mismatch). `<Desk>` switches to `components/explore/guided-desk.tsx` on small[m
+[32m+[m[32m  viewports: the same `public/explore/desk.webp` as a hero, then the interactive[m
+[32m+[m[32m  objects as a **vertical list of tappable sticker-cards** (the desk's white[m
+[32m+[m[32m  die-cut sticker aesthetic — dot, label, peel corner). No drag/aim targets;[m
+[32m+[m[32m  ambient decoration is dropped. Verified live at 390px: `.cr-guided` shows,[m
+[32m+[m[32m  `.cr-desk-stage` is gone, 8 cards render.[m
+[32m+[m[32m- [x] **Same `<Stage>`, one content path**: each guided card calls the same[m
+[32m+[m[32m  `onOpen(id)` as the desktop object, so it opens the **exact same** rich[m
+[32m+[m[32m  per-section view. There is no second content surface.[m
+[32m+[m[32m- [x] **Touch targets ≥44px**: each `.cr-guided-card` measures 77px tall (verified[m
+[32m+[m[32m  in-browser); the stage's `← Put it back` control is bumped to `min-height: 44px`[m
+[32m+[m[32m  on mobile.[m
+[32m+[m[32m- [x] **Full-screen stage on mobile**: under `@media (max-width: 700px)` the[m
+[32m+[m[32m  `.cr-panel` fills the viewport (`100dvh`, `border-radius: 0`, safe-area padding).[m
+[32m+[m[32m  Verified: tapping a card produced a 390×844 panel with `radius=0`.[m
+[32m+[m[32m- [x] **Fork + escape-hatch on touch**: the front-door fork (`mode-fork.tsx`) is[m
+[32m+[m[32m  already responsive (`flex-col sm:flex-row`) and its pick handlers fire on tap[m
+[32m+[m[32m  (not just `mouseenter`) — both cards verified visible/tappable on `/` at 390px.[m
+[32m+[m[32m  The escape-hatch `<ModeChip>` is a real `<Link>` and stays tappable.[m
+ [m
+ ---[m
+ [m
+[36m@@ -44,7 +65,39 @@[m [mbroken maze.[m
+   could trap bots or no-JS users).[m
+ [m
+ # Stage 2 Report[m
+[31m-- [ ] _Pending implementation._[m
+[32m+[m[32m- [x] **Keyboard + focus trap + return-focus**: `components/explore/stage.tsx` now[m
+[32m+[m[32m  remembers the triggering element on open, **traps Tab/Shift+Tab** inside the[m
+[32m+[m[32m  dialog (wrapping first↔last, with the panel itself as a safe anchor), closes on[m
+[32m+[m[32m  `Escape`, and **returns focus to the desk object** that opened it (still mounted[m
+[32m+[m[32m  behind the overlay). Verified live: after opening Writing, focus was inside[m
+[32m+[m[32m  `.cr-panel`; after `Escape`, focus landed back on the `Writing` `<button>` (desk)[m
+[32m+[m[32m  / the `Photography` card (mobile). Visible focus ring and logical Tab order were[m
+[32m+[m[32m  already in place from PART 1/3.[m
+[32m+[m[32m- [x] **Screen readers**: the panel is a labelled dialog (`role="dialog"`,[m
+[32m+[m[32m  `aria-modal="true"`, `aria-labelledby="cr-panel-title"` — confirmed in the live[m
+[32m+[m[32m  DOM); interactive objects keep their sticker text as the accessible name; ambient[m
+[32m+[m[32m  items stay `aria-hidden`. The guided cards' decorative dot/chevron/peel are[m
+[32m+[m[32m  `aria-hidden`.[m
+[32m+[m[32m- [x] **`prefers-reduced-motion`**: the new guided-card deal entrance is gated two[m
+[32m+[m[32m  ways — `usePrefersReducedMotion()` drops the `cr-deal` class + per-item delay in[m
+[32m+[m[32m  `guided-desk.tsx`, and the CSS `@media (prefers-reduced-motion: reduce)` block[m
+[32m+[m[32m  now also forces `.cr-guided-card` to its static end-state (alongside the existing[m
+[32m+[m[32m  stage/deal/term/unroll collapses).[m
+[32m+[m[32m- [x] **SEO — simple routes stay the indexed source**: `/explore` is a JS-driven[m
+[32m+[m[32m  alternate of content that already lives on the simple routes, so its metadata now[m
+[32m+[m[32m  sets `robots: { index: false, follow: true }` and `alternates: { canonical: "/" }`[m
+[32m+[m[32m  — crawlers are kept on the canonical pages and there's no duplicate-content[m
+[32m+[m[32m  competition. Added `metadataBase` to the root layout so the canonical resolves[m
+[32m+[m[32m  absolutely. Verified in served HTML: `/explore` →[m
+[32m+[m[32m  `<meta name="robots" content="noindex, follow">` + `<link rel="canonical"[m
+[32m+[m[32m  href="https://charlieramus.com">`; `/` and `/writing` are **unchanged**[m
+[32m+[m[32m  (`index, follow`, no canonical). No `sitemap.{ts,xml}`/`robots.txt` exists in the[m
+[32m+[m[32m  project, so there were no sitemap expectations to break; the canonical was set[m
+[32m+[m[32m  per-page (not globally) so the simple routes don't inherit a wrong canonical.[m
+[32m+[m[32m- [x] **Client-only redirect**: the saved-`creative` redirect[m
+[32m+[m[32m  (`components/creative-redirect.tsx`) remains a client-only `router.replace` that[m
+[32m+[m[32m  runs only after JS + storage are available — bots and no-JS users keep the[m
+[32m+[m[32m  canonical simple site. Left as-is after this review.[m
+ [m
+ ---[m
+ [m
+[36m@@ -61,4 +114,31 @@[m [mbroken maze.[m
+ - Confirm the simple site is untouched in behavior and performance.[m
+ [m
+ # Stage 3 Report[m
+[31m-- [ ] _Pending implementation._[m
+[32m+[m[32m- [x] **Only the desk photo loads eagerly**: confirmed in the served `/explore`[m
+[32m+[m[32m  head — exactly **one** `as="image"` preload, `public/explore/desk.webp`[m
+[32m+[m[32m  (`fetchPriority="high"`). The hero photo in the guided mobile layout reuses the[m
+[32m+[m[32m  same asset.[m
+[32m+[m[32m- [x] **Per-view lazy-loading + code-split**: `stage.tsx` now imports all eight[m
+[32m+[m[32m  rich views via `next/dynamic`, so each view (and its heavy bits — the lightbox,[m
+[32m+[m[32m  grid images, MDX bodies) is split into its own chunk that loads **on open**, not[m
+[32m+[m[32m  on desk load, with a lightweight "Opening…" fallback. The desk shell ships[m
+[32m+[m[32m  without them.[m
+[32m+[m[32m- [x] **No bloat to the simple site**: the desk/stage/views are imported **only**[m
+[32m+[m[32m  inside the `/explore` tree (`desk.tsx` → `stage.tsx` → views) — grep confirms no[m
+[32m+[m[32m  simple-site component references them — so they never entered the simple site's[m
+[32m+[m[32m  bundle. The dynamic split further keeps them out of the desk's initial chunk.[m
+[32m+[m[32m- [x] **`next build` — clean**: succeeds with **zero warnings**; `/explore` still[m
+[32m+[m[32m  prerenders as **static** (`○`), and every simple route (`/`, `/writing`,[m
+[32m+[m[32m  `/photography`, `/gear`, `/design`, `/web-projects`, `/blog`, …) is unchanged.[m
+[32m+[m[32m  `npx tsc --noEmit` and `eslint` on all touched files are clean.[m
+[32m+[m[32m- [x] **QA (desktop + mobile, headless Chromium)**: desktop 1280px — desk photo +[m
+[32m+[m[32m  all 8 objects render, no console errors, Writing opens a centered dialog, Escape[m
+[32m+[m[32m  closes and returns focus. Mobile 390px — guided list of 8 cards (77px tall),[m
+[32m+[m[32m  hero photo, free-roam desk suppressed; tapping a card opens a 390×844 full-screen[m
+[32m+[m[32m  panel; close returns focus to the card. Front-door fork tappable at 390px on `/`.[m
+[32m+[m[32m  (Reduced-motion is covered by CSS + the JS hook; live media-emulation through CDP[m
+[32m+[m[32m  didn't propagate to the page's `matchMedia`, so that one path is verified by[m
+[32m+[m[32m  code/CSS inspection rather than a live toggle.)[m
+[32m+[m[32m- [x] **Simple site untouched**: behavior and metadata of the canonical routes are[m
+[32m+[m[32m  unchanged; the only shared-layer edit (`metadataBase` in the root layout) adds no[m
+[32m+[m[32m  visible output and only enables the per-page `/explore` canonical to resolve.[m
+[1mdiff --git a/app/explore/page.tsx b/app/explore/page.tsx[m
+[1mindex 6099efc..9ae002a 100644[m
+[1m--- a/app/explore/page.tsx[m
+[1m+++ b/app/explore/page.tsx[m
+[36m@@ -9,6 +9,12 @@[m [mexport const metadata: Metadata = {[m
+   title: "Explore",[m
+   description:[m
+     "Charlie Ramus's portfolio as an explorable desk — pick something up and look closer.",[m
+[32m+[m[32m  // /explore is a JS-driven alternate presentation of content that already[m
+[32m+[m[32m  // lives on the simple routes (the single source of truth). Keep crawlers on[m
+[32m+[m[32m  // those canonical pages: point the canonical at the home and don't index the[m
+[32m+[m[32m  // desk itself, so there's no duplicate-content competition.[m
+[32m+[m[32m  alternates: { canonical: "/" },[m
+[32m+[m[32m  robots: { index: false, follow: true },[m
+ };[m
+ [m
+ /**[m
+[1mdiff --git a/app/globals.css b/app/globals.css[m
+[1mindex b8c1e21..376132b 100644[m
+[1m--- a/app/globals.css[m
+[1m+++ b/app/globals.css[m
+[36m@@ -970,6 +970,147 @@[m [mbody {[m
+   .cr-xp-dates { width: auto; }[m
+ }[m
+ [m
+[32m+[m[32m/* ═══════════════════════════════════════════════════════════════════════[m
+[32m+[m[32m   GUIDED MOBILE LAYOUT — the desk becomes a hero photo + a tappable list of[m
+[32m+[m[32m   sticker-cards. Rendered (by <Desk>) only below the touch breakpoint, so the[m
+[32m+[m[32m   styles don't need a media guard; the full-screen stage tweaks below do.[m
+[32m+[m[32m   ═══════════════════════════════════════════════════════════════════════ */[m
+[32m+[m[32m.cr-guided {[m
+[32m+[m[32m  padding: 84px 18px 56px;[m
+[32m+[m[32m  max-width: 560px;[m
+[32m+[m[32m  margin: 0 auto;[m
+[32m+[m[32m}[m
+[32m+[m[32m.cr-guided-hero {[m
+[32m+[m[32m  position: relative;[m
+[32m+[m[32m  border-radius: 14px;[m
+[32m+[m[32m  overflow: hidden;[m
+[32m+[m[32m  box-shadow: 0 24px 50px -28px rgba(20, 10, 0, 0.7);[m
+[32m+[m[32m}[m
+[32m+[m[32m.cr-guided-photo {[m
+[32m+[m[32m  display: block;[m
+[32m+[m[32m  width: 100%;[m
+[32m+[m[32m  height: auto;[m
+[32m+[m[32m  user-select: none;[m
+[32m+[m[32m  -webkit-user-drag: none;[m
+[32m+[m[32m}[m
+[32m+[m[32m.cr-guided-hint {[m
+[32m+[m[32m  position: absolute;[m
+[32m+[m[32m  left: 0;[m
+[32m+[m[32m  right: 0;[m
+[32m+[m[32m  bottom: 0;[m
+[32m+[m[32m  margin: 0;[m
+[32m+[m[32m  padding: 22px 14px 12px;[m
+[32m+[m[32m  font-size: 13px;[m
+[32m+[m[32m  font-weight: 600;[m
+[32m+[m[32m  color: #fff;[m
+[32m+[m[32m  text-align: center;[m
+[32m+[m[32m  background: linear-gradient(transparent, rgba(20, 12, 4, 0.6));[m
+[32m+[m[32m}[m
+[32m+[m[32m.cr-guided-list {[m
+[32m+[m[32m  list-style: none;[m
+[32m+[m[32m  margin: 18px 0 0;[m
+[32m+[m[32m  padding: 0;[m
+[32m+[m[32m  display: flex;[m
+[32m+[m[32m  flex-direction: column;[m
+[32m+[m[32m  gap: 10px;[m
+[32m+[m[32m}[m
+[32m+[m[32m.cr-guided-card {[m
+[32m+[m[32m  position: relative;[m
+[32m+[m[32m  width: 100%;[m
+[32m+[m[32m  min-height: 60px; /* ≥44px touch target */[m
+[32m+[m[32m  display: flex;[m
+[32m+[m[32m  align-items: center;[m
+[32m+[m[32m  gap: 14px;[m
+[32m+[m[32m  padding: 14px 16px;[m
+[32m+[m[32m  border: 1px solid rgba(0, 0, 0, 0.06);[m
+[32m+[m[32m  border-radius: 14px;[m
+[32m+[m[32m  background: #fff;[m
+[32m+[m[32m  box-shadow: 0 10px 22px -16px rgba(20, 10, 0, 0.6);[m
+[32m+[m[32m  cursor: pointer;[m
+[32m+[m[32m  font: inherit;[m
+[32m+[m[32m  color: #1a1a1a;[m
+[32m+[m[32m  text-align: left;[m
+[32m+[m[32m  overflow: hidden;[m
+[32m+[m[32m  transition: transform 0.16s ease, box-shadow 0.16s ease;[m
+[32m+[m[32m}[m
+[32m+[m[32m.cr-guided-card:active {[m
+[32m+[m[32m  transform: scale(0.99);[m
+[32m+[m[32m}[m
+[32m+[m[32m.cr-guided-card:focus-visible {[m
+[32m+[m[32m  outline: none;[m
+[32m+[m[32m  box-shadow: 0 0 0 3px var(--orange), 0 10px 22px -16px rgba(20, 10, 0, 0.6);[m
+[32m+[m[32m}[m
+[32m+[m[32m.cr-guided-dot {[m
+[32m+[m[32m  width: 12px;[m
+[32m+[m[32m  height: 12px;[m
+[32m+[m[32m  border-radius: 50%;[m
+[32m+[m[32m  background: var(--orange);[m
+[32m+[m[32m  flex: none;[m
+[32m+[m[32m}[m
+[32m+[m[32m.cr-guided-meta {[m
+[32m+[m[32m  display: flex;[m
+[32m+[m[32m  flex-direction: column;[m
+[32m+[m[32m  gap: 1px;[m
+[32m+[m[32m  min-width: 0;[m
+[32m+[m[32m}[m
+[32m+[m[32m.cr-guided-label {[m
+[32m+[m[32m  font-weight: 700;[m
+[32m+[m[32m  font-size: 16px;[m
+[32m+[m[32m  letter-spacing: -0.01em;[m
+[32m+[m[32m}[m
+[32m+[m[32m.cr-guided-section {[m
+[32m+[m[32m  font-size: 11px;[m
+[32m+[m[32m  letter-spacing: 0.14em;[m
+[32m+[m[32m  text-transform: uppercase;[m
+[32m+[m[32m  color: var(--muted);[m
+[32m+[m[32m}[m
+[32m+[m[32m.cr-guided-chev {[m
+[32m+[m[32m  margin-left: auto;[m
+[32m+[m[32m  font-size: 18px;[m
+[32m+[m[32m  color: var(--muted);[m
+[32m+[m[32m  flex: none;[m
+[32m+[m[32m}[m
+[32m+[m[32m.cr-guided-peel {[m
+[32m+[m[32m  position: absolute;[m
+[32m+[m[32m  right: -2px;[m
+[32m+[m[32m  bottom: -2px;[m
+[32m+[m[32m  width: 16px;[m
+[32m+[m[32m  height: 16px;[m
+[32m+[m[32m  background: linear-gradient(135deg, #fff 45%, #d9d4c8);[m
+[32m+[m[32m  border-radius: 0 0 12px 0;[m
+[32m+[m[32m  box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.08);[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m/* Full-screen stage on phones: the zoom panel fills the viewport so the rich[m
+[32m+[m[32m   views get all the room, and controls stay large/tappable. */[m
+[32m+[m[32m@media (max-width: 700px) {[m
+[32m+[m[32m  .cr-stage {[m
+[32m+[m[32m    align-items: stretch;[m
+[32m+[m[32m    justify-content: stretch;[m
+[32m+[m[32m    backdrop-filter: none;[m
+[32m+[m[32m  }[m
+[32m+[m[32m  .cr-panel,[m
+[32m+[m[32m  .cr-panel-wide {[m
+[32m+[m[32m    width: 100%;[m
+[32m+[m[32m    max-width: 100%;[m
+[32m+[m[32m    max-height: 100dvh;[m
+[32m+[m[32m    height: 100dvh;[m
+[32m+[m[32m    border-radius: 0;[m
+[32m+[m[32m  }[m
+[32m+[m[32m  .cr-panel-top {[m
+[32m+[m[32m    padding: 16px 18px;[m
+[32m+[m[32m    /* keep the close control comfortably above the notch / on-screen edges */[m
+[32m+[m[32m    padding-top: max(16px, env(safe-area-inset-top));[m
+[32m+[m[32m  }[m
+[32m+[m[32m  .cr-back {[m
+[32m+[m[32m    min-height: 44px;[m
+[32m+[m[32m    padding: 10px 16px;[m
+[32m+[m[32m  }[m
+[32m+[m[32m  .cr-panel-body {[m
+[32m+[m[32m    padding: 18px 16px max(18px, env(safe-area-inset-bottom));[m
+[32m+[m[32m  }[m
+[32m+[m[32m}[m
+[32m+[m
+ @media (prefers-reduced-motion: reduce) {[m
+   .cr-stage, .cr-panel { animation: none !important; }[m
+   .cr-obj { transition: none !important; }[m
+[36m@@ -977,4 +1118,5 @@[m [mbody {[m
+   .cr-term-type,[m
+   .cr-unroll { animation: none !important; opacity: 1 !important; transform: none !important; }[m
+   .cr-tile { opacity: 1 !important; transform: none !important; transition: none !important; }[m
+[32m+[m[32m  .cr-guided-card { animation: none !important; opacity: 1 !important; transform: none !important; }[m
+ }[m
+[1mdiff --git a/app/layout.tsx b/app/layout.tsx[m
+[1mindex f02cbea..35bd8a2 100644[m
+[1m--- a/app/layout.tsx[m
+[1m+++ b/app/layout.tsx[m
+[36m@@ -15,6 +15,7 @@[m [mconst inter = Inter({[m
+ });[m
+ [m
+ export const metadata: Metadata = {[m
+[32m+[m[32m  metadataBase: new URL("https://charlieramus.com"),[m
+   title: {[m
+     default: "Charlie Ramus",[m
+     template: "%s | Charlie Ramus",[m
+[1mdiff --git a/components/explore/desk.tsx b/components/explore/desk.tsx[m
+[1mindex f7cc325..c663bb0 100644[m
+[1m--- a/components/explore/desk.tsx[m
+[1m+++ b/components/explore/desk.tsx[m
+[36m@@ -4,7 +4,9 @@[m [mimport Link from "next/link";[m
+ import type { DeskObject } from "@/data/desk";[m
+ import DeskStage from "@/components/explore/desk-stage";[m
+ import DeskObjectView from "@/components/explore/desk-object";[m
+[32m+[m[32mimport GuidedDesk from "@/components/explore/guided-desk";[m
+ import Stage from "@/components/explore/stage";[m
+[32m+[m[32mimport { useIsMobile } from "@/components/explore/use-is-mobile";[m
+ [m
+ /** An article surfaced in the Writing view — server-rendered body included. */[m
+ export type DeskArticle = {[m
+[36m@@ -32,12 +34,20 @@[m [mexport default function Desk({[m
+   articles: DeskArticle[];[m
+ }) {[m
+   const [openId, setOpenId] = useState<string | null>(null);[m
+[32m+[m[32m  const isMobile = useIsMobile();[m
+ [m
+   const openObject = useMemo([m
+     () => objects.find((o) => o.id === openId) ?? null,[m
+     [objects, openId],[m
+   );[m
+ [m
+[32m+[m[32m  // The guided list only carries the interactive objects (ambient items are[m
+[32m+[m[32m  // decoration and were never tappable), in the same reading/Tab order.[m
+[32m+[m[32m  const interactive = useMemo([m
+[32m+[m[32m    () => objects.filter((o) => o.kind !== "ambient"),[m
+[32m+[m[32m    [objects],[m
+[32m+[m[32m  );[m
+[32m+[m
+   const handleOpen = useCallback((id: string) => setOpenId(id), []);[m
+   const handleClose = useCallback(() => setOpenId(null), []);[m
+ [m
+[36m@@ -60,16 +70,20 @@[m [mexport default function Desk({[m
+         </Link>[m
+       </header>[m
+ [m
+[31m-      <DeskStage>[m
+[31m-        {objects.map((object) => ([m
+[31m-          <DeskObjectView[m
+[31m-            key={object.id}[m
+[31m-            object={object}[m
+[31m-            onOpen={handleOpen}[m
+[31m-            cards={object.section === "writing" ? writingCards : undefined}[m
+[31m-          />[m
+[31m-        ))}[m
+[31m-      </DeskStage>[m
+[32m+[m[32m      {isMobile ? ([m
+[32m+[m[32m        <GuidedDesk objects={interactive} onOpen={handleOpen} />[m
+[32m+[m[32m      ) : ([m
+[32m+[m[32m        <DeskStage>[m
+[32m+[m[32m          {objects.map((object) => ([m
+[32m+[m[32m            <DeskObjectView[m
+[32m+[m[32m              key={object.id}[m
+[32m+[m[32m              object={object}[m
+[32m+[m[32m              onOpen={handleOpen}[m
+[32m+[m[32m              cards={object.section === "writing" ? writingCards : undefined}[m
+[32m+[m[32m            />[m
+[32m+[m[32m          ))}[m
+[32m+[m[32m        </DeskStage>[m
+[32m+[m[32m      )}[m
+ [m
+       <Stage object={openObject} onClose={handleClose} articles={articles} />[m
+     </div>[m
+[1mdiff --git a/components/explore/guided-desk.tsx b/components/explore/guided-desk.tsx[m
+[1mnew file mode 100644[m
+[1mindex 0000000..d556995[m
+[1m--- /dev/null[m
+[1m+++ b/components/explore/guided-desk.tsx[m
+[36m@@ -0,0 +1,76 @@[m
+[32m+[m[32m"use client";[m
+[32m+[m[32mimport Image from "next/image";[m
+[32m+[m[32mimport type { DeskObject } from "@/data/desk";[m
+[32m+[m[32mimport {[m
+[32m+[m[32m  DESK_PHOTO_HEIGHT,[m
+[32m+[m[32m  DESK_PHOTO_SRC,[m
+[32m+[m[32m  DESK_PHOTO_WIDTH,[m
+[32m+[m[32m} from "@/data/desk";[m
+[32m+[m[32mimport { usePrefersReducedMotion } from "@/components/explore/use-reduced-motion";[m
+[32m+[m
+[32m+[m[32m/**[m
+[32m+[m[32m * The mobile / touch layout. The free-roam desk needs precise aiming at small,[m
+[32m+[m[32m * rotated targets, which is hostile on a phone — so below the breakpoint the[m
+[32m+[m[32m * desk becomes a **guided** experience: the same desk photo as a hero, then the[m
+[32m+[m[32m * same interactive objects as a vertical list of big, tappable sticker-cards[m
+[32m+[m[32m * (the desk's white die-cut sticker aesthetic, scaled up to a ≥44px target).[m
+[32m+[m[32m * Each card opens the exact same shared <Stage> view as the desktop object, so[m
+[32m+[m[32m * there is no second content path. Ambient items are dropped (they were pure[m
+[32m+[m[32m * decoration and never interactive).[m
+[32m+[m[32m */[m
+[32m+[m[32mexport default function GuidedDesk({[m
+[32m+[m[32m  objects,[m
+[32m+[m[32m  onOpen,[m
+[32m+[m[32m}: {[m
+[32m+[m[32m  objects: DeskObject[];[m
+[32m+[m[32m  onOpen: (id: strin
