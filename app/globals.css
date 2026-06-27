@@ -263,6 +263,53 @@ body {
 .fd-confetti { top: -5vh; animation-name: fdConfetti; animation-timing-function: linear; animation-iteration-count: infinite; }
 .fd-note { font-family: Georgia, "Times New Roman", serif; font-style: italic; }
 
+/* ── Flower illustration system (Log V4) ─────────────────────────────────── */
+
+/* Absolute decorative layer; sits behind content in a position:relative parent.
+   The layer itself ignores pointer events; each flower re-enables them so only
+   the flower (not the dead space around it) responds to hover. */
+.flower-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.flower {
+  position: absolute;
+  pointer-events: auto;
+  user-select: none;
+  /* Resting tilt comes from the per-flower --flower-rot custom property. */
+  transform: rotate(var(--flower-rot, 0deg));
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.flower:hover {
+  transform: rotate(calc(var(--flower-rot, 0deg) + 180deg)) scale(1.06);
+}
+
+/* Stage 5 — responsive: thin the field and lighten flowers on small screens. */
+@media (max-width: 640px) {
+  .flower[data-mobile-hide] {
+    display: none;
+  }
+  .flower {
+    opacity: 0.85;
+  }
+}
+
+/* Stage 5 — reduced motion: disable the spin entirely (static, still
+   decorative). Complements the global guard below. */
+@media (prefers-reduced-motion: reduce) {
+  .flower {
+    transition: none;
+  }
+  .flower:hover {
+    transform: rotate(var(--flower-rot, 0deg));
+  }
+}
+
 /* Global motion guard — later logs add scatter/spin/scroll motion; honor the
    user's reduced-motion preference everywhere by neutralizing animation,
    transition, and smooth-scroll. */

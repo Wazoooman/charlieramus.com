@@ -68,11 +68,24 @@ edits. Each illustration spins 180° on hover. Depends on Log V3 tokens.
   (no hydration mismatch — no `Math.random()` at render).
 
 # Stage 3 Report
-- [ ] Client component renders the passed illustrations, absolutely positioned
-- [ ] 180° hover spin works on each, smooth easing
-- [ ] Placement deterministic (no hydration warnings)
-- [ ] Adding/removing a file changes the render with no code edit
-- Issues:
+- [x] Client component renders the passed illustrations, absolutely positioned —
+  `components/illustrations.tsx` (`"use client"`) renders each placement as an
+  `<img>` (handles mixed `.svg`/`.webp`; `next.config` is `unoptimized`, so plain
+  `<img>` ≈ `next/image` here) inside an absolute `.flower-layer`. Verified live:
+  26 flowers across 2 layers, each absolutely positioned.
+- [x] 180° hover spin works on each, smooth easing — CSS `.flower` rests at
+  `rotate(var(--flower-rot))`, `:hover` → `rotate(calc(... + 180deg)) scale(1.06)`
+  with `transition: transform .6s cubic-bezier(.22,1,.36,1)`. Verified: a flower
+  resting at -8° settled to `matrix(-1.05,.15,-.15,-1.05)` on hover = rotate(172°)
+  × 1.06. Layer is `pointer-events:none`, flowers `pointer-events:auto` so only
+  the flower reacts.
+- [x] Placement deterministic (no hydration warnings) — positions come from
+  `components/flower-layouts.ts` (pure data + index math, no `Math.random()`).
+  Browser console clean, zero hydration warnings.
+- [x] Adding/removing a file changes the render with no code edit — paths are read
+  from the folder (Stage 2) and cycle by index, so file count drives the render.
+- Issues: `@next/next/no-img-element` lint suppressed inline (decorative,
+  pre-optimized, mixed formats) — intentional, eslint clean.
 
 ---
 
@@ -85,10 +98,18 @@ edits. Each illustration spins 180° on hover. Depends on Log V3 tokens.
 - Make count/density capped by available assets and a `max` prop.
 
 # Stage 4 Report
-- [ ] FlowerField composes server-read + client-render cleanly
-- [ ] `scatter` and `field` presets both render correctly
-- [ ] Density respects asset count + `max` prop
-- Issues:
+- [x] FlowerField composes server-read + client-render cleanly —
+  `components/flower-field.tsx` (server) calls `getIllustrationPaths()`, picks a
+  preset, and passes paths + placements to client `<Illustrations>`. `fs` stays
+  server-side; returns `null` when there are no assets.
+- [x] `scatter` and `field` presets both render correctly — verified on a throwaway
+  route: `scatter` (8 sparse flowers hugging the hero edges, clear of the headline)
+  and `field` (18-flower deterministic ring around a centred quote). Temp route
+  removed after verification.
+- [x] Density respects asset count + `max` prop — `cap = min(preset.length,
+  max ?? preset.length, assets × MAX_REPEAT)`. The `max` prop hard-caps count; the
+  `assets × 3` term keeps a tiny asset set from carpeting a dense preset.
+- Issues: none. `npm run build` clean (exit 0); no flowertest route shipped.
 
 ---
 
@@ -100,7 +121,18 @@ edits. Each illustration spins 180° on hover. Depends on Log V3 tokens.
   keep SVGs inline-cheap; ensure no layout shift.
 
 # Stage 5 Report
-- [ ] Mobile renders fewer/lighter flowers, no horizontal overflow
-- [ ] Spin disabled under `prefers-reduced-motion`
-- [ ] No CLS; off-screen fields lazy-load
-- Issues:
+- [x] Mobile renders fewer/lighter flowers, no horizontal overflow — `@media
+  (max-width: 640px)` hides `[data-mobile-hide]` flowers and drops flower opacity
+  to .85. Verified at 375×812: 13 of 26 flowers shown, `scrollWidth === clientWidth
+  === 375` (no overflow). `.flower-layer` is `overflow: hidden` so nothing spills.
+- [x] Spin disabled under `prefers-reduced-motion` — `@media (prefers-reduced-
+  motion: reduce)` sets `.flower { transition: none }` and `.flower:hover {
+  transform: rotate(var(--flower-rot)) }` (rest tilt kept, no 180° spin),
+  complementing the existing global motion guard.
+- [x] No CLS; off-screen fields lazy-load — flowers are absolutely positioned in an
+  `inset:0` layer (out of flow → no layout shift), with explicit `width`/`height`.
+  Images use `loading="lazy"` (verified `loading=lazy` in DOM); hero is left
+  non-priority by default (`priority` defaults `false`).
+- Issues: headless Chromium reported `prefers-reduced-motion: false`, so the
+  disabled-spin path was confirmed by the matched CSS rule rather than live
+  emulation. Rule is a standard media query; behavior is deterministic.
