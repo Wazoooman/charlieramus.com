@@ -15,9 +15,26 @@ sizes and rhythm, no monotony). Depends on Logs V3, V6.
   `/design`, `/gear`) — no dead tiles.
 
 # Stage 1 Report
-- [ ] Bento grid renders with section-colored tiles, both modes
-- [ ] Every tile links to its real route (verified by navigation)
-- Issues:
+- [x] **Bento grid renders with section-colored tiles, both modes.** New
+  `components/bento.tsx` (server component) — a responsive CSS grid
+  (`grid-cols-1 sm:grid-cols-2 lg:grid-cols-4`) below the dashboard. Each
+  section tile = a `.panel` with a section-colored top rule + dot + mono
+  `.label` + Fraunces `.display-sm` title + blurb + `ArrowUpRight` "Explore"
+  affordance, driven by a `toneMap` keyed to the wayfinding palette
+  (photography=sky `c-photo`, writing=marigold `c-writing`, web=red `c-work`,
+  design=pink `c-design`, gear=orange). Added to `app/preview/page.tsx` after
+  `<Dashboard />`. Verified live (browse) in dark desktop, light mobile — colors
+  and dots correct in both modes, no overflow, zero console errors.
+- [x] **Every tile links to its real route (verified by navigation).** Photography
+  → `/photography`, Writing → `/writing`, Web Projects → `/web-projects`,
+  Design → `/design`, Gear → `/gear`, latest-writing items → `/writing/<slug>`,
+  Contact → `mailto:`. All routes return 200 (curl); clicking the Web Projects
+  tile in `#explore` navigated to `/web-projects` (browse).
+- Issues: `stories` could not be imported into the server component from
+  `components/stories.tsx` ("use client" — exports become client references,
+  `stories[0]` was `undefined` → SSR crash). Extracted the data to
+  `data/stories.ts` (plain module); `stories.tsx` now re-exports it, and both
+  `bento.tsx` and the existing importers consume the data module.
 
 ---
 
@@ -29,10 +46,29 @@ sizes and rhythm, no monotony). Depends on Logs V3, V6.
 - Vary rhythm so scrolling stays engaging; avoid a uniform grid wall.
 
 # Stage 2 Report
-- [ ] Section is ~2-3x longer with varied tile sizes and content types
-- [ ] Scroll stays visually interesting (no monotonous repetition)
-- [ ] Added content uses real data where available
-- Issues:
+- [x] **Section is ~2-3x longer with varied tile sizes and content types.**
+  Beyond the six section tiles, the grid now mixes: a large Photography anchor
+  (`sm:col-span-2 sm:row-span-2`) holding a 2×2 photo preview; a wide Writing
+  tile (`sm:col-span-2`) with a pull-quote of the latest essay; a paired
+  Web/Design row of square tiles; a full-width **stats strip** (`lg:col-span-4`,
+  4 figures in Fraunces `.display-md`); a wide **Latest writing** preview list
+  (3 stories with thumbnails); a serif **pull-quote** tile; a wide **Gear**
+  feature blurb; and a solid-ink **Contact** CTA tile to close. Six tile shapes,
+  five content types (image grid / list / stats / quote / CTA).
+- [x] **Scroll stays visually interesting (no monotonous repetition).** Rhythm
+  alternates big↔small and panel↔solid: the photo-heavy anchor, a text quote
+  tile, the numeric stats band as a palette cleanser, then list + quote, then
+  blurb + the inverted ink contact tile. No two adjacent rows share a layout.
+- [x] **Added content uses real data where available.** Photo previews =
+  `photos.slice(0,4)` from `data/photos.ts` (with `blurDataURL` placeholders);
+  stats `61 photographs` / `3 essays` derive from `photos.length` /
+  `stories.length`; Latest-writing list + the Writing tile quote pull from
+  `data/stories.ts` (real slugs/thumbnails). `300k+` impressions and `6 threads`
+  are the only hardcoded figures (no dataset for them).
+- Issues: Section tiles in a row stretch to the tallest sibling (CSS grid
+  `items-stretch`), so the Writing/Web/Design tiles carry some bottom whitespace
+  with the "Explore" arrow pinned via `mt-auto` — reads as intentional bento
+  negative space; the dedicated responsive pass (Stage 5) can tighten if wanted.
 
 ---
 

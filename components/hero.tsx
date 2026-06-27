@@ -12,10 +12,14 @@ export default function Hero() {
       {/* Stage 2 — sparse scatter, behind the text (`.flower-layer` is z-0). */}
       <FlowerField preset="scatter" />
 
-      <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center">
+      <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center">
         <p className="label mb-6">Boulder, CO · High School Junior · Builder</p>
 
-        <h1 className="display-xl text-fg">Charlie Ramus</h1>
+        <h1 className="display-hero text-fg">
+          Charlie
+          <br />
+          Ramus
+        </h1>
 
         <p className="mt-7 max-w-130 text-base leading-relaxed text-muted">
           Building software, growing{" "}

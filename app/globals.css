@@ -120,6 +120,16 @@ body {
   line-height: 0.95;
   letter-spacing: -0.02em;
 }
+/* Hero-scale display — the oversized name (Zone A). Mirrors the mockup's
+   clamp(64px, 14vw, 200px) so the headline fills the viewport. */
+.display-hero {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-size: clamp(4rem, 14vw, 12.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+}
 .display-lg {
   font-family: var(--font-display);
   font-optical-sizing: auto;

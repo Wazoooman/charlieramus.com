@@ -2,27 +2,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
-
-export const stories = [
-  {
-    year: "2026",
-    title: "When Bigger Means More Biased: How Scale Transforms LLMs into Confident Amplifiers of Majority Perspectives",
-    slug: "article-two",
-    thumbnail: "/images/Article-2_webp.webp",
-  },
-  {
-    year: "2026",
-    title: "The Third Rotation",
-    slug: "article-three",
-    thumbnail: "/images/Article-3_webp.webp",
-  },
-  {
-    year: "2025",
-    title: "The Architecture of Self-Justification: How Pride Disguises Moral Failure",
-    slug: "article-one",
-    thumbnail: "/images/Article-1_webp.webp",
-  },
-];
+// Data lives in data/stories.ts so server components (e.g. components/bento.tsx)
+// can import it too — re-exported here to keep existing importers working.
+export { stories } from "@/data/stories";
+import { stories } from "@/data/stories";
 
 export default function Stories() {
   return (

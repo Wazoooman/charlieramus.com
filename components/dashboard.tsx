@@ -414,8 +414,10 @@ export default function Dashboard() {
 
   return (
     <section id="dashboard" className="py-20">
-      {/* Section head — Fraunces title + mono hint. */}
-      <div className="mb-8 flex items-end justify-between gap-4 px-6 md:px-16">
+      {/* Section head — Fraunces title + mono hint. Centered at ~1280px so the
+          dashboard is squeezed in from the page edges a little (wider than the
+          bento's 1080px column below it). */}
+      <div className="mx-auto mb-8 flex max-w-7xl items-end justify-between gap-4 px-6 md:px-16">
         <div>
           <p className="label mb-2">Zone B · Dashboard</p>
           <h2 className="display-md text-fg">The dashboard</h2>
@@ -429,7 +431,7 @@ export default function Dashboard() {
       <div
         ref={scrollRef}
         onScroll={handleScroll}
-        className="dashboard-scroll relative flex h-[78vh] max-h-160 snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-4 md:px-16"
+        className="dashboard-scroll relative mx-auto flex h-[78vh] max-h-160 max-w-7xl snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-4 md:px-16"
       >
         {panels.map((p) => (
           <Panel key={p.label} label={p.label} dotClass={p.dotClass}>
@@ -441,7 +443,7 @@ export default function Dashboard() {
       </div>
 
       {/* Stage 3 — tappable nav: [‹] dots [›]. Active dot tracks scroll. */}
-      <div className="mt-6 flex items-center justify-center gap-5 px-6 md:px-16">
+      <div className="mx-auto mt-6 flex max-w-7xl items-center justify-center gap-5 px-6 md:px-16">
         <button
           type="button"
           onClick={() => scrollToIndex(Math.max(0, active - 1))}
