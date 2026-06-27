@@ -8,22 +8,28 @@ const links = [
   { href: "#contact", label: "Contact" },
 ];
 
+/**
+ * Zone A top bar (Log V5). Blurred translucent bar pinned to the top, Space Mono
+ * name + nav links. The theme toggle lives globally in `app/layout.tsx` as a
+ * fixed pill in the top-right corner, so the bar reserves right padding (`pr-24`)
+ * to clear it rather than embedding a second toggle.
+ */
 export default function Nav() {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border">
-      <div className="max-w-2xl mx-auto px-6 h-14 flex items-center justify-between">
+    <nav className="fixed inset-x-0 top-0 z-40 border-b border-border bg-bg/70 backdrop-blur-md">
+      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6 sm:pr-24">
         <Link
           href="/"
-          className="text-sm font-medium text-foreground hover:text-muted transition-colors"
+          className="font-mono text-sm font-bold tracking-tight text-fg transition-colors hover:text-muted"
         >
           Charlie Ramus
         </Link>
-        <div className="hidden sm:flex items-center gap-6">
+        <div className="hidden items-center gap-7 sm:flex">
           {links.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="text-sm text-muted hover:text-foreground transition-colors"
+              className="font-mono text-[11px] uppercase tracking-[0.12em] text-muted transition-colors hover:text-fg"
             >
               {link.label}
             </a>

@@ -263,6 +263,19 @@ body {
 .fd-confetti { top: -5vh; animation-name: fdConfetti; animation-timing-function: linear; animation-iteration-count: infinite; }
 .fd-note { font-family: Georgia, "Times New Roman", serif; font-style: italic; }
 
+/* ── Hero scroll cue (Log V5) ────────────────────────────────────────────── */
+
+/* Quiet mono "↓ scroll" at the foot of the hero. Gentle vertical bob; the
+   global reduced-motion guard below neutralizes the animation. */
+@keyframes scrollBob {
+  0%, 100% { transform: translate(-50%, 0); }
+  50%      { transform: translate(-50%, 5px); }
+}
+.scroll-cue {
+  animation: scrollBob 2.2s ease-in-out infinite;
+  transition: color 0.2s;
+}
+
 /* ── Flower illustration system (Log V4) ─────────────────────────────────── */
 
 /* Absolute decorative layer; sits behind content in a position:relative parent.
