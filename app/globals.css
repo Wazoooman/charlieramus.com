@@ -276,6 +276,29 @@ body {
   transition: color 0.2s;
 }
 
+/* ── Zone B dashboard (Log V6) ───────────────────────────────────────────── */
+
+/* Horizontal scroll-snap row of `.panel` cards. Native scrollbar kept (the
+   primary affordance on pointer devices) but slimmed to match the dashboard;
+   Stage 3 adds dot/arrow controls on top for short/touch screens. */
+.dashboard-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.dashboard-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+.dashboard-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.dashboard-scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+}
+.dashboard-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}
+
 /* ── Flower illustration system (Log V4) ─────────────────────────────────── */
 
 /* Absolute decorative layer; sits behind content in a position:relative parent.

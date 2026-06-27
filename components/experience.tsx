@@ -1,6 +1,6 @@
 import { ArrowUpRight, Link2 } from "lucide-react";
 
-const entries = [
+export const entries = [
   {
     // CUSTOMIZE: date range string
     dates: "2026 — Present",

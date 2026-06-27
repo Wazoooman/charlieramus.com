@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
-const projects = [
+export const projects = [
   {
     thumbnailDark: "/images/For-Projects-Placeholder-Cards/Frame-2mp4.webp",
     thumbnailLight: "/images/For-Projects-Placeholder-Cards/Frame-5_webp.webp",
