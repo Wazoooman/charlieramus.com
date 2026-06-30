@@ -19,7 +19,7 @@ export default function WritingArticleList({
             }
           >
             <div className="flex items-baseline justify-between gap-4 mb-1">
-              <h2 className="text-base font-medium text-fg group-hover:text-accent transition-colors">
+              <h2 className="text-base font-medium text-fg group-hover:text-marigold transition-colors">
                 {article.title}
               </h2>
               <span className="text-xs text-muted shrink-0">

@@ -18,6 +18,7 @@ export default function WebProjectsPage() {
             eyebrow="Selected Builds"
             title="Web Projects"
             subtitle="Sites and web experiences designed and built."
+            accent="var(--red)"
           />
           <WebProjects />
         </div>

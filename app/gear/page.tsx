@@ -20,6 +20,7 @@ export default function GearPage() {
             subtitle="What I shoot with."
             backHref="/photography"
             backLabel="Photography"
+            accent="var(--cobalt)"
           />
           <GearList />
         </div>

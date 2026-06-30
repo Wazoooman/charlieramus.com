@@ -18,6 +18,7 @@ export default function DesignPage() {
             eyebrow="Visual Work"
             title="Design"
             subtitle="Figma work, brand projects and visual experiments."
+            accent="var(--pink)"
           />
           <DesignProjects />
         </div>

@@ -41,7 +41,7 @@ export default async function ArticlePage({
   return (
     <>
       <Nav />
-      <main className="max-w-170 mx-auto px-6 pt-24 pb-24">
+      <main className="max-w-2xl mx-auto px-6 pt-24 pb-24">
         <div className="mb-10">
           <BackButton />
         </div>
@@ -57,13 +57,13 @@ export default async function ArticlePage({
         </div>
       )}
 
-      <h1 className="text-[2rem] font-bold leading-tight text-fg mb-4">
+      <h1 className="display-md text-fg mb-4">
         {fm.title}
       </h1>
 
       <div className="flex items-center justify-between mb-3">
-        <span className="text-sm text-muted">{fm.author}</span>
-        <span className="text-sm text-muted">{fm.date}</span>
+        <span className="label">{fm.author}</span>
+        <span className="label">{fm.date}</span>
       </div>
       <hr className="border-rule mb-6" />
 

@@ -16,7 +16,7 @@ const posts: Post[] = [
     excerpt:
       "The decisions, trade-offs, and lessons from building a portfolio site that is also meant to be a portfolio piece.",
     content: (
-      <div className="prose text-base text-foreground">
+      <div>
         <p>
           I built this site for one reason: when someone Googles me, I want them
           to find something real.

@@ -151,10 +151,11 @@ function Carousel({
       className="relative mb-12 select-none"
       style={{ width: "100vw", marginLeft: "calc(50% - 50vw)" }}
     >
-      {/* Left ombre — dark background fades into the peeking slide */}
-      <div className="absolute inset-y-0 left-0 w-32 bg-linear-to-r from-[#141414] to-transparent pointer-events-none z-10" />
+      {/* Left ombre — page background fades into the peeking slide (token, so it
+          tracks light/dark) */}
+      <div className="absolute inset-y-0 left-0 w-32 bg-linear-to-r from-bg to-transparent pointer-events-none z-10" />
       {/* Right ombre */}
-      <div className="absolute inset-y-0 right-0 w-32 bg-linear-to-l from-[#141414] to-transparent pointer-events-none z-10" />
+      <div className="absolute inset-y-0 right-0 w-32 bg-linear-to-l from-bg to-transparent pointer-events-none z-10" />
 
       {/* Clipping wrapper — clips the track but not the arrow buttons */}
       <div className="overflow-hidden">
@@ -185,7 +186,7 @@ function Carousel({
       <button
         onClick={prev}
         aria-label="Previous slide"
-        className="absolute inset-y-0 flex items-center justify-center text-white/40 hover:text-white transition-colors duration-150 cursor-pointer"
+        className="absolute inset-y-0 flex items-center justify-center text-muted hover:text-pink transition-colors duration-150 cursor-pointer"
         style={{ left: `calc(${PEEK}% - 24px)`, width: "48px" }}
       >
         <ChevronLeft size={26} strokeWidth={1.5} />
@@ -195,7 +196,7 @@ function Carousel({
       <button
         onClick={next}
         aria-label="Next slide"
-        className="absolute inset-y-0 flex items-center justify-center text-white/40 hover:text-white transition-colors duration-150 cursor-pointer"
+        className="absolute inset-y-0 flex items-center justify-center text-muted hover:text-pink transition-colors duration-150 cursor-pointer"
         style={{ right: `calc(${PEEK}% - 24px)`, width: "48px" }}
       >
         <ChevronRight size={26} strokeWidth={1.5} />
@@ -215,15 +216,15 @@ export default function DesignProjects() {
       <div className="flex flex-col">
         {projects.map((project, i) => (
           <div key={i}>
-            {i > 0 && <hr className="border-[#272727] mb-12" />}
+            {i > 0 && <hr className="border-rule mb-12" />}
 
             <div className="flex items-baseline justify-between mb-3">
-              <h2 className="text-xl font-bold">{project.title}</h2>
-              <span className="text-[13px] text-[#717171] ml-4 shrink-0">{project.date}</span>
+              <h2 className="display-sm text-fg">{project.title}</h2>
+              <span className="label ml-4 shrink-0">{project.date}</span>
             </div>
 
             {project.description && (
-              <p className="text-[14px] text-[#717171] leading-[1.7] max-w-[65ch] mb-6">
+              <p className="text-[14px] text-muted leading-[1.7] max-w-[65ch] mb-6">
                 {project.description}
               </p>
             )}

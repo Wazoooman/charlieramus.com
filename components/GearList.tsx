@@ -45,17 +45,17 @@ export default function GearList() {
     <div className="flex flex-col gap-10">
       {sections.map(({ key, label }) => (
         <div key={key}>
-          <p className="text-xs font-medium tracking-widest uppercase text-[#717171] mb-2">
+          <p className="label mb-2">
             {label}
           </p>
-          <div style={{ height: "1px", background: "#272727", marginBottom: "1rem" }} />
+          <div className="h-px bg-rule mb-4" />
           <div className="flex flex-col gap-3">
             {gear[key].map((item) => (
               <div key={item.name} className="flex items-center justify-between gap-4">
-                <span className="text-sm font-medium text-[#f4f3ee]">{item.name}</span>
+                <span className="text-sm font-medium text-fg">{item.name}</span>
                 <div className="flex items-center gap-2 shrink-0">
                   {item.note && (
-                    <span className="text-xs text-[#717171]">{item.note}</span>
+                    <span className="text-xs text-muted">{item.note}</span>
                   )}
                   {item.href && (
                     <a
@@ -63,7 +63,7 @@ export default function GearList() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={`View ${item.name}`}
-                      className="text-[#717171] hover:text-[#f4f3ee] transition-colors duration-150"
+                      className="text-muted hover:text-cobalt transition-colors duration-150"
                     >
                       <ArrowUpRight size={14} />
                     </a>

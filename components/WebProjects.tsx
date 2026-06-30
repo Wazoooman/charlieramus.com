@@ -54,10 +54,10 @@ export default function WebProjects() {
       {webProjects.map((project, i) => (
         <div
           key={i}
-          className="flex gap-5 -mx-3 px-3 py-3 rounded-lg hover:bg-[rgba(255,255,255,0.04)] transition-colors duration-200"
+          className="flex gap-5 -mx-3 px-3 py-3 rounded-lg hover:bg-surface transition-colors duration-200"
         >
           {/* Thumbnail */}
-          <div className="relative w-22 h-16.5 shrink-0 rounded-sm overflow-hidden bg-[#1e1e1e]">
+          <div className="relative w-22 h-16.5 shrink-0 rounded-sm overflow-hidden bg-surface">
             <Image
               src={project.thumbnail}
               alt={project.title}
@@ -73,15 +73,15 @@ export default function WebProjects() {
                 href={project.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-[15px] font-medium text-[#f4f3ee] hover:text-[#FA5B1C] transition-colors duration-200"
+                className="inline-flex items-center gap-1 text-[15px] font-medium text-fg hover:text-red transition-colors duration-200"
               >
                 {project.title}
                 <ArrowUpRight size={14} className="shrink-0" />
               </a>
-              <span className="text-[12px] text-[#717171] ml-4 shrink-0">{project.date}</span>
+              <span className="text-[12px] text-muted ml-4 shrink-0">{project.date}</span>
             </div>
             {project.description && (
-              <p className="text-[13px] text-[#717171] leading-[1.7] mb-2">
+              <p className="text-[13px] text-muted leading-[1.7] mb-2">
                 {project.description}
               </p>
             )}
@@ -89,7 +89,7 @@ export default function WebProjects() {
               {project.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="text-[11px] font-medium px-2.5 py-1 bg-[#272727] text-[#FA5B1C] rounded-sm"
+                  className="text-[11px] font-medium px-2.5 py-1 bg-surface text-red rounded-sm"
                 >
                   {tag}
                 </span>

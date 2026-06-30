@@ -57,17 +57,14 @@ export default async function PostPage({
         </div>
         <article>
         <header className="mb-10">
-          <time
-            dateTime={post.date}
-            className="text-xs text-muted block mb-3"
-          >
+          <time dateTime={post.date} className="label mb-3 block">
             {formatDate(post.date)}
           </time>
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+          <h1 className="display-md text-fg">
             {post.title}
           </h1>
         </header>
-        {post.content}
+        <div className="article-body text-fg">{post.content}</div>
         </article>
       </main>
     </>

@@ -206,15 +206,20 @@ body {
 .article-body h2 { font-size: 1.4rem; }
 .article-body h3 { font-size: 1.2rem; }
 .article-body p { margin-bottom: 1.25rem; }
+/* Writing-section accent is marigold (--c-writing). Links carry a quiet
+   marigold underline that fills in on hover; the pull-quote rule matches. */
 .article-body a {
-  color: var(--accent);
-  text-decoration: none;
+  color: var(--c-writing);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--c-writing) 40%, transparent);
+  text-underline-offset: 2px;
+  transition: text-decoration-color 0.2s ease;
 }
 .article-body a:hover {
-  text-decoration: underline;
+  text-decoration-color: var(--c-writing);
 }
 .article-body blockquote {
-  border-left: 4px solid var(--accent);
+  border-left: 3px solid var(--c-writing);
   padding-left: 1rem;
   font-style: italic;
   color: var(--muted);

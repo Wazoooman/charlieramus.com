@@ -24,13 +24,13 @@ export default function BlogPage() {
     <>
       <Nav />
       <main className="mx-auto max-w-2xl px-6 pb-24 pt-24">
-        <PageHeader eyebrow="Journal" title="Writing" />
-        <ul className="divide-y divide-border">
+        <PageHeader eyebrow="Journal" title="Writing" accent="var(--marigold)" />
+        <ul className="divide-y divide-rule">
           {posts.map((post) => (
-            <li key={post.slug} className="py-8 first:pt-0 last:pb-0">
+            <li key={post.slug} className="py-6 first:pt-0 last:pb-0">
               <Link href={`/blog/${post.slug}`} className="group block">
                 <div className="flex items-baseline justify-between gap-4 mb-2">
-                  <h2 className="text-base font-medium text-foreground group-hover:text-accent transition-colors">
+                  <h2 className="text-base font-medium text-fg group-hover:text-marigold transition-colors">
                     {post.title}
                   </h2>
                   <time

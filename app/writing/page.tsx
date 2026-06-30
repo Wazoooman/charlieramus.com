@@ -15,8 +15,12 @@ export default function WritingPage() {
   return (
     <>
       <Nav />
-      <main className="mx-auto max-w-170 px-6 pb-24 pt-24">
-        <PageHeader eyebrow="Essays & Notes" title="Writing" />
+      <main className="mx-auto max-w-2xl px-6 pb-24 pt-24">
+        <PageHeader
+          eyebrow="Essays & Notes"
+          title="Writing"
+          accent="var(--marigold)"
+        />
         <WritingArticleList articles={articles} />
       </main>
     </>

@@ -71,15 +71,15 @@ function WebProjectEntry({
 }) {
   return (
     <div className="py-12">
-      {/* Name — headline-scale, full-brightness fg */}
-      <h2 className="text-[22px] font-bold text-fg mb-1">{project.name}</h2>
+      {/* Name — Fraunces display, full-brightness fg */}
+      <h2 className="display-sm text-fg mb-1">{project.name}</h2>
 
-      {/* Live site link — accent color (orange dark / black light), ArrowUpRight inline */}
+      {/* Live site link — red (web-projects section color), ArrowUpRight inline */}
       <a
         href={project.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-1 text-[13px] text-accent hover:opacity-75 transition-opacity duration-150 mb-4"
+        className="inline-flex items-center gap-1 text-[13px] text-red hover:opacity-75 transition-opacity duration-150 mb-4"
       >
         {project.url}
         <ArrowUpRight size={12} className="shrink-0" />
@@ -92,12 +92,12 @@ function WebProjectEntry({
         </p>
       )}
 
-      {/* Skill pills — grey only, never orange, adapts to theme */}
+      {/* Skill pills — neutral, token-based, adapts to theme */}
       <div className="flex flex-wrap gap-2 mb-6">
         {project.skills.map((skill) => (
           <span
             key={skill}
-            className="text-[11px] font-medium px-2.5 py-1 bg-rule text-[#3d3d3d] dark:text-[#c4c4c4] rounded-sm"
+            className="text-[11px] font-medium px-2.5 py-1 bg-surface text-muted rounded-sm"
           >
             {skill}
           </span>
