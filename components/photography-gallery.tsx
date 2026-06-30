@@ -34,48 +34,41 @@ function isMothersDayToday(): boolean {
 function MothersDayCard({ onDismiss }: { onDismiss: () => void }) {
   return (
     <div
-      className="fixed inset-0 z-60 flex items-center justify-center"
-      style={{ background: "rgba(0,0,0,0.6)" }}
+      className="fd-overlay-in fixed inset-0 z-60 flex items-center justify-center bg-black/60 px-4"
       onClick={onDismiss}
     >
+      {/* Contact-card language (Log V11, Stage 2): rounded panel on tokens,
+          Fraunces heading, sans body, a red section accent. */}
       <div
-        className="relative bg-white rounded-2xl max-w-105 w-full mx-4"
-        style={{ padding: "2.5rem", boxShadow: "0 20px 60px rgba(0,0,0,0.18), 0 4px 16px rgba(0,0,0,0.10)" }}
+        className="fd-card-in relative w-full max-w-105 overflow-hidden rounded-3xl border border-border bg-panel p-8 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.4)] sm:p-10"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onDismiss}
           aria-label="Close"
-          className="absolute top-4 right-4 transition-colors duration-150"
-          style={{ color: "#bbb" }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "#555")}
-          onMouseLeave={(e) => (e.currentTarget.style.color = "#bbb")}
+          className="absolute right-5 top-5 text-muted transition-colors duration-150 hover:text-fg"
         >
-          <X size={17} />
+          <X size={18} />
         </button>
 
-        {/* Decorative top motif — a single centered rule */}
-        <div className="flex items-center justify-center mb-8">
-          <div style={{ height: "1px", width: "48px", background: "#d4d4d4" }} />
+        {/* Red accent rule — the card-language section marker. */}
+        <div className="mb-7 flex items-center justify-center">
+          <span className="h-0.5 w-12 rounded-full bg-red" />
         </div>
 
         {/* CUSTOMIZE: heading line */}
-        <h2 style={{ fontFamily: "Inter, sans-serif", fontWeight: 700, fontSize: "1.25rem", color: "#1a1a1a", marginBottom: "1rem" }}>
-          Happy Mother's Day
-        </h2>
+        <h2 className="display-sm text-center text-fg">Happy Mother&apos;s Day</h2>
 
         {/* CUSTOMIZE: I know I'm not always great at saying it, but I think about how lucky I am to have you as my mom more than you'd guess. You have always been there, and always supported me. */}
-        <div style={{ fontFamily: "Georgia, serif", fontSize: "16px", lineHeight: "1.8", color: "#555", marginBottom: "1.5rem" }}>
+        <div className="mt-5 space-y-4 text-[15px] leading-relaxed text-muted">
           <p>
-            I know I'm not always great at saying it, but I think about how lucky I am to have you as my mom more than you'd guess. You have always been there, and always supported me. I hope we have another wonderful year together, and I can't wait to see what new trips and adventures we get to share. I hope that when we part (college), this site can be used as another form of link between our realities, it features a website I will update frequently with all my photos and hopefully videos eventually.
+            I know I&apos;m not always great at saying it, but I think about how lucky I am to have you as my mom more than you&apos;d guess. You have always been there, and always supported me. I hope we have another wonderful year together, and I can&apos;t wait to see what new trips and adventures we get to share. I hope that when we part (college), this site can be used as another form of link between our realities, it features a website I will update frequently with all my photos and hopefully videos eventually.
           </p>
-          <p style={{ marginTop: "1rem" }}>
-            Love you so much.
-          </p>
+          <p>Love you so much.</p>
         </div>
 
         {/* CUSTOMIZE: closing line */}
-        <p style={{ fontSize: "13px", color: "#aaa", textAlign: "right" }}>— Charlie</p>
+        <p className="label mt-7 text-right">— Charlie</p>
       </div>
     </div>
   );
@@ -95,76 +88,60 @@ function InquireModal({ onDismiss }: { onDismiss: () => void }) {
 
   return (
     <div
-      className="fixed inset-0 z-60 flex items-center justify-center"
-      style={{ background: "rgba(0,0,0,0.6)" }}
+      className="fd-overlay-in fixed inset-0 z-60 flex items-center justify-center bg-black/60 px-4"
       onClick={onDismiss}
     >
+      {/* Contact-card language (Log V11, Stage 2): rounded panel on tokens,
+          Fraunces heading, and a red invert-on-hover primary action that mirrors
+          the contact card (red → surface on hover). */}
       <div
-        className="relative bg-white rounded-2xl max-w-[380px] w-full mx-4"
-        style={{ padding: "2rem", boxShadow: "0 20px 60px rgba(0,0,0,0.18), 0 4px 16px rgba(0,0,0,0.10)" }}
+        className="fd-card-in relative w-full max-w-95 overflow-hidden rounded-3xl border border-border bg-panel p-8 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.4)]"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onDismiss}
           aria-label="Close"
-          className="absolute top-4 right-4 transition-colors duration-150"
-          style={{ color: "#bbb" }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "#555")}
-          onMouseLeave={(e) => (e.currentTarget.style.color = "#bbb")}
+          className="absolute right-5 top-5 text-muted transition-colors duration-150 hover:text-fg"
         >
-          <X size={17} />
+          <X size={18} />
         </button>
 
-        <h2 style={{ fontFamily: "Inter, sans-serif", fontWeight: 700, fontSize: "1.25rem", color: "#1a1a1a", marginBottom: "0.5rem" }}>
-          Get in Touch
-        </h2>
+        <h2 className="display-sm text-fg">Get in touch</h2>
         {/* CUSTOMIZE: e.g. "For print inquiries, commissions or licensing." */}
-        <p style={{ fontSize: "13px", color: "#888", marginBottom: "1.5rem" }}>
+        <p className="mt-1.5 text-[13px] text-muted">
           For print inquiries, commissions or licensing.
         </p>
 
+        {/* Primary action — reuses the contact-card invert: red/white at rest,
+            surface/red on hover (the global reduced-motion guard softens it). */}
         <button
-          onClick={() => { window.location.href = mailtoHref; }}
-          style={{
-            display: "block",
-            width: "100%",
-            padding: "0.625rem 1rem",
-            background: "#1a1a1a",
-            color: "#fff",
-            border: "none",
-            borderRadius: "8px",
-            fontSize: "14px",
-            fontWeight: 500,
-            cursor: "pointer",
-            marginBottom: "1.25rem",
+          onClick={() => {
+            window.location.href = mailtoHref;
           }}
+          className="mt-6 w-full rounded-full border border-transparent bg-red px-4 py-3 text-sm font-medium text-white transition-colors duration-300 hover:border-border hover:bg-surface hover:text-red"
         >
           Open in Mail
         </button>
 
-        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1.25rem" }}>
-          <div style={{ flex: 1, height: "1px", background: "#e5e5e5" }} />
-          <span style={{ fontSize: "12px", color: "#aaa" }}>or</span>
-          <div style={{ flex: 1, height: "1px", background: "#e5e5e5" }} />
+        <div className="my-5 flex items-center gap-3">
+          <span className="h-px flex-1 bg-border" />
+          <span className="label text-[10px]!">or</span>
+          <span className="h-px flex-1 bg-border" />
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem", marginBottom: "1.25rem" }}>
-          <span style={{ fontFamily: "monospace", fontSize: "13px", color: "#555" }}>
-            {email}
-          </span>
+        <div className="flex items-center justify-center gap-2">
+          <span className="font-mono text-[13px] text-fg">{email}</span>
           <button
             onClick={handleCopy}
             aria-label="Copy email"
-            style={{ color: "#bbb", background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex", alignItems: "center" }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "#555")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "#bbb")}
+            className="flex items-center text-muted transition-colors duration-150 hover:text-fg"
           >
-            {copied ? <Check size={14} /> : <Copy size={14} />}
+            {copied ? <Check size={15} /> : <Copy size={15} />}
           </button>
         </div>
 
         {/* CUSTOMIZE: e.g. "Please include the photo code(s) from the gallery, They are at the bottom left of each photo when clicked on. " */}
-        <p style={{ fontSize: "14px", color: "#888", textAlign: "center" }}>
+        <p className="mt-5 text-center text-[13px] leading-relaxed text-muted">
           Please include the photo code(s) from the gallery, They are at the bottom left of each photo when clicked on.
         </p>
       </div>

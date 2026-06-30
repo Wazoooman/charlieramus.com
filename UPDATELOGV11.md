@@ -82,9 +82,27 @@ instead of the current bespoke white cards:
 - The Inquire primary action can reuse the contact-card invert-on-hover treatment.
 
 # Stage 2 Report
-- [ ] Both modals reskinned to the card language, on tokens, theme-aware
-- [ ] Behavior intact (date gate, dismiss, mailto, copy email)
-- Issues:
+- [x] Both modals reskinned to the card language, on tokens, theme-aware
+- [x] Behavior intact (date gate, dismiss, mailto, copy email)
+- Reskinned `MothersDayCard` + `InquireModal` in `components/photography-gallery.tsx`
+  to the contact-card language. All bespoke inline styles and hardcoded colors
+  (`#fff`, `#1a1a1a`, the grey ramp, inline `boxShadow`/`onMouseEnter` color
+  swaps) are gone — both are now token-based Tailwind: `bg-panel` + `border-border`
+  rounded panels, `display-sm` (Fraunces) headings, sans body in `text-fg`/
+  `text-muted`, and a `--red` accent. Theme-aware in light + dark by construction.
+- Mother's Day: a red accent rule (`bg-red`) replaces the grey divider; the note
+  moves to sans on tokens; sign-off is the mono `.label`. The `CUSTOMIZE` comments
+  are preserved so the copy stays a quick edit.
+- Inquire: the primary "Open in Mail" reuses the contact-card invert — red/white
+  at rest, `hover:bg-surface hover:text-red` (border fades in for definition). The
+  "or" divider, mono email, and copy button are all on tokens.
+- Added the existing `fd-overlay-in` / `fd-card-in` entrance classes (already in
+  `app/globals.css`, reduced-motion guarded) for a soft open — no new keyframes.
+- Behavior untouched: the Mother's-Day date gate + session dismiss live in the
+  parent (unchanged); Inquire still fires the same `mailtoHref`, copies the same
+  `email`, and shows the photo-code instructions.
+- Issues: none. The lightbox and the sky floating "Inquire" button were left as-is
+  (out of scope — Stage 2 is just the two modals).
 
 ---
 
