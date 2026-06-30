@@ -4,6 +4,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { getArticleSource, getArticleSlugs } from "@/lib/articles";
 import matter from "gray-matter";
 import type { ArticleFrontmatter } from "@/lib/articles";
+import Nav from "@/components/nav";
 import BackButton from "@/components/back-button";
 
 export async function generateStaticParams() {
@@ -38,10 +39,12 @@ export default async function ArticlePage({
   const fm = data as ArticleFrontmatter;
 
   return (
-    <main className="max-w-[680px] mx-auto px-6 pt-14 pb-24">
-      <div className="mb-10">
-        <BackButton />
-      </div>
+    <>
+      <Nav />
+      <main className="max-w-170 mx-auto px-6 pt-24 pb-24">
+        <div className="mb-10">
+          <BackButton />
+        </div>
 
       {fm.headerImage && (
         <div className="relative w-full mb-6 overflow-hidden rounded-sm">
@@ -80,6 +83,7 @@ export default async function ArticlePage({
       <article className="article-body text-fg">
         <MDXRemote source={content} />
       </article>
-    </main>
+      </main>
+    </>
   );
 }

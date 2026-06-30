@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import Nav from "@/components/nav";
+import PageHeader from "@/components/page-header";
 import GearList from "@/components/GearList";
 
 export const metadata: Metadata = {
@@ -10,31 +10,20 @@ export const metadata: Metadata = {
 
 export default function GearPage() {
   return (
-    <div className="min-h-screen bg-[#141414] text-[#f4f3ee] px-8 py-10">
-      <Link
-        href="/photography"
-        className="inline-flex items-center gap-2 text-[#717171] hover:text-[#f4f3ee] transition-colors duration-200 mb-10 text-[13px]"
-      >
-        <ArrowLeft size={14} />
-        Back
-      </Link>
-
-      <div className="max-w-lg">
-        <h1
-          style={{
-            fontFamily: "Inter, sans-serif",
-            fontWeight: 700,
-            fontSize: "2.5rem",
-            color: "#f4f3ee",
-            marginBottom: "0.5rem",
-          }}
-        >
-          Gear
-        </h1>
-        {/* CUSTOMIZE: one-line subtext below the title */}
-        <p className="text-sm text-[#717171] mb-12">What I shoot with.</p>
-        <GearList />
-      </div>
-    </div>
+    <>
+      <Nav />
+      <main className="min-h-screen bg-bg px-6 pb-24 pt-24 text-fg sm:px-8">
+        <div className="max-w-lg">
+          <PageHeader
+            eyebrow="Kit"
+            title="Gear"
+            subtitle="What I shoot with."
+            backHref="/photography"
+            backLabel="Photography"
+          />
+          <GearList />
+        </div>
+      </main>
+    </>
   );
 }

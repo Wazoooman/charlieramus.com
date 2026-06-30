@@ -1,11 +1,13 @@
 import Link from "next/link";
 
+// Absolute hash targets (`/#about`, not `#about`) so the bar wayfinds back to
+// the homepage sections from any route — the V9 subpages render it too.
 const links = [
-  { href: "#about", label: "About" },
-  { href: "#projects", label: "Projects" },
-  { href: "#photography", label: "Photography" },
-  { href: "#writing", label: "Writing" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#about", label: "About" },
+  { href: "/#projects", label: "Projects" },
+  { href: "/#photography", label: "Photography" },
+  { href: "/#writing", label: "Writing" },
+  { href: "/#contact", label: "Contact" },
 ];
 
 /**

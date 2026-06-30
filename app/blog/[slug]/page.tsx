@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import Nav from "@/components/nav";
 import { getPost, getAllPosts } from "@/lib/posts";
 
 export async function generateStaticParams() {
@@ -41,16 +43,19 @@ export default async function PostPage({
   if (!post) notFound();
 
   return (
-    <main className="max-w-2xl mx-auto px-6 pt-32 pb-24">
-      <div className="mb-12">
-        <Link
-          href="/blog"
-          className="text-xs text-muted hover:text-foreground transition-colors"
-        >
-          ← Writing
-        </Link>
-      </div>
-      <article>
+    <>
+      <Nav />
+      <main className="max-w-2xl mx-auto px-6 pt-24 pb-24">
+        <div className="mb-10">
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.12em] text-muted transition-colors hover:text-fg"
+          >
+            <ArrowLeft size={13} />
+            Writing
+          </Link>
+        </div>
+        <article>
         <header className="mb-10">
           <time
             dateTime={post.date}
@@ -63,7 +68,8 @@ export default async function PostPage({
           </h1>
         </header>
         {post.content}
-      </article>
-    </main>
+        </article>
+      </main>
+    </>
   );
 }
