@@ -83,6 +83,25 @@ Depends on Logs V3, V4.
 - Respect `prefers-reduced-motion`; ensure the field doesn't cause overflow/CLS.
 
 # Stage 3 Report
-- [ ] Quote + field readable and contained on mobile
-- [ ] Reduced-motion respected; no overflow/CLS
-- Issues:
+- [x] **Quote + field readable and contained on mobile.** The `field` preset
+  flags every other flower `hideOnMobile` (V4), which the renderer emits as
+  `data-mobile-hide`; the `@media (max-width: 640px)` rule then drops the ring
+  from 18 → **9 flowers** and lightens them to `opacity .85`. Verified at 375×812:
+  9 of 18 flowers shown, quote `font-size: 32px` (the `display-lg` clamp floor),
+  centered within the `px-6` gutters (left 24px / right 351px of 375), and the
+  footer collapses to a centered `flex-col`. No code change needed here — the
+  closing field inherits V4's responsive system; this stage confirms it on Zone D
+  and checks the quote/footer at each width.
+- [x] **Reduced-motion respected; no overflow/CLS.** Spin is governed by the
+  deterministic `@media (prefers-reduced-motion: reduce)` rule (globals.css) —
+  `.flower { transition: none }` and `.flower:hover` resets to the resting tilt
+  (no 180° spin). (Headless Chromium reports `prefers-reduced-motion: false` and
+  `Emulation.setEmulatedMedia` is off the browse CDP allowlist, so this is
+  confirmed by the matched static rule, as in V4 Stage 5.) **No overflow** at any
+  width: `scrollWidth === clientWidth` at 375 / 768 / 1280, and `.flower-layer`
+  is `overflow: hidden` so the ring's edge flowers (which sit at 6–94% with the
+  thinning off above 640) are clipped, not spilled — checked the 768 tablet
+  case where all 18 render. **No CLS:** flowers are absolutely positioned in an
+  `inset:0` layer (out of flow) with explicit `width`/`height`, and the section
+  is `min-h-svh`, so nothing reflows on image load.
+- Issues: none. `tsc --noEmit` clean.
