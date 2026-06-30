@@ -65,9 +65,46 @@ end: photography, writing/blog, web-projects, design, gear. Depends on Logs V3-V
   skeleton, `unoptimized` Cloudflare fix) — do not regress loading.
 
 # Stage 2 Report
-- [ ] Photography gallery reskinned (palette + halftone), lightbox intact
-- [ ] V2 image performance preserved (no white flash / slow-load regression)
-- Issues:
+- [x] **Photography gallery reskinned (palette + halftone), lightbox intact.**
+  `components/photography-gallery.tsx` now wears the sky section color and the
+  V7 halftone signature. Each masonry tile is a `group`, and the thumbnail
+  button carries the shared `.halftone` class (globals.css) — the sky dot-screen
+  (`radial-gradient(var(--sky) …)`, `mix-blend: screen`) lays over every photo
+  at rest and fades to `opacity .14` on hover, where the image also lifts
+  `group-hover:scale-[1.03]` (replacing the old `hover:brightness-90`). Sky is
+  applied across the page's accents: the floating Inquire button went from an
+  orange `#FA5B1C` rounded rect to a mono pill (`border-sky/50 bg-bg/70
+  backdrop-blur`, Space Mono uppercase `text-sky`) matching the V5 toggle/nav;
+  the lightbox photo-code chip is now `text-sky` mono; the footer line is a mono
+  `.label` and the Gear List link is a sky mono link (`Gear List →`). All the
+  hardcoded neutrals (`text-neutral-*`) became tokens. The lightbox is unchanged
+  in behavior — verified (browse): clicking a tile opens it, the full image
+  loads (`naturalWidth 1366`, `complete`), the `#0001`-style code chip computes
+  `rgb(47,156,201)` (= `--sky`), the Hide/Show description toggle works, and
+  Escape closes it. `.halftone` is present on all 61 thumbnails with the sky dot
+  gradient confirmed in the `::after`.
+- [x] **V2 image performance preserved (no white flash / slow-load regression).**
+  Every V2 mechanism is intact: `next/image` with `fill`, `sizes` per the
+  responsive masonry breakpoints, `priority` on the first 4 tiles, and the blur
+  placeholders (`placeholder="blur"` + per-photo `blurDataURL`) — the spread
+  that applies them was kept verbatim. `unoptimized: true` in `next.config`
+  (the Cloudflare optimizer fix) is untouched. The "dark skeleton" that prevents
+  the white flash is now the `bg-surface` token instead of a hardcoded
+  `#141414`/`bg-neutral-800`: it stays dark (`#1e1e1e`) in dark mode AND becomes
+  cream (`#eaeae5`) in light mode, so the no-white-flash guarantee now holds in
+  both themes the page supports post-V9-S1 (rather than flashing a dark box on
+  the cream light-mode page). Verified (browse): thumbnails and the lightbox
+  image report `complete=true` with real `naturalWidth`, no console errors
+  (only the pre-existing gear-image aspect-ratio warnings, which are Stage 4),
+  and the gallery renders cleanly in both light and dark at 1280.
+- Issues: none. Two deliberate non-changes: the Mother's Day and Inquire modals
+  keep their bespoke white-card styling (personal/contact cards, not gallery
+  chrome — out of scope), and the lightbox overlay stays `bg-black/80` with light
+  neutral caption text since it is always a dark viewing surface regardless of
+  theme. The `.halftone::after` is decorative and not marked `pointer-events:
+  none`, so Playwright's actionability check can balk at a synthetic center-click
+  on a tile (a real click and `el.click()` both open the lightbox); left as-is to
+  avoid touching the shared V7 primitive.
 
 ---
 

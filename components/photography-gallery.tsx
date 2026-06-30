@@ -214,7 +214,7 @@ export default function PhotographyGallery() {
       {pathname === "/photography" && (
         <button
           onClick={() => setShowInquire(true)}
-          className="fixed bottom-6 left-6 z-40 text-[11px] text-[#FA5B1C] border border-[#FA5B1C] rounded-md px-3 py-1.5 transition-colors duration-200"
+          className="fixed bottom-6 left-6 z-40 rounded-full border border-sky/50 bg-bg/70 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-sky backdrop-blur-md transition-colors duration-200 hover:border-sky hover:bg-sky/10"
         >
           Inquire
         </button>
@@ -222,23 +222,23 @@ export default function PhotographyGallery() {
 
       <div className="columns-2 sm:columns-3 lg:columns-4 xl:columns-5 gap-4 max-w-4xl mx-auto">
         {photos.map((photo, idx) => (
-          <div key={photo.src || String(idx)} className="break-inside-avoid mb-4">
+          <div key={photo.src || String(idx)} className="group break-inside-avoid mb-4">
             {photo.placeholder ? (
               <div
-                className="w-full bg-neutral-800 rounded-sm"
+                className="w-full rounded-sm bg-surface"
                 style={{ aspectRatio: String(photo.ratio) }}
               />
             ) : (
               <button
                 onClick={() => setLightboxIdx(idx)}
-                className="relative block w-full overflow-hidden focus:outline-none bg-[#141414]"
+                className="relative block w-full cursor-pointer overflow-hidden rounded-sm bg-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-sky focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
                 style={{ aspectRatio: String(photo.ratio) }}
               >
                 <Image
                   src={photo.thumb}
                   alt={photo.alt}
                   fill
-                  className="object-cover hover:brightness-90 transition-[filter] duration-200 cursor-pointer"
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
                   priority={idx < 4}
                   {...(photo.blurDataURL
@@ -251,13 +251,13 @@ export default function PhotographyGallery() {
         ))}
       </div>
 
-      <div className="flex flex-col items-center mt-12 gap-3">
-        <p className="text-xs text-neutral-600">That&apos;s everything for now. More adventures are in the works.</p>
+      <div className="mt-16 flex flex-col items-center gap-3">
+        <p className="label">That&apos;s everything for now — more adventures are in the works.</p>
         <Link
           href="/gear"
-          className="text-xs text-neutral-500 hover:text-neutral-300 transition-colors duration-150"
+          className="font-mono text-[11px] uppercase tracking-[0.12em] text-sky transition-colors duration-150 hover:text-fg"
         >
-          Gear List
+          Gear List →
         </Link>
       </div>
 
@@ -290,7 +290,7 @@ export default function PhotographyGallery() {
             {(photos[lightboxIdx].code || photos[lightboxIdx].caption) && (
               <div className="flex items-center justify-between w-full max-w-[75vw] mt-3">
                 {photos[lightboxIdx].code ? (
-                  <span className="font-mono text-[11px] text-neutral-400 px-2 py-0.5 rounded-sm bg-black/50">
+                  <span className="rounded-sm bg-black/50 px-2 py-0.5 font-mono text-[11px] uppercase tracking-[0.12em] text-sky">
                     #{photos[lightboxIdx].code}
                   </span>
                 ) : (
