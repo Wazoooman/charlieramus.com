@@ -3,6 +3,7 @@ import Hero from "@/components/hero";
 import Dashboard from "@/components/dashboard";
 import Bento from "@/components/bento";
 import ClosingQuote from "@/components/closing-quote";
+import Footer from "@/components/footer";
 
 /**
  * Redesign preview — a stable place to watch the reskin come together while the
@@ -19,6 +20,7 @@ export default function Preview() {
       <Dashboard />
       <Bento />
       <ClosingQuote />
+      <Footer />
     </>
   );
 }

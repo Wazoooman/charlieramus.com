@@ -52,8 +52,28 @@ Depends on Logs V3, V4.
   links (reuse the existing social set from `components/sidebar.tsx`).
 
 # Stage 2 Report
-- [ ] Footer restyled (mono), socials present and correct
-- Issues:
+- [x] **Footer restyled to the mono system; socials present and correct.** The
+  redesign had no footer yet, so this builds one in the mono system rather than
+  restyling old markup. New `components/footer.tsx` (server component) — a
+  rule-topped bar (`border-t border-border`, `max-w-6xl`) with the meta line
+  **name · location · year** in the `.label` mono face (Space Mono, uppercase)
+  on the left (name in `text-fg`, the rest `text-muted`) and the social set on
+  the right. Year is `new Date().getFullYear()` (renders `2026`), name/location
+  are top-of-file constants. Added to `app/preview/page.tsx` after
+  `<ClosingQuote />`. Verified live (browse): meta reads
+  "Charlie Ramus · Boulder, CO · 2026" in `font-family: Space Mono`, 5 social
+  anchors with the correct hrefs (LinkedIn, GitHub, both Instagrams, Letterboxd),
+  icons sized to 20px, `border-top: 1px`, hover → `text-accent`.
+- [x] **Socials reuse the existing sidebar set (not duplicated).** Extracted the
+  `socialLinks` array + `SocialLink` type + icon SVGs out of the client
+  `components/sidebar.tsx` into a plain `components/social-links.tsx` module (no
+  "use client"), so both the old client sidebar and the new server footer import
+  one source of truth (mirrors the V7 `data/stories.ts` extraction). Confirmed
+  the old homepage sidebar still renders all 5 socials (desktop + mobile = 10
+  anchors) with no console errors after the move.
+- Issues: none. (The two-step edit briefly flashed a "defined multiple times"
+  HMR error in the dev overlay while the duplicate const was mid-removal; gone
+  on recompile, `tsc --noEmit` clean.)
 
 ---
 
