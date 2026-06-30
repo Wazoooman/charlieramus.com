@@ -3,6 +3,7 @@ import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import type { ReactNode } from "react";
 import { getAllArticles } from "@/lib/articles";
+import { getAllPosts } from "@/lib/posts";
 import { photos } from "@/data/photos";
 
 /**
@@ -38,6 +39,13 @@ const toneMap = {
     dot: "bg-c-writing",
   },
   work: { rule: "border-t-c-work", text: "text-c-work", dot: "bg-c-work" },
+  // Blog/journal reuses cobalt (the experience hue) — the one wayfinding color
+  // not already spoken for in this grid, so the journal tile reads distinctly.
+  blog: {
+    rule: "border-t-c-experience",
+    text: "text-c-experience",
+    dot: "bg-c-experience",
+  },
   design: {
     rule: "border-t-c-design",
     text: "text-c-design",
@@ -114,6 +122,9 @@ export default function Bento() {
   // lib/articles.ts, sorted newest-first — nothing about writing is hardcoded.
   const articles = getAllArticles();
   const latest = articles[0];
+  // Blog posts (the journal) come from the same plain-import source as articles.
+  const posts = getAllPosts();
+  const latestPost = posts[0];
 
   return (
     <section id="explore" className="px-6 py-20 md:px-16">
@@ -282,26 +293,22 @@ export default function Bento() {
           className="sm:col-span-2"
         />
 
-        {/* ── Contact — solid red CTA tile to close the section ── */}
-        <a
-          href="mailto:charlie.ramus12@gmail.com"
-          className="group relative col-span-1 flex flex-col justify-between overflow-hidden rounded-xl bg-[#fd1e1f] p-6 text-[#f4f3ee] transition duration-300 hover:-translate-y-1 sm:col-span-2"
+        {/* ── Blog (cobalt) — the journal feed, closing the section. Contact now
+            lives in the full-width contact card below the grid (Log V11). ── */}
+        <SectionTile
+          tone="blog"
+          label="Blog"
+          title="The journal"
+          blurb="Shorter, more frequent notes — build logs, what I'm reading, and thinking out loud between the longer essays."
+          href="/blog"
+          className="sm:col-span-2"
         >
-          <div>
-            <h3 className="display-md mb-2">Get in touch</h3>
-            <p className="max-w-prose text-[13px] leading-[1.6] text-[#f4f3ee]/70">
-              Research, internships, collaboration, or a cold hello — my inbox is
-              open.
+          {latestPost && (
+            <p className="mb-4 line-clamp-2 border-l-2 border-c-experience/40 pl-3 text-[13px] italic leading-normal text-fg">
+              “{latestPost.title}”
             </p>
-          </div>
-          <span className="mt-6 inline-flex items-center gap-1 text-[11px] font-medium uppercase tracking-[0.12em]">
-            charlie.ramus12@gmail.com
-            <ArrowUpRight
-              size={13}
-              className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            />
-          </span>
-        </a>
+          )}
+        </SectionTile>
       </div>
     </section>
   );
