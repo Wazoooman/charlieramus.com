@@ -122,9 +122,37 @@ OPEN: needs Charlie's sign-off on column count / tile size, the interstitial cop
 + placement, and what "more interactive" means before this stage is built.
 
 # Stage 3 Report
-- [ ] Larger photos + editorial interstitials, layout approved
-- [ ] Interactivity added; V2 perf + lightbox preserved
-- Issues:
+- [x] Larger photos + editorial interstitials, layout approved
+- [x] Interactivity added; V2 perf + lightbox preserved
+- Sign-off captured (the stage was gated on it): **bigger tiles** = drop the 5-col
+  breakpoint → masonry is now `columns-2 sm:columns-3 lg:columns-4` (≈25% larger
+  tiles); **interstitials** = three Fraunces statements, each a word then a second
+  word a few lines down in an accent — CREATE./ART. (red), SEE./DIFFERENTLY.
+  (sky), STILL./MOVING. (`#f2a900`); **interactive** = parallax drift on the
+  interstitials.
+- REVISION (Charlie): the inline interstitials were replaced by a **slow vertical
+  type-ticker** down the LEFT gutter (photography page only). Words are now
+  **bold/black Inter** (not Fraunces), vertical glyphs, and each word is its own
+  single color — no white (CREATE./ART. red, SEE./DIFFERENTLY. sky, STILL./MOVING.
+  `#f2a900`). They're spread far apart (`my-[12vh]` per word) and the marquee
+  creeps upward super slowly. The gallery is back to a single 2/3/4-col masonry.
+- Implementation in `components/photography-gallery.tsx`: `LeftTicker` is a
+  `pointer-events-none`, `aria-hidden` fixed strip (`top-14` → below the nav) at
+  `z-20` (so the lightbox/modals/Inquire button stay on top). Copy/order/accents
+  live in the top-of-file `TICKER_WORDS` constant; the list is rendered twice for a
+  seamless loop. The `.ticker-track` keyframes live in `app/globals.css`
+  (70s linear — sped up ~2× from the first pass at Charlie's request; raise the
+  duration to slow it). Neutralized under `prefers-reduced-motion` by the global
+  guard.
+- Mobile: the strip narrows (`w-11`) and the type shrinks (`text-3xl`) so it hugs
+  the left edge without crowding the photos; it scales up at `sm`/`md`.
+- V2 perf preserved: still `next/image` (fill + blur placeholder), theme-aware
+  `bg-surface` skeleton, and the existing lightbox + Escape/keyboard handling are
+  untouched. `sizes` was retuned for the new max of 4 columns (25vw).
+- Issues: interstitials are `aria-hidden` (decorative typographic breaks). The
+  photo data has no theme tags, so groups are even quarters of the list rather
+  than thematic — fine for now; a future pass could tag photos and add the filter
+  chips we deferred. No build/type errors.
 
 ---
 
@@ -136,6 +164,26 @@ OPEN: needs Charlie's sign-off on column count / tile size, the interstitial cop
   the rest of the system.
 
 # Stage 4 Report
-- [ ] Dead component removed; build clean
-- [ ] Card/modals consistent with the system
-- Issues:
+- [x] Dead component removed; build clean
+- [x] Card/modals consistent with the system
+- Deleted `components/WebProjects.tsx` (confirmed dead — `app/web-projects/page.tsx`
+  imports the default export from `components/WebProjectEntry.tsx`, not this file;
+  no other references). `git rm`'d; `tsc --noEmit` clean afterward.
+- Consistency sweep of the V11 surface (contact card, both photography modals,
+  ticker): unified the card-language drop shadow — the two modals were
+  `…rgba(0,0,0,0.4)`, now `0.35` to match the canonical contact card. Everything
+  else already shares tokens (`bg-panel`/`border-border`/`bg-red`), the Fraunces
+  `display-*` + mono `.label` type scale, and the rounded card shape; modals use
+  `rounded-3xl` vs the card's `rounded-4xl`, proportional to their smaller size.
+- Also (Charlie): the left photography ticker was sped up ~2× (`globals.css`
+  `.ticker-track` 140s → 70s).
+- Issues: none. Build/type-check clean.
+
+---
+
+# V11 complete
+All four stages landed: (1) the "Get in touch" contact card on `/preview`, (2) the
+two photography modals reskinned to that card language, (3) the photography rework
+— bigger 2/3/4-col masonry + the slow left type-ticker (bold/black Inter, single
+colors, parallax→marquee per Charlie), and (4) cleanup. Deferred for a later log:
+tagging photos by theme to enable the filter chips we scoped but didn't build.

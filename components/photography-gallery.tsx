@@ -7,6 +7,49 @@ import Link from "next/link";
 import { X, Copy, Check } from "lucide-react";
 import { photos } from "@/data/photos";
 
+/**
+ * Left type-ticker words (Log V11, Stage 3 revision) — the editorial statements,
+ * now a slow vertical marquee down the left gutter instead of inline breaks. Each
+ * word is its own single color (no white). Edit copy/order/accents here; `accent`
+ * is any text-color utility. Duplicated at render time for a seamless loop.
+ */
+const TICKER_WORDS: { word: string; accent: string }[] = [
+  { word: "CREATE.", accent: "text-red" },
+  { word: "ART.", accent: "text-red" },
+  { word: "SEE.", accent: "text-sky" },
+  { word: "DIFFERENTLY.", accent: "text-sky" },
+  { word: "STILL.", accent: "text-[#f2a900]" },
+  { word: "MOVING.", accent: "text-[#f2a900]" },
+];
+
+/**
+ * Slow vertical type-ticker pinned to the left gutter (photography page only).
+ * Decorative + non-interactive (`aria-hidden`, `pointer-events-none`) so it never
+ * blocks taps or the lightbox. Bold/black Inter, vertical glyphs, each pair in its
+ * own color. The `.ticker-track` CSS animation (in globals.css) creeps it upward
+ * super slowly and is neutralized under prefers-reduced-motion. Narrow + smaller
+ * type on mobile so it hugs the edge without crowding the photos.
+ */
+function LeftTicker() {
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none fixed bottom-0 left-0 top-14 z-20 flex w-11 justify-center overflow-hidden select-none sm:w-20 md:w-28"
+    >
+      <div className="ticker-track flex shrink-0 flex-col items-center">
+        {[...TICKER_WORDS, ...TICKER_WORDS].map((w, i) => (
+          <span
+            key={i}
+            className={`my-[12vh] rotate-180 font-sans text-3xl font-black tracking-tight [writing-mode:vertical-rl] sm:text-5xl md:text-7xl ${w.accent}`}
+          >
+            {w.word}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function isMothersDayToday(): boolean {
   const now = new Date();
   if (now.getMonth() !== 4) return false;
@@ -40,7 +83,7 @@ function MothersDayCard({ onDismiss }: { onDismiss: () => void }) {
       {/* Contact-card language (Log V11, Stage 2): rounded panel on tokens,
           Fraunces heading, sans body, a red section accent. */}
       <div
-        className="fd-card-in relative w-full max-w-105 overflow-hidden rounded-3xl border border-border bg-panel p-8 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.4)] sm:p-10"
+        className="fd-card-in relative w-full max-w-105 overflow-hidden rounded-3xl border border-border bg-panel p-8 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.35)] sm:p-10"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -95,7 +138,7 @@ function InquireModal({ onDismiss }: { onDismiss: () => void }) {
           Fraunces heading, and a red invert-on-hover primary action that mirrors
           the contact card (red → surface on hover). */}
       <div
-        className="fd-card-in relative w-full max-w-95 overflow-hidden rounded-3xl border border-border bg-panel p-8 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.4)]"
+        className="fd-card-in relative w-full max-w-95 overflow-hidden rounded-3xl border border-border bg-panel p-8 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.35)]"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -187,6 +230,9 @@ export default function PhotographyGallery() {
       {showMothersDay && <MothersDayCard onDismiss={dismissMothersDay} />}
       {showInquire && <InquireModal onDismiss={() => setShowInquire(false)} />}
 
+      {/* Slow vertical type-ticker down the left gutter (photography page only). */}
+      {pathname === "/photography" && <LeftTicker />}
+
       {/* Floating Inquire button — fixed bottom-left, only on /photography */}
       {pathname === "/photography" && (
         <button
@@ -197,9 +243,14 @@ export default function PhotographyGallery() {
         </button>
       )}
 
-      <div className="columns-2 sm:columns-3 lg:columns-4 xl:columns-5 gap-4 max-w-4xl mx-auto">
+      {/* Masonry (Log V11, Stage 3): 2/3/4 columns for bigger tiles. The
+          editorial statements moved to the left type-ticker above. */}
+      <div className="columns-2 gap-4 sm:columns-3 lg:columns-4 mx-auto max-w-4xl">
         {photos.map((photo, idx) => (
-          <div key={photo.src || String(idx)} className="group break-inside-avoid mb-4">
+          <div
+            key={photo.src || String(idx)}
+            className="group mb-4 break-inside-avoid"
+          >
             {photo.placeholder ? (
               <div
                 className="w-full rounded-sm bg-surface"
@@ -216,7 +267,7 @@ export default function PhotographyGallery() {
                   alt={photo.alt}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                   priority={idx < 4}
                   {...(photo.blurDataURL
                     ? { placeholder: "blur", blurDataURL: photo.blurDataURL }

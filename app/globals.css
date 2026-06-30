@@ -303,6 +303,23 @@ body {
 .fd-confetti { top: -5vh; animation-name: fdConfetti; animation-timing-function: linear; animation-iteration-count: infinite; }
 .fd-note { font-family: Georgia, "Times New Roman", serif; font-style: italic; }
 
+/* ── Photography left type-ticker (Log V11) ──────────────────────────────── */
+
+/* Vertical marquee for the photography page's left-gutter statements. The track
+   holds two identical copies of the word list; translating up by 50% lands copy
+   two exactly where copy one began, so the loop is seamless (each word carries a
+   symmetric vertical margin, keeping the two halves equal height). "Super super
+   slow" — a long duration; bump it to slow it further. The global reduced-motion
+   guard below neutralizes the animation. */
+@keyframes tickerUp {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-50%); }
+}
+.ticker-track {
+  animation: tickerUp 70s linear infinite;
+  will-change: transform;
+}
+
 /* ── Hero scroll cue (Log V5) ────────────────────────────────────────────── */
 
 /* Quiet mono "↓ scroll" at the foot of the hero. Gentle vertical bob; the
