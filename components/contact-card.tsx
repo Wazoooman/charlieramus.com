@@ -16,7 +16,7 @@ import { socialLinks } from "@/components/social-links";
  * `components/social-links.tsx` (single source of truth for Charlie's socials).
  */
 const EMAIL = "charlie.ramus12@gmail.com";
-const LEAD_IN = "Like what you see?";
+const LEAD_IN = "Want to reach out?";
 const HEADLINE = "Get in touch";
 /** Peace hand with the text-presentation selector (U+FE0E) so it renders
  *  monochrome and inherits `currentColor` — letting it invert with the card. */

@@ -22,10 +22,9 @@ export default function Hero() {
         </h1>
 
         <p className="mt-7 max-w-130 text-base leading-relaxed text-muted">
-          Building software, growing{" "}
+          {"Boulder, CO · High School Junior · Builder software, growing "}
           <span className="font-medium text-c-work">communities</span>, and
-          exploring the intersection of computation and biology. Junior at
-          Boulder High School, Boulder CO.
+          exploring the intersection of computation and biology. 
         </p>
       </div>
 
