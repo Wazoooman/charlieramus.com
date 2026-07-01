@@ -280,28 +280,16 @@ body {
   to   { opacity: 0; transform: rotate(-4deg) scale(0.97); }
 }
 
-/* Father's Day modal */
+/* Shared modal entrance (originally the Father's Day modal; that seasonal modal
+   was retired in Log V10, but the photography modals reuse these `fd-*` entrance
+   classes for their soft open). Reduced motion is handled by the global guard. */
 @keyframes fdOverlayIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes fdOverlayOut { from { opacity: 1; } to { opacity: 0; } }
 @keyframes fdCardIn {
   from { opacity: 0; transform: translateY(16px) scale(0.96); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
-@keyframes fdCardOut {
-  from { opacity: 1; transform: translateY(0) scale(1); }
-  to   { opacity: 0; transform: translateY(10px) scale(0.97); }
-}
-@keyframes fdConfetti {
-  0%   { transform: translateY(-12vh) rotate(0deg); opacity: 0; }
-  10%  { opacity: 1; }
-  100% { transform: translateY(112vh) rotate(540deg); opacity: 0.9; }
-}
 .fd-overlay-in { animation: fdOverlayIn 0.25s ease forwards; }
-.fd-overlay-out { animation: fdOverlayOut 0.28s ease forwards; }
 .fd-card-in { animation: fdCardIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-.fd-card-out { animation: fdCardOut 0.28s ease forwards; }
-.fd-confetti { top: -5vh; animation-name: fdConfetti; animation-timing-function: linear; animation-iteration-count: infinite; }
-.fd-note { font-family: Georgia, "Times New Roman", serif; font-style: italic; }
 
 /* ── Photography left type-ticker (Log V11) ──────────────────────────────── */
 

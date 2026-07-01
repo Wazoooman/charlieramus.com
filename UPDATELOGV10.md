@@ -13,10 +13,46 @@ SEO, and ship. Depends on all prior logs.
 - Everything respects `prefers-reduced-motion`.
 
 # Stage 1 Report
-- [ ] Motion timing consistent system-wide
-- [ ] Cursor-glow decision made + applied; stale seasonal modal handled
-- [ ] Reduced-motion honored everywhere
-- Issues:
+- [x] Motion timing consistent system-wide
+- [x] Cursor-glow decision made + applied; stale seasonal modal handled
+- [x] Reduced-motion honored everywhere
+- **Timing unification.** The site already had a coherent transform vocabulary —
+  tile/panel lifts and small transforms at `duration-300` (bento panel, arrows,
+  contact-card tabs), large-surface moves at `duration-500` (bento image zoom,
+  contact-card color invert), decorative flower spin at 600ms, and the tuned
+  overlay entrances (`dash-*`, `fd-*`, `lb-*`) on `cubic-bezier(0.22,1,0.36,1)`.
+  The one real inconsistency was the color/opacity **micro-hovers**: most used
+  the established `duration-200`, but a handful fell back to Tailwind's bare 150ms
+  default. Normalized those to `duration-200`: `nav` (name + links), `back-button`,
+  `page-header` back link, and the dashboard controls — career-row hover
+  (`transition-colors`), the "View details" reveal (`transition-opacity`), the
+  prev/next arrow buttons + the active-dot (`transition`/`transition-all`), and
+  the career-modal close button. Bare `transition` on the bg-only buttons became
+  the precise `transition-colors` while I was there.
+- **Cursor-glow → kept + restyled (not dropped).** The ambient dark-mode glow is a
+  nice touch, but `components/cursor-glow.tsx` drove it through a `useState`
+  updated on every `mousemove`, re-rendering the component (and rebuilding the
+  gradient string) on each event. Rewrote it to write `--gx/--gy` straight to the
+  node via a ref, so tracking the cursor now costs zero React re-renders; the
+  visual is byte-for-byte the same radial gradient. Also added explicit coarse-
+  pointer and `prefers-reduced-motion` bail-outs (no listener attached at all),
+  and hoisted the excluded routes into a `HIDDEN_PATHS` constant. The now-orphaned
+  `hooks/useMousePosition.ts` (its only consumer) was deleted.
+- **Stale seasonal modal → removed.** The Father's Day modal was date-gated to
+  2026-06-21 (today is 2026-06-30) and could never render again. Deleted
+  `components/fathers-day-modal.tsx` and unwired it from `app/layout.tsx`. In
+  `globals.css` I pruned the modal-only CSS it left behind (`fdOverlayOut`/
+  `fdCardOut`/`fdConfetti` keyframes and the `.fd-overlay-out`/`.fd-card-out`/
+  `.fd-confetti`/`.fd-note` classes) but **kept** `fdOverlayIn`/`fdCardIn` +
+  `.fd-overlay-in`/`.fd-card-in` — the photography modals (V11 S2) reuse those for
+  their soft open — and relabeled the comment to reflect the shared ownership.
+- **Reduced motion.** The global guard in `globals.css` still neutralizes every
+  animation/transition/smooth-scroll; flowers keep their extra explicit guard; and
+  cursor-glow now opts out of its own listener under `prefers-reduced-motion`.
+- Issues: the Father's Day photo asset (`/public/images/fathers-day-images/
+  fathers-day.webp`) is now unreferenced. Left in place — it's not bundled/shipped
+  unless requested, so it's harmless; can be swept in a later cleanup if wanted.
+  `tsc --noEmit` clean.
 
 ---
 

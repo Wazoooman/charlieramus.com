@@ -23,7 +23,7 @@ export default function BackButton() {
   return (
     <button
       onClick={() => router.push(dest)}
-      className="inline-flex cursor-pointer items-center gap-2 font-mono text-[11px] uppercase tracking-[0.12em] text-muted transition-colors hover:text-fg"
+      className="inline-flex cursor-pointer items-center gap-2 font-mono text-[11px] uppercase tracking-[0.12em] text-muted transition-colors duration-200 hover:text-fg"
     >
       <ArrowLeft size={13} />
       {dest === "/writing" ? "Writing" : "Home"}

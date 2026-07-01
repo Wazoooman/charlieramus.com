@@ -31,7 +31,7 @@ export default function PageHeader({
     <header className="mb-12">
       <Link
         href={backHref}
-        className="mb-10 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.12em] text-muted transition-colors hover:text-fg"
+        className="mb-10 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.12em] text-muted transition-colors duration-200 hover:text-fg"
       >
         <ArrowLeft size={13} />
         {backLabel}

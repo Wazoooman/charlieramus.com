@@ -22,7 +22,7 @@ export default function Nav() {
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6 sm:pr-24">
         <Link
           href="/"
-          className="font-mono text-sm font-bold tracking-tight text-fg transition-colors hover:text-muted"
+          className="font-mono text-sm font-bold tracking-tight text-fg transition-colors duration-200 hover:text-muted"
         >
           Charlie Ramus
         </Link>
@@ -31,7 +31,7 @@ export default function Nav() {
             <a
               key={link.href}
               href={link.href}
-              className="font-mono text-[11px] uppercase tracking-[0.12em] text-muted transition-colors hover:text-fg"
+              className="font-mono text-[11px] uppercase tracking-[0.12em] text-muted transition-colors duration-200 hover:text-fg"
             >
               {link.label}
             </a>

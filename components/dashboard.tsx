@@ -244,7 +244,7 @@ export default function Dashboard() {
                 type="button"
                 onClick={(e) => openEntry(i, e)}
                 aria-label={`Expand details for ${entry.title}`}
-                className="group -mx-2 mb-6 min-w-0 flex-1 rounded-lg px-2 py-1 text-left transition-colors hover:bg-[rgba(0,0,0,0.05)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-c-experience dark:hover:bg-[rgba(255,255,255,0.05)]"
+                className="group -mx-2 mb-6 min-w-0 flex-1 rounded-lg px-2 py-1 text-left transition-colors duration-200 hover:bg-[rgba(0,0,0,0.05)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-c-experience dark:hover:bg-[rgba(255,255,255,0.05)]"
               >
                 <span className="block text-[14px] font-medium text-fg">
                   {entry.title}
@@ -267,7 +267,7 @@ export default function Dashboard() {
                     </span>
                   ))}
                 </div>
-                <span className="inline-flex items-center gap-1 text-[11px] font-medium uppercase tracking-[0.12em] text-c-experience opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+                <span className="inline-flex items-center gap-1 text-[11px] font-medium uppercase tracking-[0.12em] text-c-experience opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100">
                   View details <ArrowUpRight size={12} />
                 </span>
               </button>
@@ -449,7 +449,7 @@ export default function Dashboard() {
           onClick={() => scrollToIndex(Math.max(0, active - 1))}
           disabled={active === 0}
           aria-label="Previous panel"
-          className="flex size-10 items-center justify-center rounded-full border border-border text-fg transition hover:bg-surface disabled:pointer-events-none disabled:opacity-40"
+          className="flex size-10 items-center justify-center rounded-full border border-border text-fg transition-colors duration-200 hover:bg-surface disabled:pointer-events-none disabled:opacity-40"
         >
           <ChevronLeft size={18} />
         </button>
@@ -466,7 +466,7 @@ export default function Dashboard() {
               className="flex size-7 items-center justify-center"
             >
               <span
-                className={`block size-2.5 rounded-full transition-all ${
+                className={`block size-2.5 rounded-full transition-all duration-200 ${
                   active === i ? `${p.dotClass} scale-125` : "bg-border"
                 }`}
               />
@@ -479,7 +479,7 @@ export default function Dashboard() {
           onClick={() => scrollToIndex(Math.min(panels.length - 1, active + 1))}
           disabled={active === panels.length - 1}
           aria-label="Next panel"
-          className="flex size-10 items-center justify-center rounded-full border border-border text-fg transition hover:bg-surface disabled:pointer-events-none disabled:opacity-40"
+          className="flex size-10 items-center justify-center rounded-full border border-border text-fg transition-colors duration-200 hover:bg-surface disabled:pointer-events-none disabled:opacity-40"
         >
           <ChevronRight size={18} />
         </button>
@@ -517,7 +517,7 @@ export default function Dashboard() {
                 type="button"
                 onClick={closeModal}
                 aria-label="Close"
-                className="flex size-9 items-center justify-center rounded-full border border-border text-muted transition hover:bg-surface hover:text-fg"
+                className="flex size-9 items-center justify-center rounded-full border border-border text-muted transition-colors duration-200 hover:bg-surface hover:text-fg"
               >
                 <X size={16} />
               </button>
