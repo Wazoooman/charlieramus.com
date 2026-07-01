@@ -114,10 +114,50 @@ SEO, and ship. Depends on all prior logs.
   bundle for accidental client `fs` or large client components.
 
 # Stage 3 Report
-- [ ] Image + font performance verified; UPDATELOGV2 open items closed/triaged
-- [ ] No render-blocking fonts; no client-bundle leaks
-- [ ] `npm run build` clean
-- Issues:
+- [x] Image + font performance verified; UPDATELOGV2 open items closed/triaged
+- [x] No render-blocking fonts; no client-bundle leaks
+- [x] `npm run build` clean
+- **Fonts — self-hosted, no render-blocking requests.** All three faces load via
+  `next/font/google` in the root layout (`app/layout.tsx`): Inter (body), Fraunces
+  (display, variable with `opsz` axis), Space Mono (mono). Per the Next.js font
+  docs, `next/font/google` downloads the CSS + font files **at build time and
+  self-hosts them** — the browser never hits Google, so there are zero
+  render-blocking external font requests. Each face sets `subsets: ["latin"]`
+  (which drives the `<link rel=preload>` head tag) and `display: "swap"` (no
+  invisible-text FOIT). Because the fonts are declared in the root layout they're
+  preloaded on every route. No changes needed — the setup was already optimal.
+- **Images — UPDATELOGV2 open items closed/triaged.** Walked the three items left
+  open in V2:
+  - *`quality` prop not set (V2 S1/S4)* → **closed, N/A.** `next.config.ts` sets
+    `images: { unoptimized: true }` (Cloudflare edge can't run `sharp`), and in
+    unoptimized mode Next passes files through untouched, so `quality` is ignored.
+    Setting it would be dead config. Confirmed no `quality` prop needed anywhere.
+  - *WebP verification (V2 S5)* → **closed by construction.** With `unoptimized`,
+    `<Image>` serves the original path (`/photos/*.webp`, thumbnails, etc.); every
+    source asset is already `.webp`, so what ships is WebP. Not CLI-verifiable
+    beyond that; deferred the live Network-tab check to Stage 4 device QA.
+  - *Fast-3G white-flash manual check (V2 S5)* → **carried to Stage 4.** Requires a
+    real browser + throttling. The Stage 2 blur placeholders + Stage 4 `#141414`
+    skeleton backgrounds should eliminate it; explicitly listed as a Stage 4 QA item.
+  - All raw `<img>` were already converted to `next/image` in V2 S5 — re-grepped,
+    none remain outside `node_modules`.
+- **No client-bundle leaks.** Audited every module importing `fs`: `lib/articles.ts`
+  and `lib/illustrations.ts` (and the gallery build script). Their consumers —
+  `bento.tsx`, `flower-field.tsx`, the `writing`/`blog` route files — are all
+  **server components**. The one client component that touches articles
+  (`writing-article-list.tsx`, `"use client"`) imports only `import type
+  { ArticleListItem }`, which is erased at compile and never reaches the bundle.
+  `illustrations.ts` already had a `server-only` guard; **added the same
+  `import "server-only"` to `lib/articles.ts`** for parity, turning any future
+  accidental client import into a build-time error instead of a silent `fs` leak.
+- **Build.** `npm run build` clean before and after the guard — compiled in ~33s,
+  TypeScript passed, all 15 routes prerendered (static + SSG), **zero image/font
+  warnings**.
+- Issues: none blocking. Two checks are inherently browser-only (WebP in Network
+  tab, Fast-3G white flash) and are folded into Stage 4 cross-device QA. Pre-existing
+  V2 note still stands: `@cloudflare/next-on-pages@1` officially supports up to
+  Next 15.5.2 while this project is on Next 16 (invoked via `npx` in the build) —
+  monitor for a Next 16-compatible release; no action here.
 
 ---
 
