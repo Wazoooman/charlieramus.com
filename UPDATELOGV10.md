@@ -250,8 +250,8 @@ SEO, and ship. Depends on all prior logs.
 # Stage 5 Report
 - [x] A11y pass (keyboard, focus, ARIA, alt) — code audit across the redesign
       (`/preview` zones + `/photography`); strong overall, two gaps flagged below
-- [x] Metadata/OG audited post-redesign — one bug **fixed**, two content items
-      **flagged** for Charlie (grade + hero copy)
+- [x] Metadata/OG audited post-redesign — blog-title bug, grade mismatch, and hero
+      copy clutter all **fixed** (per Charlie's sign-off)
 - **Method.** Static code audit again (no browser — the `browse` daemon crashes
   this machine). Scope = the redesign UI: Nav, Hero, Dashboard, Bento, ContactCard,
   ClosingQuote/flowers, Footer, ThemeToggle, and the `/photography` gallery.
@@ -282,28 +282,27 @@ SEO, and ship. Depends on all prior logs.
   `/writing`, so both routes resolved to "Writing | Charlie Ramus". Changed both to
   **"Journal"** (`app/blog/page.tsx`), matching its own eyebrow and the redesign
   wayfinding. Revert if "Writing" was intended.
-- **SEO — FLAG (content): grade mismatch.** `app/layout.tsx` metadata + OG
-  description say **"High school sophomore in Boulder…"**, but the redesigned hero
-  (`hero.tsx`) says **"High School Junior"** (kicker + intro). The site contradicts
-  itself. Recommend aligning the description to whichever is current (likely
-  "junior" as of 2026-06-30) — but that's Charlie's fact to set, so left unchanged.
-- **COPY BUG (content, flagged not fixed): hero intro.** `hero.tsx` line 25's intro
-  paragraph renders as *"Boulder, CO · High School Junior · Builder software,
-  growing communities, and exploring the intersection of computation and biology."*
-  — the mono kicker string leaked into the sentence and "building" became
-  "Builder", so the lead sentence is broken. Almost certainly should read
+- **SEO — FIXED: grade mismatch.** `app/layout.tsx` metadata + OG description said
+  **"High school sophomore in Boulder…"** while the hero says **"Junior"**. Updated
+  both description strings (page + OG/Twitter) to **"High school junior in Boulder…"**
+  so the site is consistent.
+- **FIXED: hero intro clutter.** `hero.tsx`'s intro paragraph had the mono kicker
+  string leaked into it ("…· Builder software, growing…", with "building" mangled to
+  "Builder"). Per Charlie ("too much clutter — keep it together"), the location/role
+  now lives **only** in the kicker line, and the intro reads the clean
   *"Building software, growing communities, and exploring the intersection of
-  computation and biology."* (matches the metadata description). Left unchanged
-  because it's Charlie's personal bio voice — one-word confirm and I'll fix it.
+  computation and biology."* (`communities` keeps its `--red` accent). No more
+  duplication.
 - **OG image (optional):** `layout.tsx` OG/Twitter have title+description but no
   `images`; Twitter card is `summary` (not `summary_large_image`). Not a regression
   — accurate, just minimal. Adding a `/public` OG image is a nice-to-have for social
   unfurls, not required.
-- Issues: `/blog` title bug fixed. Open: lightbox focus-management (medium a11y),
-  mobile nav absence (UX/design call), grade mismatch + hero copy bug (both need
-  Charlie's word). Live keyboard/screen-reader testing on a device still folds into
-  the deferred manual-QA list from Stage 4. No build-affecting changes — edits are
-  string-only.
+- Issues: `/blog` title, grade mismatch, and hero copy clutter all fixed. Still
+  open (not blocking): lightbox focus-management (medium a11y) and mobile nav
+  absence (UX/design call) — both left for a follow-up since a mobile menu is new UI
+  and the lightbox fix is optional polish. Live keyboard/screen-reader testing on a
+  device still folds into the deferred manual-QA list from Stage 4. Edits are
+  string-only (no build-affecting changes).
 
 ---
 
@@ -314,7 +313,30 @@ SEO, and ship. Depends on all prior logs.
 - Smoke-test production: load speed, both modes, key interactions.
 
 # Stage 6 Report
-- [ ] Diff reviewed; DESIGN.md reconciled
-- [ ] Deployed to production successfully
-- [ ] Production smoke test passed (speed, modes, interactions)
-- Issues:
+- [x] Diff reviewed; DESIGN.md reconciled (nothing drifted)
+- [ ] Deployed to production — **pending Charlie's go-ahead** (outward-facing)
+- [ ] Production smoke test — **can't run here** (needs a browser; folds into the
+      deferred manual-QA list, since the `browse` daemon crashes this machine)
+- **Diff review.** Full v10 diff is coherent and matches the stage reports. Code
+  changes (excluding logs), `stage1v10^..HEAD` + working tree:
+  `cursor-glow.tsx` (ref-based rewrite), `fathers-day-modal.tsx` +
+  `hooks/useMousePosition.ts` deleted, `globals.css` pruned (kept the shared
+  `fd-*-in` keyframes), `dashboard/nav/back-button/page-header` transition-timing
+  normalization, `photography-gallery.tsx` marigold ticker fix, `lib/articles.ts`
+  `server-only` guard, `next.config.ts` turbopack root, `app/blog/page.tsx` title
+  "Writing"→"Journal", `app/layout.tsx` description "sophomore"→"junior",
+  `hero.tsx` intro de-clutter. No stray debug code, no leftover references to the
+  deleted modal/hook.
+- **DESIGN.md reconciled.** Grepped for the things v10 touched (removed
+  seasonal modal, cursor-glow, the mouse hook, the grade string) — DESIGN.md
+  references none of them. v10 was motion/perf/a11y/SEO polish with **no
+  design-system changes** (fonts, tokens, palette, spacing all unchanged), so
+  DESIGN.md is already accurate. No edit needed.
+- **Deploy.** Not executed. Deploying to `charlieramus.com` is an outward-facing,
+  hard-to-reverse step, and the build/deploy pipeline plus the post-deploy browser
+  smoke test both risk crashing this machine (the same instability that blocked
+  live QA in Stages 4–5). Left for Charlie to trigger — via `/land-and-deploy` or
+  the existing `npm run build && npx @cloudflare/next-on-pages@1` → Cloudflare
+  Pages pipeline — once the working changes are committed.
+- Issues: none code-side. Remaining work is operational (commit the 3 working-tree
+  files, deploy, smoke-test on a real browser) and needs Charlie in the loop.

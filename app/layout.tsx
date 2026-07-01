@@ -38,11 +38,11 @@ export const metadata: Metadata = {
     template: "%s | Charlie Ramus",
   },
   description:
-    "High school sophomore in Boulder building software, growing communities and exploring the intersection of computation and biology.",
+    "High school junior in Boulder building software, growing communities and exploring the intersection of computation and biology.",
   openGraph: {
     title: "Charlie Ramus",
     description:
-      "High school sophomore in Boulder building software, growing communities and exploring the intersection of computation and biology.",
+      "High school junior in Boulder building software, growing communities and exploring the intersection of computation and biology.",
     url: "https://charlieramus.com",
     siteName: "Charlie Ramus",
     locale: "en_US",
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     card: "summary",
     title: "Charlie Ramus",
     description:
-      "High school sophomore in Boulder building software, growing communities and exploring the intersection of computation and biology.",
+      "High school junior in Boulder building software, growing communities and exploring the intersection of computation and biology.",
   },
   robots: {
     index: true,
