@@ -18,8 +18,8 @@ const TICKER_WORDS: { word: string; accent: string }[] = [
   { word: "ART.", accent: "text-red" },
   { word: "SEE.", accent: "text-sky" },
   { word: "DIFFERENTLY.", accent: "text-sky" },
-  { word: "STILL.", accent: "text-[#f2a900]" },
-  { word: "MOVING.", accent: "text-[#f2a900]" },
+  { word: "STILL.", accent: "text-marigold" },
+  { word: "MOVING.", accent: "text-marigold" },
 ];
 
 /**

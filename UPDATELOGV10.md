@@ -62,9 +62,47 @@ SEO, and ship. Depends on all prior logs.
   contrast, borders, section colors, halftone, flowers.
 
 # Stage 2 Report
-- [ ] All sections pass contrast + legibility in both modes
-- [ ] Section colors + borders tuned per mode where needed
-- Issues:
+- [x] All sections pass contrast + legibility in both modes (per Charlie's sign-off
+  on the decorative-label contrast tradeoff — see below)
+- [x] Section colors + borders tuned per mode where needed
+- **Parity is by construction.** Every surface, border, and section hue is a CSS
+  token that swaps at `.dark` (`globals.css` `:root` vs `.dark`): base
+  (`--bg/--fg/--muted/--rule/--surface/--panel/--border`) and the section palette
+  (`--red/--cobalt/--sky/--marigold/--pink`, plus the `--c-*` wayfinding aliases
+  and `--accent`). Light values are deliberately darkened for cream; dark values
+  brightened for charcoal. Nearly all components consume tokens, so both modes are
+  correct by default. The hardcoded colors that remain are intentional and mode-
+  agnostic: black/white scrims on lightboxes/modals (`bg-black/60`, `text-white`),
+  the two-mode hover tints (`hover:bg-[rgba(0,0,0,x)] dark:hover:bg-[rgba(255,255,255,x)]`
+  in dashboard/experience/projects/stories), and the caption box's
+  `bg-black/8 dark:bg-black/40` — all verified to read in both modes.
+- **One real bug fixed.** The photography left type-ticker mixed adaptive tokens
+  (`text-red`, `text-sky`) with a hardcoded `text-[#f2a900]` on STILL./MOVING.,
+  which stayed bright-amber in light mode (illegible on cream) instead of darkening
+  like its siblings. Switched to `text-marigold` — it now adapts (light `#c2890c`,
+  dark `#f7b500`); dark mode is visually unchanged (`#f2a900 ≈ #f7b500`), light mode
+  is fixed. Consistent with the other two ticker colors.
+- **Contrast audit (measured, WCAG).** Computed real ratios for every section color
+  on its light/dark surfaces. Findings: in LIGHT mode sky (2.8), marigold (2.75),
+  pink (2.67), red (3.5) fall below AA-4.5 on cream/panel (cobalt is strong, 8:1);
+  in DARK mode the inverse — those three are 8–10:1 but cobalt drops to ~3.5 and
+  red to 4.75. The palette trades strict AA for character, consistently, in both
+  modes. Crucially these colors are used only on **decorative 11px mono kicker
+  labels, colored top-borders, and bg-fills with white text** (fills read fine) —
+  never on body copy. Raised the tradeoff to Charlie: **decision = leave the tuned
+  palette as-is** (decorative labels, color is redundant wayfinding beside large
+  headings). So no token values were changed.
+- **Borders.** `--rule` (hairlines) and `--border` (card edges) both swap per mode
+  (light `#dddcd7`/`#e3e1da`, dark `#272727`/`#2a2a2a`) — no per-mode border fixes
+  needed.
+- **Halftone + flowers.** The halftone is a `var(--sky)` dot screen (`mix-blend:
+  screen`) laid over mid-toned photos, not the canvas — reads in both modes by
+  design (V7). Flowers are drop-in image assets rendered with no per-mode tint, so
+  they're identical in both modes; their on-canvas legibility depends on the art
+  itself (colorful illustrations on both cream and charcoal) — a visual-QA item for
+  Stage 4, not a code parity issue.
+- Issues: none blocking. The section-label contrast is a signed-off aesthetic
+  choice, not a defect. `tsc --noEmit` clean.
 
 ---
 
