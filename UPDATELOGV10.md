@@ -248,9 +248,62 @@ SEO, and ship. Depends on all prior logs.
   copy or images.
 
 # Stage 5 Report
-- [ ] A11y pass (keyboard, focus, ARIA, alt) across new UI
-- [ ] Metadata/OG accurate post-redesign
-- Issues:
+- [x] A11y pass (keyboard, focus, ARIA, alt) — code audit across the redesign
+      (`/preview` zones + `/photography`); strong overall, two gaps flagged below
+- [x] Metadata/OG audited post-redesign — one bug **fixed**, two content items
+      **flagged** for Charlie (grade + hero copy)
+- **Method.** Static code audit again (no browser — the `browse` daemon crashes
+  this machine). Scope = the redesign UI: Nav, Hero, Dashboard, Bento, ContactCard,
+  ClosingQuote/flowers, Footer, ThemeToggle, and the `/photography` gallery.
+- **A11y — what's solid.** The career overlay (`dashboard.tsx`) is the model: `role
+  ="dialog" aria-modal`, labelled title, Esc + backdrop close, focus moved in +
+  trapped + restored, body-scroll lock, all reduced-motion-aware. Dots/arrows are
+  real `<button>`s with `aria-label`/`aria-selected`; gallery tiles are `<button>`s
+  with a visible `focus-visible:ring`; every icon-only control (theme toggle, close
+  buttons, social tabs, copy-email) has an `aria-label`; decorative layers (flowers,
+  left ticker, footer separators, peace glyph) are `aria-hidden`; alt text is real
+  content where it matters (`photo.alt`, article/project titles) and correctly empty
+  on decorative thumbs. No obvious contrast/ARIA-misuse in the new UI.
+- **A11y — gap 1 (medium): photography lightbox.** `photography-gallery.tsx`'s
+  lightbox (and the Mother's-Day / Inquire modals) is a plain `<div>` overlay: Esc
+  closes the lightbox and the close button is labelled, but unlike the career modal
+  it has **no `role="dialog"`/`aria-modal`, no focus trap, no focus restore, and no
+  body-scroll lock**. The two seasonal modals also have no Esc handler. Recommend
+  porting the career-modal focus pattern to the lightbox (offered below).
+- **A11y — gap 2 (low/UX): mobile nav.** `nav.tsx` links are `hidden sm:flex` with
+  no hamburger/menu fallback, so on phones the bar shows only the name + theme
+  toggle — the About/Projects/Photography/Writing/Contact links vanish. Content is
+  still reachable by scrolling and via the bento, so it's not a hard block, but
+  there's no top-nav wayfinding on mobile. Flag for a design call (a menu is new UI
+  — needs Charlie per the no-extreme-design-without-consulting rule).
+- **SEO — FIXED: `/blog` was titled "Writing".** `/blog` is the journal (eyebrow
+  "Journal", linked from the bento as "The journal"), but its metadata `title` and
+  visible `<PageHeader>` title both read **"Writing"** — a copy-paste from
+  `/writing`, so both routes resolved to "Writing | Charlie Ramus". Changed both to
+  **"Journal"** (`app/blog/page.tsx`), matching its own eyebrow and the redesign
+  wayfinding. Revert if "Writing" was intended.
+- **SEO — FLAG (content): grade mismatch.** `app/layout.tsx` metadata + OG
+  description say **"High school sophomore in Boulder…"**, but the redesigned hero
+  (`hero.tsx`) says **"High School Junior"** (kicker + intro). The site contradicts
+  itself. Recommend aligning the description to whichever is current (likely
+  "junior" as of 2026-06-30) — but that's Charlie's fact to set, so left unchanged.
+- **COPY BUG (content, flagged not fixed): hero intro.** `hero.tsx` line 25's intro
+  paragraph renders as *"Boulder, CO · High School Junior · Builder software,
+  growing communities, and exploring the intersection of computation and biology."*
+  — the mono kicker string leaked into the sentence and "building" became
+  "Builder", so the lead sentence is broken. Almost certainly should read
+  *"Building software, growing communities, and exploring the intersection of
+  computation and biology."* (matches the metadata description). Left unchanged
+  because it's Charlie's personal bio voice — one-word confirm and I'll fix it.
+- **OG image (optional):** `layout.tsx` OG/Twitter have title+description but no
+  `images`; Twitter card is `summary` (not `summary_large_image`). Not a regression
+  — accurate, just minimal. Adding a `/public` OG image is a nice-to-have for social
+  unfurls, not required.
+- Issues: `/blog` title bug fixed. Open: lightbox focus-management (medium a11y),
+  mobile nav absence (UX/design call), grade mismatch + hero copy bug (both need
+  Charlie's word). Live keyboard/screen-reader testing on a device still folds into
+  the deferred manual-QA list from Stage 4. No build-affecting changes — edits are
+  string-only.
 
 ---
 

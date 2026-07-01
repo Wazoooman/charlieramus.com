@@ -5,7 +5,7 @@ import PageHeader from "@/components/page-header";
 import { getAllPosts } from "@/lib/posts";
 
 export const metadata: Metadata = {
-  title: "Writing",
+  title: "Journal",
   description: "Thoughts on software, biology, building things, and whatever else is worth writing about.",
 };
 
@@ -24,7 +24,7 @@ export default function BlogPage() {
     <>
       <Nav />
       <main className="mx-auto max-w-2xl px-6 pb-24 pt-24">
-        <PageHeader eyebrow="Journal" title="Writing" accent="var(--marigold)" />
+        <PageHeader eyebrow="Journal" title="Journal" accent="var(--marigold)" />
         <ul className="divide-y divide-rule">
           {posts.map((post) => (
             <li key={post.slug} className="py-6 first:pt-0 last:pb-0">
