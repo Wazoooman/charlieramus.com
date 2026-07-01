@@ -156,3 +156,5 @@ thumbnails (Charlie's photographer-flavored counterpart to the flowers).
 modes verified rendering correctly with the new tokens + fonts: light resolves to
 cream `#f4f3ee`, dark to charcoal `#141414`, theme toggle flips with no white
 flash, no console errors, nothing unstyled.
+
+file:///C:/Users/jason/AppData/Local/Temp/claude/c--Users-jason-Desktop-Mock-Folder-CharlieRamus-com/75b2d605-b74c-4043-af3f-9eea4e1ecb17/scratchpad/hellodani-mockup.html
