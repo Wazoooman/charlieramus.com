@@ -314,9 +314,12 @@ SEO, and ship. Depends on all prior logs.
 
 # Stage 6 Report
 - [x] Diff reviewed; DESIGN.md reconciled (nothing drifted)
-- [ ] Deployed to production — **pending Charlie's go-ahead** (outward-facing)
-- [ ] Production smoke test — **can't run here** (needs a browser; folds into the
-      deferred manual-QA list, since the `browse` daemon crashes this machine)
+- [x] Deploy **triggered** — `stage6v10` (3f9cf9e) pushed to `origin/main`; Cloudflare
+      Pages builds + deploys server-side. Confirm the build went green on the
+      Cloudflare dashboard (I can't observe it from here).
+- [ ] Production smoke test — **can't run here** (needs a browser; the `browse`
+      daemon crashes this machine). Owed: load the live site, check both modes +
+      key interactions.
 - **Diff review.** Full v10 diff is coherent and matches the stage reports. Code
   changes (excluding logs), `stage1v10^..HEAD` + working tree:
   `cursor-glow.tsx` (ref-based rewrite), `fathers-day-modal.tsx` +
@@ -332,11 +335,16 @@ SEO, and ship. Depends on all prior logs.
   references none of them. v10 was motion/perf/a11y/SEO polish with **no
   design-system changes** (fonts, tokens, palette, spacing all unchanged), so
   DESIGN.md is already accurate. No edit needed.
-- **Deploy.** Not executed. Deploying to `charlieramus.com` is an outward-facing,
-  hard-to-reverse step, and the build/deploy pipeline plus the post-deploy browser
-  smoke test both risk crashing this machine (the same instability that blocked
-  live QA in Stages 4–5). Left for Charlie to trigger — via `/land-and-deploy` or
-  the existing `npm run build && npx @cloudflare/next-on-pages@1` → Cloudflare
-  Pages pipeline — once the working changes are committed.
-- Issues: none code-side. Remaining work is operational (commit the 3 working-tree
-  files, deploy, smoke-test on a real browser) and needs Charlie in the loop.
+- **Deploy — done (pushed).** Per Charlie's "commit + deploy now": committed the 3
+  working-tree files as `stage6v10` (3f9cf9e) and pushed `origin/main`
+  (`7e3d6d3..3f9cf9e`). There's no local wrangler config — the repo is wired to
+  **Cloudflare Pages via GitHub**, so the push is the deploy: Cloudflare runs
+  `npm run build && npx @cloudflare/next-on-pages@1` on its own edge builder (heavy
+  build stays off this machine — the low-crash-risk path). Also updated the `origin`
+  remote to the repo's new location (`github.com/charlieramus/charlieramus.com`);
+  the old `Wazoooman` URL still worked via redirect but GitHub asked to move.
+- Issues: none code-side. Two things still need eyes-on (both browser/dashboard, so
+  they couldn't run on this crash-prone machine): (1) confirm the Cloudflare Pages
+  build succeeded, (2) smoke-test the live site — load speed, light/dark, dashboard
+  nav + career overlay, flowers, links. These join the deferred manual-QA list from
+  Stages 4–5.
