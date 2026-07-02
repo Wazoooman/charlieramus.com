@@ -43,7 +43,10 @@ type Shot =
   | {
       kind: "image";
       href: string;
+      /** Link accessible name — describes the destination. */
       label: string;
+      /** Real, descriptive image alt — describes the preview itself. */
+      alt: string;
       src: string;
       blurDataURL?: string;
     }
@@ -81,6 +84,7 @@ export default function DigitalHome() {
       kind: "image",
       href: "/photography",
       label: "Photography — view the gallery",
+      alt: photoA.alt,
       src: photoA.thumb,
       blurDataURL: photoA.blurDataURL,
     });
@@ -90,6 +94,7 @@ export default function DigitalHome() {
       kind: "image",
       href: webProject.href,
       label: `${webProject.title} — ${webProject.cta}`,
+      alt: `${webProject.title} preview`,
       src: webProject.thumb,
     });
 
@@ -98,6 +103,7 @@ export default function DigitalHome() {
       kind: "image",
       href: `/writing/${latestEssay.slug}`,
       label: `Read: ${latestEssay.title}`,
+      alt: `Header image for “${latestEssay.title}”`,
       src: latestEssay.headerImage,
     });
 
@@ -106,6 +112,7 @@ export default function DigitalHome() {
       kind: "image",
       href: "/photography",
       label: "Photography — view the gallery",
+      alt: photoB.alt,
       src: photoB.thumb,
       blurDataURL: photoB.blurDataURL,
     });
@@ -115,6 +122,7 @@ export default function DigitalHome() {
       kind: "image",
       href: designProject.href,
       label: `${designProject.title} — ${designProject.cta}`,
+      alt: `${designProject.title} preview`,
       src: designProject.thumb,
     });
 
@@ -149,7 +157,7 @@ export default function DigitalHome() {
               <span className="body shot-img">
                 <Image
                   src={shot.src}
-                  alt=""
+                  alt={shot.alt}
                   fill
                   sizes="330px"
                   placeholder={shot.blurDataURL ? "blur" : "empty"}

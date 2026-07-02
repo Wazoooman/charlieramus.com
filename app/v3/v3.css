@@ -161,6 +161,20 @@
       transform: none;
       transition: none;
     }
+    /* Neutralize the interactive hover lifts/slides too (buttons, carousel
+       shots, bento cards) so no transform-based motion runs under reduced
+       motion. Color/opacity hover feedback still applies. */
+    & .btn,
+    & .shot,
+    & .pcard,
+    & .card {
+      transition: none;
+    }
+    & .btn:hover,
+    & .shot:hover,
+    & .pcard:hover {
+      transform: none;
+    }
   }
 
   /* ---------- HERO ---------- */

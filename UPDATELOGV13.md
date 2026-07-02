@@ -181,4 +181,54 @@ Reference the mockup's `.carousel` (full-bleed, horizontal browser-card row).
 - Verify `npx tsc --noEmit` + eslint clean. Don't commit unless Charlie asks.
 
 # Stage 3 Report
-_TBD — fill after implementing._
+
+- [x] **Hero proportions** — verified against the mockup; they match by
+  construction (the hero CSS was ported verbatim in V12): headline is
+  `font-family:var(--serif)`, **weight 400**, `clamp(26px,4vw,52px)`; daisies
+  bleed `-9vw` at `clamp(320px,37vw,720px)`; rainbow arc is `width:54px` centered
+  in `.inner`. No CSS change needed. Daisies **wind-spin** (the `<Flower>` gets
+  `animation: windspin` via `.flower` in v3.css; the two blooms carry
+  `index={0}`/`{1}` so their `--spin-dur`/`--spin-delay` differ) and stay **clear
+  of the text** (`.bloom` is `pointer-events:none`, `z-index:0`, positioned at the
+  edges; `.hero{overflow:hidden}` clips the bleed; `.inner` is `z-index:2`).
+- [x] **Nav a11y** — links are real `<Link>`s (keyboard-focusable, Enter
+  activates); **visible focus** via `& a:focus-visible { outline:2px solid
+  var(--blue); outline-offset:3px }` (already in v3.css); **tab order** is natural
+  and sensible: works → garden → hero CTA (the wordmark is a non-interactive
+  `<span>`, correctly skipped). Confirmed **non-sticky**: `& nav { position:
+  relative }` (no `sticky`/`fixed`), so it scrolls away with the hero as in the
+  mockup.
+- [x] **Carousel a11y** — every card is a `<Link>` with an accessible name (the
+  `aria-label` describes the **destination**, e.g. "Photography — view the
+  gallery", "Read: <essay title>"). **Images now carry real, descriptive `alt`**
+  (previously `alt=""`): photos use the photo's own `alt`, project shots use
+  "<Title> preview", the essay shot uses "Header image for “<title>”". So the DOM
+  has real alt *and* the link has a clear purpose. Keyboard-scrollable (focusable
+  card links → the browser scrolls each into view on focus) and touch-scrollable
+  (`.carousel{overflow-x:auto}`); the browser-chrome dots are `aria-hidden`.
+- [x] **No horizontal overflow at 375px** — the only fixed-width content is the
+  330px `.shot`, which lives inside the `overflow-x:auto` carousel (scrolls
+  internally); `.v3-root{overflow-x:hidden}` + `.hero{overflow:hidden}` are the
+  backstops that clip the daisy bleed. Nav/hero/bento all use relative units and
+  the bento collapses 4→2→1 (`@media 880/560px`). Statically confirmed no element
+  exceeds the viewport at 375px.
+- [x] **Reduced motion** — extended the `@media (prefers-reduced-motion: reduce)`
+  block in v3.css: on top of the existing `.flower{animation:none}` +
+  `.reveal{shown, no transition}`, it now also sets `transition:none` on
+  `.btn`/`.shot`/`.pcard`/`.card` and `transform:none` on their `:hover`, so **no
+  transform-based motion** runs under reduced motion (color/opacity hover feedback
+  still applies). Every animated element currently rendered is covered;
+  `nav a:hover` is opacity-only.
+- **Files touched:** `components/v3/digital-home.tsx` (real image `alt` + `alt`
+  field on the image `Shot` type) and `app/v3/v3.css` (reduced-motion extension).
+  Hero/nav needed no changes. Live site untouched.
+- **Verify:** `npx tsc --noEmit` clean; `npx eslint` on all four V13 components +
+  page clean. Static-only per the machine constraint (no dev server / browser).
+- **Issues / flags:** (1) The hero `<h1>` currently reads just **"Charlie Ramus"**
+  (Charlie edited it during S2), which duplicates the `.hi` line "Hi, I'm Charlie
+  Ramus" and leaves the hero without the mockup's thin-serif **tagline**. The
+  layout/proportions are correct, but I'd recommend restoring a one-line tagline
+  in the `<h1>` — happy to if Charlie wants (left as-is since the edit was
+  deliberate). (2) Visual match to the mockup screenshots (exact daisy crop / card
+  rhythm) still wants an eyeball on the Vercel preview, per the no-browser
+  constraint. Not committed — awaiting Charlie's go-ahead.
