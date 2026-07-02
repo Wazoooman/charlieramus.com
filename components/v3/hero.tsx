@@ -38,8 +38,7 @@ export default function Hero() {
         </svg>
         <div className="hi">Hi, I&apos;m Charlie Ramus</div>
         <h1>
-          I build software, grow communities, and make photographs — in Boulder,
-          Colorado.
+          Charlie Ramus
         </h1>
         <p className="lede">
           I&apos;m a high-school junior who likes making things: web apps that

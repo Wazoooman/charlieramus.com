@@ -331,6 +331,23 @@
     background: linear-gradient(120deg, #e7d9ff, #c7b3f0);
     color: #4a3b6b;
   }
+  /* Image "shot" body — a padding-free, positioned frame so a `fill` <Image>
+     (real photo / project / essay preview) fills the browser card. The mockup's
+     bodies were solid gradients; real previews reuse the same chrome. */
+  & .shot .body.shot-img {
+    padding: 0;
+    position: relative;
+  }
+  /* The whole shot is a link; keep the mockup's card look and lift on hover. */
+  & .shot {
+    display: block;
+    transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.3, 1),
+      box-shadow 0.25s ease;
+  }
+  & .shot:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 50px rgba(0, 0, 0, 0.16);
+  }
 
   /* ---------- SECTION HEADS ---------- */
   & section {

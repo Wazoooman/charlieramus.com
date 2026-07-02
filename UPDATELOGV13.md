@@ -99,7 +99,73 @@ Reference the mockup's `.carousel` (full-bleed, horizontal browser-card row).
 - Verify `npx tsc --noEmit` + eslint clean.
 
 # Stage 2 Report
-_TBD — fill after implementing._
+
+- [x] **`components/v3/digital-home.tsx`** — the mockup's `.step` heading
+  (🔖 "Step into my digital home") + the full-bleed `.carousel` scroll-snap row
+  of browser-chrome `.shot` cards. Server component: reads the server-only
+  `getAllArticles()` / `getAllPosts()` and hands server-rendered cards to the
+  client `<Reveal>`. Matching the mockup, `.reveal` is on the **carousel as a
+  whole** (and the step), so each shot stays a plain `<Link>` — no per-card
+  observer. A small `<Bbar>` renders the three decorative traffic-light dots
+  (`aria-hidden`).
+- [x] **Wired to real previews, each linking to its real route:**
+  - **Photography** ×2 — two landscape photos (`ratio ≥ 1.4`, taken from
+    different parts of `data/photos.ts` so the row isn't two near-identical
+    frames) rendered with `next/image` `fill` + `placeholder="blur"` from each
+    photo's `blurDataURL` → `/photography`.
+  - **Web Projects** → `/web-projects` and **Graphic Design** → `/design` —
+    the two portfolio previews (route + `thumbnailLight` asset) mirror
+    `components/projects.tsx` but are declared **inline** (`PORTFOLIO` const), not
+    imported: `components/projects.tsx` is a `"use client"` module, and importing
+    its `projects` array into this **server** component hands back a client
+    *reference* (function proxy), not the data — which crashes on destructure.
+    Inlining keeps the live component 100% untouched.
+  - **Latest essay** — `getAllArticles()[0].headerImage` → `/writing/[slug]`.
+  - **From the blog** — `getAllPosts()[0].title` as the one serif **text** shot
+    (`.s-lav`, echoing the mockup's gradient cards so the row mixes imagery +
+    type) → `/blog`.
+  - Each card is defensively pushed only if its source exists, so a missing
+    essay/post/photo just drops that card rather than erroring.
+- [x] **`app/v3/v3.css`** — added `& .shot .body.shot-img { padding:0;
+  position:relative }` (a padding-free, positioned frame so the `fill` `<Image>`
+  fills the browser body — the mockup's bodies were solid gradients), plus
+  `& .shot { display:block; transition }` and a `& .shot:hover` lift (the shots
+  are now links, so they get the card's hover affordance). No other CSS touched;
+  `.carousel` / `.shot` / `.bbar` / `.body` were already ported in V12.
+- [x] **`app/v3/page.tsx`** — mounts `<DigitalHome/>` between `<Hero/>` and the
+  `#personal` bento, **outside** `.wrap` (full-bleed; the carousel pads itself
+  with `--edge`).
+- **Data flow:** photos → `data/photos.ts` (thumbs + blur); projects → inline
+  `PORTFOLIO` const mirroring `components/projects.tsx` (uses the `thumbnailLight`
+  asset since `/v3` is always the paper/light look — no theme system; can't
+  import from the client module, see above); essay → server-only
+  `getAllArticles()`; post → `getAllPosts()`. All preview assets verified present
+  on disk (`Frame-5/4_webp.webp`, `artical-1-header_webp.webp`, photo thumbs).
+- **Bugfix (post-first-pass):** the first version imported `{ projects }` from the
+  `"use client"` `components/projects.tsx` into this server component, which threw
+  `function is not iterable` at runtime (server got a client reference, not the
+  array). Fixed by inlining the two entries. A **separate** console warning
+  ("Encountered a script tag while rendering React component") comes from
+  `next-themes`' `ThemeProvider` in the **root** `app/layout.tsx` (it injects an
+  anti-flash `<script>`); it's a dev-only React 19 warning about client
+  re-renders, affects the whole site, and surfaced only because the crash forced
+  a re-render. Not touched — the V3 brief says don't restructure the root layout.
+- **Responsive / overflow:** `.carousel` is `overflow-x:auto` (touch + scroll),
+  and `.v3-root` is `overflow-x:hidden`, so the row scrolls horizontally with **no
+  vertical page overflow**; shots are 330px < 375px so nothing breaks at phone
+  width. Reduced motion already handled globally (`.reveal` forced visible in
+  v3.css).
+- **A11y:** each shot is a `<Link>` with a descriptive `aria-label` (link purpose
+  = destination); preview images are `alt=""` (decorative, name comes from the
+  link); chrome dots are `aria-hidden`.
+- **Verify:** `npx tsc --noEmit` clean; `npx eslint components/v3/digital-home.tsx
+  app/v3/page.tsx` clean. Static-only per the machine constraint. Live site
+  untouched — only `app/v3/page.tsx` + `v3.css` changed and one new component.
+- **Issues:** None blocking. (1) The two portfolio previews reuse the live site's
+  `For-Projects-Placeholder-Cards` thumbnails — fine as real previews, but if
+  Charlie wants bespoke `/v3` shots those can swap in later. (2) Not visually
+  confirmed in a browser (constraint) — worth an eyeball on the Vercel preview
+  for photo crop / card rhythm vs. the mockup (that's the S3 polish pass).
 
 ---
 
