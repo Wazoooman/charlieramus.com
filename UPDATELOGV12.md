@@ -250,4 +250,40 @@ classes**, wired to real data. Reference the mockup markup for `.pbento`,
 - Verify `npx tsc --noEmit` + eslint clean. Do **not** commit unless Charlie asks.
 
 # Stage 4 Report
-_TBD — fill after implementing._
+- [x] Responsive 4 → 2 → 1 with no horizontal overflow — the mockup already
+  collapses 4-col → 2-col at `880px`; added a new `@media (max-width: 560px)`
+  block so `.pbento` drops to a single column and `.p-flowers` goes 4-up → 2-up
+  (daisies stay a sensible size). Root-cause overflow fixes so nothing spills at
+  375px: `overflow-wrap: anywhere` + `min-width: 0` on the long-text flex
+  children (`.role .rt`, `.wlist div`), and the essay titles (`.wlist .wt`) now
+  `-webkit-line-clamp: 3`. `.v3-root` also keeps the mockup's `overflow-x: hidden`
+  as a backstop. (Verified the `560px` breakpoint + line-clamp are in the served
+  CSS; couldn't pixel-measure at 375px — browser automation is still off per the
+  machine note — but the column collapse + wrap/clamp + `min-width:0` address the
+  overflow sources directly.)
+- [x] Focus-visible states — the mockup shipped none. Added
+  `& a:focus-visible, & button:focus-visible { outline: 2px solid var(--blue);
+  outline-offset: 3px }` on `.v3-root`, so every card link gets a visible keyboard
+  ring (mouse clicks don't trigger it). No `border-radius` override, so the pcards
+  keep their 16px corners on focus (the outline follows the radius in modern
+  browsers).
+- [x] Accessible link names — every bento card is a single `<a>` with meaningful
+  text (kick + heading/list + "go"), which forms its accessible name. The one
+  exception was Photography, whose four `next/image` thumbnails carry long real
+  captions as `alt`; those would have concatenated into a verbose link name. Gave
+  that card an `aria-label="Photography — view the gallery"` (concise link name)
+  **while keeping the images' real `alt`** — aria-label wins for the link name, so
+  screen readers get a clean label and the photos still describe themselves.
+  Verified the aria-label is in the DOM.
+- [x] Images / motion a11y — photo thumbnails use the data's real `alt`; the
+  writing thumbnails are decorative background-image spans (no bogus alt); every
+  `<Flower>` is `aria-hidden`. Reduced-motion is already honored from S2 (flower
+  spin off, reveal shown immediately) — unchanged.
+- [x] Verified: `npx tsc --noEmit` clean; `npx eslint components/v3/ app/v3/`
+  clean; `/v3` → HTTP 200 with the bento intact and the new focus-visible / 560px
+  / line-clamp rules present in the served stylesheet.
+- Issues: visual pixel-tightening against the mockup screenshots and a true 375px
+  overflow measurement still want a real browser pass (automation remains
+  disabled on this machine) — best done on the Vercel preview. Graphic-design
+  thumbnails remain decorative gradients (carried over from S3). Not committed —
+  awaiting the go-ahead.

@@ -109,7 +109,12 @@ export default function PersonalBento() {
         <CareerJourney />
 
         {/* Photography — real thumbnails, halftone dots from .pgrid i::after */}
-        <Reveal as="a" href="/photography" className="pcard p-photo">
+        <Reveal
+          as="a"
+          href="/photography"
+          className="pcard p-photo"
+          aria-label="Photography — view the gallery"
+        >
           <span className="kick">
             <span className="fdot" style={{ background: "var(--cyan)" }} /> Photography
           </span>

@@ -80,6 +80,14 @@
     color: inherit;
     text-decoration: none;
   }
+  /* Keyboard focus — the mockup had no focus styles; give every interactive
+     element a visible ring (a11y pass). :focus-visible only shows it for
+     keyboard users, not mouse clicks. */
+  & a:focus-visible,
+  & button:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 3px;
+  }
   & .wrap {
     max-width: var(--maxw);
     margin: 0 auto;
@@ -826,6 +834,15 @@
     font-weight: 700;
     font-size: 11.5px;
     line-height: 1.18;
+    /* real essay titles run long — wrap, clamp to 3 lines, never overflow */
+    overflow-wrap: anywhere;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  & .wlist div {
+    min-width: 0;
   }
 
   /* blog list */
@@ -953,6 +970,9 @@
     font-weight: 600;
     color: var(--ink);
     line-height: 1.18;
+    /* real role titles run long (e.g. "Liberty Puzzles TA & Media Manager") */
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
   & .role .rt span {
     color: var(--ink-soft);
@@ -1205,6 +1225,17 @@
     }
     & .p-flowers {
       grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  /* Single column on phones — bento goes 4 → 2 → 1 with no horizontal overflow
+     at 375px. Flower strip drops to 2-up so the daisies stay a sensible size. */
+  @media (max-width: 560px) {
+    & .pbento {
+      grid-template-columns: 1fr;
+    }
+    & .p-flowers {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 }
