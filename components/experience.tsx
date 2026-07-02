@@ -1,57 +1,9 @@
 import { ArrowUpRight, Link2 } from "lucide-react";
+import { entries } from "@/data/experience";
 
-export const entries = [
-  {
-    // CUSTOMIZE: date range string
-    dates: "2026 — Present",
-    // CUSTOMIZE: position name
-    title: "Stealth Startup",
-    // CUSTOMIZE: company or org name
-    org: "",
-    // CUSTOMIZE: org link URL, set "" to hide arrow icon
-    href: "",
-    // CUSTOMIZE: reference links, or set to []
-    links: [{ label: "Github", href: "https://github.com/charlieramus/ostiara" }],
-    // CUSTOMIZE: 2-4 sentence description of what you did and learned
-    description: "An app for door-to-door salespeople to optimize their work... Built for salesman or enterpises",
-    // CUSTOMIZE: skill tag strings
-    tags: ["JavaScript, Auth, Branding, Algorithims, UI/UX Design, Database Management"],
-  },
-  // --- ENTRY 2: copy structure above ---
-  {
-    // CUSTOMIZE: date range string
-    dates: "2026 — Present",
-    // CUSTOMIZE: position name
-    title: "Liberty Puzzles TA & Media Manager (Seasonal)",
-    // CUSTOMIZE: company or org name
-    org: "Liberty Puzzles",
-    // CUSTOMIZE: org link URL, set "" to hide arrow icon
-    href: "https://libertypuzzles.com/pages/about-us",
-    // CUSTOMIZE: reference links, or set to []
-    links: [],
-    // CUSTOMIZE: 2-4 sentence description of what you did and learned
-    description: "Puzzle assembly and customer tours for a high-end puzzle company. Managed social media accounts, created content, and engaged with the puzzle community.",
-    // CUSTOMIZE: skill tag strings
-    tags: ["Photography, Videography, Adobe Lightroom, Visual Storytelling, Exacto knives (Lol)"],
-  },
-  // --- ENTRY 3: copy structure above ---
-  {
-    // CUSTOMIZE: date range string
-    dates: "2025 — Present",
-    // CUSTOMIZE: position name
-    title: "Content Creator & Builder",
-    // CUSTOMIZE: company or org name
-    org: "",
-    // CUSTOMIZE: org link URL, set "tas" to hide arrow icon
-    href: "",
-    // CUSTOMIZE: reference links, or set to []
-    links: [],
-    // CUSTOMIZE: 2-4 sentence description of what you did and learned
-    description: "Built an architecture community. Designed and shared original architectural builds grabbing 300,000+ interactions, created tutorial content, and engaged a community of fellow builders.",
-    // CUSTOMIZE: skill tag strings
-    tags: ["Community Building, Online Content Creation, Figma (Software), 3D Modeling "],
-  },
-];
+// Re-exported so existing importers (dashboard.tsx) keep working while the data
+// itself now lives in data/experience.ts (the shared source of truth).
+export { entries };
 
 export default function Experience() {
   return (

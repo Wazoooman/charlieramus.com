@@ -167,64 +167,70 @@
   .about-grid .bio p + p { margin-top: 18px; }
 
   /* ---------- PERSONAL / EXPLORE BENTO ---------- */
-  .pbento { display:grid; grid-template-columns: 1.25fr 1fr 1fr; gap:20px; margin-top:42px; align-items:stretch; }
-  .p-right { display:flex; flex-direction:column; gap:20px; }
-  .p-right .p-writing { flex:1.35; }
-  .p-right .brow { flex:1; display:grid; grid-template-columns:1.5fr 1fr; gap:20px; }
+  .pbento { display:grid; grid-template-columns: 1.25fr 1fr 1fr 1fr;
+    grid-template-rows: repeat(2, minmax(0,1fr)); gap:14px; margin-top:34px; }
+  .p-career  { grid-column:1; grid-row:1 / span 2; }
+  .p-photo   { grid-column:2; grid-row:1; }
+  .p-graphic { grid-column:3; grid-row:1; }
+  .p-writing { grid-column:4; grid-row:1; }
+  .p-blog    { grid-column:2; grid-row:2; }
+  .p-tiles   { grid-column:3; grid-row:2; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .p-play    { grid-column:4; grid-row:2; }
 
   /* shared card system */
-  .pcard { background:#EFEEE7; border:1px solid var(--line); border-radius:22px; padding:24px; display:flex; flex-direction:column; color:var(--ink); transition:transform .25s ease, box-shadow .25s ease; }
-  .pcard:hover { transform:translateY(-4px); box-shadow:0 18px 40px rgba(0,0,0,.08); }
-  .kick { display:inline-flex; align-items:center; gap:10px; font-size:12px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:16px; }
-  .kick .fdot { width:16px; height:16px; border-radius:5px; display:inline-block; }
-  .pcard h3 { font-family:var(--serif); font-weight:700; font-size:24px; letter-spacing:-.01em; margin-bottom:10px; }
-  .pcard .sub { color:var(--ink-soft); font-size:14px; line-height:1.55; margin-bottom:18px; }
-  .pcard .go { margin-top:auto; font-size:12px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--blue); }
+  .pcard { background:#EFEEE7; border:1px solid var(--line); border-radius:16px; padding:14px; display:flex; flex-direction:column; color:var(--ink); transition:transform .25s ease, box-shadow .25s ease; }
+  .pcard:hover { transform:translateY(-4px); box-shadow:0 14px 32px rgba(0,0,0,.08); }
+  .kick { display:inline-flex; align-items:center; gap:6px; font-size:8.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:8px; }
+  .kick .fdot { width:11px; height:11px; border-radius:4px; display:inline-block; }
+  .pcard h3 { font-family:var(--serif); font-weight:700; font-size:14px; letter-spacing:-.01em; margin-bottom:5px; }
+  .pcard .sub { color:var(--ink-soft); font-size:10.5px; line-height:1.45; margin-bottom:10px; }
+  .pcard .go { margin-top:auto; font-size:8.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--blue); }
   .pcard:hover .go { color:var(--red); }
 
-  /* photography: 2x2 grid with halftone dot overlay */
-  .p-photo .pgrid { flex:1; display:grid; grid-template-columns:1fr 1fr; grid-auto-rows:1fr; gap:10px; margin-bottom:18px; min-height:300px; }
-  .p-photo .pgrid i { position:relative; border-radius:10px; overflow:hidden; }
-  .p-photo .pgrid i::after { content:""; position:absolute; inset:0; background-image:radial-gradient(rgba(22,22,18,.30) 1.1px, transparent 1.3px); background-size:6px 6px; mix-blend-mode:multiply; }
+  /* image/thumbnail grids with halftone dot overlay */
+  .pgrid { flex:1; display:grid; grid-auto-rows:1fr; gap:6px; margin-bottom:10px; min-height:0; }
+  .p-photo .pgrid { grid-template-columns:repeat(4,1fr); }
+  .p-graphic .pgrid { grid-template-columns:repeat(3,1fr); }
+  .pgrid i { position:relative; border-radius:7px; overflow:hidden; }
+  .pgrid i::after { content:""; position:absolute; inset:0; background-image:radial-gradient(rgba(22,22,18,.30) 1px, transparent 1.2px); background-size:5px 5px; mix-blend-mode:multiply; }
 
   /* writing list (thumbnail + year + serif title) */
-  .wlist { list-style:none; display:flex; flex-direction:column; margin-bottom:16px; }
-  .wlist li { display:flex; gap:14px; align-items:center; padding:14px 0; border-top:1px solid var(--line); }
+  .wlist { list-style:none; display:flex; flex-direction:column; margin-bottom:10px; }
+  .wlist li { display:flex; gap:9px; align-items:center; padding:7px 0; border-top:1px solid var(--line); }
   .wlist li:first-child { border-top:0; padding-top:0; }
-  .wlist .thumb { width:54px; height:46px; border-radius:8px; flex:none; }
-  .wlist .yr { font-size:12px; color:var(--ink-soft); letter-spacing:.06em; margin-bottom:3px; }
-  .wlist .wt { font-family:var(--serif); font-weight:700; font-size:16px; line-height:1.22; }
+  .wlist .thumb { width:32px; height:28px; border-radius:6px; flex:none; }
+  .wlist .yr { font-size:8.5px; color:var(--ink-soft); letter-spacing:.06em; margin-bottom:1px; }
+  .wlist .wt { font-family:var(--serif); font-weight:700; font-size:11.5px; line-height:1.18; }
 
   /* blog list */
-  .blist { list-style:none; display:flex; flex-direction:column; margin-bottom:14px; }
-  .blist li { display:flex; justify-content:space-between; gap:12px; font-size:14px; padding:11px 0; border-top:1px solid var(--line); }
+  .blist { list-style:none; display:flex; flex-direction:column; margin-bottom:10px; }
+  .blist li { display:flex; justify-content:space-between; gap:10px; font-size:10.5px; padding:6px 0; border-top:1px solid var(--line); }
   .blist li:first-child { border-top:0; padding-top:0; }
-  .blist li span { color:var(--ink-soft); font-size:12px; white-space:nowrap; }
+  .blist li span { color:var(--ink-soft); font-size:8.5px; white-space:nowrap; }
 
-  /* flower tiles — echo the work section (colored flower + white, stacked) */
-  .brow .tstack { display:grid; grid-auto-rows:min-content; gap:16px; align-content:center; }
-  .ptile { border-radius:20px; display:grid; place-items:center; padding:14px; aspect-ratio:1; }
+  /* flower tiles — echo the work section (colored flower + white, side by side) */
+  .ptile { border-radius:14px; display:grid; place-items:center; padding:10px; min-height:0; }
   .ptile.white { background:#fff; border:1px solid var(--line); }
-  .ptile .flower { width:66%; }
+  .ptile .flower { width:62%; }
 
   /* Career Journey (dark timeline card, styled after the reference) */
-  .cj { background:#141414; border:1px solid #282828; border-radius:24px; padding:24px 24px 20px; color:#e9e9e9; position:relative; overflow:hidden; }
-  .cj-title { font-size:12px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:#8c8c8c; }
-  .cj-timeline { position:relative; margin-top:24px; height:560px; }
-  .cj-year { position:absolute; left:0; width:46px; font-size:13px; color:#787878; transform:translateY(-50%); }
-  .cj-line { position:absolute; left:56px; right:0; height:1px; background:rgba(255,255,255,.06); }
-  .cj-band { position:absolute; left:64px; top:0; bottom:0; width:38px; border-radius:7px;
-    background: repeating-linear-gradient(45deg,#3d4b1e 0 7px,#546a29 7px 14px); }
-  .cj-band span { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); writing-mode:vertical-rl; rotate:180deg; font-size:11px; color:#d9e6b8; white-space:nowrap; letter-spacing:.02em; }
-  .role { position:absolute; background:#202020; border:1px solid #323232; border-radius:12px; padding:11px 14px; display:flex; align-items:center; gap:10px; box-shadow:0 10px 24px rgba(0,0,0,.35); }
-  .role .lg { width:24px; height:24px; border-radius:7px; flex:none; display:grid; place-items:center; font-size:12px; font-weight:800; }
-  .role .rt { font-size:13px; font-weight:600; color:#fff; line-height:1.2; }
-  .role .rt span { color:#9a9a9a; font-weight:400; }
-  .role .dt { font-size:11px; color:#8a8a8a; margin-left:auto; padding-left:14px; white-space:nowrap; letter-spacing:.04em; }
-  .role.big { flex-direction:column; align-items:flex-start; justify-content:space-between; padding:18px; }
-  .role.big .lg { width:30px; height:30px; }
-  .role.big .rt { font-size:17px; margin-top:auto; }
-  .role.big .dt { margin-left:0; margin-top:6px; padding-left:0; }
+  .cj { background:#EFEEE7; border:1px solid var(--line); border-radius:16px; padding:14px 14px 12px; color:var(--ink); position:relative; overflow:hidden; }
+  .cj-title { font-size:9px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-soft); }
+  .cj-timeline { position:relative; margin-top:14px; height:308px; }
+  .cj-year { position:absolute; left:0; width:32px; font-size:9.5px; color:var(--ink-soft); transform:translateY(-50%); }
+  .cj-line { position:absolute; left:42px; right:0; height:1px; background:rgba(20,20,15,.09); }
+  .cj-band { position:absolute; left:48px; top:0; bottom:0; width:30px; border-radius:6px;
+    background: repeating-linear-gradient(45deg,#c7d19a 0 6px,#dbe4b8 6px 12px); }
+  .cj-band span { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); writing-mode:vertical-rl; rotate:180deg; font-size:9px; color:#5a6b34; white-space:nowrap; letter-spacing:.02em; }
+  .role { position:absolute; background:#fff; border:1px solid var(--line); border-radius:9px; padding:7px 9px; display:flex; align-items:center; gap:7px; box-shadow:0 6px 16px rgba(20,20,15,.08); }
+  .role .lg { width:19px; height:19px; border-radius:5px; flex:none; display:grid; place-items:center; font-size:9.5px; font-weight:800; }
+  .role .rt { font-size:10px; font-weight:600; color:var(--ink); line-height:1.18; }
+  .role .rt span { color:var(--ink-soft); font-weight:400; }
+  .role .dt { font-size:8.5px; color:var(--ink-soft); margin-left:auto; padding-left:9px; white-space:nowrap; letter-spacing:.04em; }
+  .role.big { flex-direction:column; align-items:flex-start; justify-content:space-between; padding:11px; }
+  .role.big .lg { width:24px; height:24px; }
+  .role.big .rt { font-size:12px; margin-top:auto; }
+  .role.big .dt { margin-left:0; margin-top:5px; padding-left:0; }
 
   /* ---------- CONTACT (red Get in touch) ---------- */
   .contact { padding: clamp(50px,6vw,80px) var(--edge) 0; }
@@ -281,8 +287,9 @@
     .hero .bloom { opacity: .3; width: 30vw; }
     .contact .box { width: 90vw; min-height: 400px; }
     .contact .huge { white-space: normal; font-size: clamp(40px,13vw,74px); }
-    .pbento { grid-template-columns: 1fr; }
-    .p-right .brow { grid-template-columns: 1.75fr 1fr; }
+    .pbento { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .p-career  { grid-column:1 / -1; grid-row:auto; }
+    .p-photo, .p-writing, .p-blog, .p-tiles { grid-column:auto; grid-row:auto; }
   }
 </style>
 </head>
@@ -340,32 +347,32 @@
         <div class="cj-timeline">
           <!-- gridlines + year labels: 2027 (top) → 2020 (bottom) -->
           <div class="cj-line" style="top:0"></div>   <div class="cj-year" style="top:0">2027</div>
-          <div class="cj-line" style="top:80px"></div><div class="cj-year" style="top:80px">2026</div>
-          <div class="cj-line" style="top:160px"></div><div class="cj-year" style="top:160px">2025</div>
-          <div class="cj-line" style="top:240px"></div><div class="cj-year" style="top:240px">2024</div>
-          <div class="cj-line" style="top:320px"></div><div class="cj-year" style="top:320px">2023</div>
-          <div class="cj-line" style="top:400px"></div><div class="cj-year" style="top:400px">2022</div>
-          <div class="cj-line" style="top:480px"></div><div class="cj-year" style="top:480px">2021</div>
-          <div class="cj-line" style="top:560px"></div><div class="cj-year" style="top:560px">2020</div>
+          <div class="cj-line" style="top:44px"></div><div class="cj-year" style="top:44px">2026</div>
+          <div class="cj-line" style="top:88px"></div><div class="cj-year" style="top:88px">2025</div>
+          <div class="cj-line" style="top:132px"></div><div class="cj-year" style="top:132px">2024</div>
+          <div class="cj-line" style="top:176px"></div><div class="cj-year" style="top:176px">2023</div>
+          <div class="cj-line" style="top:220px"></div><div class="cj-year" style="top:220px">2022</div>
+          <div class="cj-line" style="top:264px"></div><div class="cj-year" style="top:264px">2021</div>
+          <div class="cj-line" style="top:308px"></div><div class="cj-year" style="top:308px">2020</div>
 
           <!-- freelance band -->
           <div class="cj-band"><span>Freelance &amp; Side Projects</span></div>
 
           <!-- roles -->
-          <div class="role" style="top:110px; left:118px;">
+          <div class="role" style="top:51px; left:92px;">
             <span class="lg" style="background:#CC785C;color:#fff">A</span>
             <span class="rt">Design Engineer <span>· Anthropic</span></span>
           </div>
-          <div class="role" style="top:132px; right:-30px;">
+          <div class="role" style="top:93px; right:-20px;">
             <span class="lg" style="background:#FF2D20;color:#fff">L</span>
             <span class="rt">Product Designer <span>· Laravel</span></span>
           </div>
-          <div class="role big" style="top:236px; left:118px; right:14px; height:176px;">
+          <div class="role big" style="top:134px; left:92px; right:12px; height:90px;">
             <span class="lg" style="background:#4353FF;color:#fff">W</span>
             <span class="rt">Senior Staff Designer <span>· Webflow</span></span>
             <span class="dt">DEC 21 — DEC 24</span>
           </div>
-          <div class="role" style="top:474px; left:118px; right:14px;">
+          <div class="role" style="top:260px; left:92px; right:12px;">
             <span class="lg" style="background:#FF90E8;color:#111">G</span>
             <span class="rt">Product Designer <span>· Gumroad</span></span>
             <span class="dt">AUG — DEC 21</span>
@@ -373,11 +380,10 @@
         </div>
       </article>
 
-      <!-- Photography (tall, halftone 2x2 grid) -->
+      <!-- Photography (short, halftone thumbnail row) -->
       <a class="pcard p-photo reveal" href="#">
         <span class="kick"><span class="fdot" style="background:var(--cyan)"></span> Photography</span>
         <h3>Through the viewfinder</h3>
-        <p class="sub">Placeholder blurb — a line or two on what you shoot and why it's your favourite medium.</p>
         <div class="pgrid">
           <i style="background:linear-gradient(150deg,#2f5c86,#c98a3a)"></i>
           <i style="background:linear-gradient(150deg,#c9a24a,#7a5a1e)"></i>
@@ -387,43 +393,58 @@
         <span class="go">View the gallery ↗</span>
       </a>
 
-      <!-- right column: writing (top) + [blog | flower tile] (bottom) -->
-      <div class="p-right">
-        <a class="pcard p-writing reveal" href="#">
-          <span class="kick"><span class="fdot" style="background:var(--yellow)"></span> Latest writing</span>
-          <ul class="wlist">
-            <li>
-              <span class="thumb" style="background:linear-gradient(135deg,#2b3d55,#84def9)"></span>
-              <div><div class="yr">2026</div><div class="wt">On the quiet craft of interfaces</div></div>
-            </li>
-            <li>
-              <span class="thumb" style="background:linear-gradient(135deg,#1b1b1b,#555)"></span>
-              <div><div class="yr">2026</div><div class="wt">Why constraints make better design</div></div>
-            </li>
-            <li>
-              <span class="thumb" style="background:linear-gradient(135deg,#3a2a5a,#c7b3f0)"></span>
-              <div><div class="yr">2025</div><div class="wt">Notes on shipping slowly</div></div>
-            </li>
-          </ul>
-          <span class="go">Read all essays ↗</span>
-        </a>
-
-        <div class="brow">
-          <a class="pcard p-blog reveal" href="#">
-            <span class="kick"><span class="fdot" style="background:var(--blue)"></span> From the blog</span>
-            <ul class="blist">
-              <li>Redesigning the portfolio, again <span>Jun 26</span></li>
-              <li>A week of small experiments <span>May 26</span></li>
-              <li>What good defaults feel like <span>Apr 26</span></li>
-            </ul>
-            <span class="go">Read the blog ↗</span>
-          </a>
-          <div class="tstack">
-            <div class="ptile reveal" style="background:var(--pink)" data-flower="blue|#0015D4|6"></div>
-            <div class="ptile white reveal"></div>
-          </div>
+      <!-- Graphic design portfolio (short) -->
+      <a class="pcard p-graphic reveal" href="#">
+        <span class="kick"><span class="fdot" style="background:var(--red)"></span> Graphic design</span>
+        <h3>Posters &amp; type</h3>
+        <div class="pgrid">
+          <i style="background:linear-gradient(150deg,#F32317,#FFCB41)"></i>
+          <i style="background:linear-gradient(150deg,#0015D4,#84DEF9)"></i>
+          <i style="background:linear-gradient(150deg,#14140f,#5a5a5a)"></i>
         </div>
+        <span class="go">See the portfolio ↗</span>
+      </a>
+
+      <!-- Latest writing (short) -->
+      <a class="pcard p-writing reveal" href="#">
+        <span class="kick"><span class="fdot" style="background:var(--yellow)"></span> Latest writing</span>
+        <ul class="wlist">
+          <li>
+            <span class="thumb" style="background:linear-gradient(135deg,#2b3d55,#84def9)"></span>
+            <div><div class="yr">2026</div><div class="wt">On the quiet craft of interfaces</div></div>
+          </li>
+          <li>
+            <span class="thumb" style="background:linear-gradient(135deg,#3a2a5a,#c7b3f0)"></span>
+            <div><div class="yr">2025</div><div class="wt">Notes on shipping slowly</div></div>
+          </li>
+        </ul>
+        <span class="go">Read all essays ↗</span>
+      </a>
+
+      <!-- From the blog (short) -->
+      <a class="pcard p-blog reveal" href="#">
+        <span class="kick"><span class="fdot" style="background:var(--blue)"></span> From the blog</span>
+        <ul class="blist">
+          <li>Redesigning the portfolio, again <span>Jun 26</span></li>
+          <li>A week of small experiments <span>May 26</span></li>
+          <li>What good defaults feel like <span>Apr 26</span></li>
+        </ul>
+        <span class="go">Read the blog ↗</span>
+      </a>
+
+      <!-- Accent flower tiles (short, side by side) -->
+      <div class="p-tiles">
+        <div class="ptile reveal" style="background:var(--pink)" data-flower="blue|#0015D4|6"></div>
+        <div class="ptile white reveal" data-flower="red|#F32317|6"></div>
       </div>
+
+      <!-- Playground (short) -->
+      <a class="pcard p-play reveal" href="#">
+        <span class="kick"><span class="fdot" style="background:var(--yellow)"></span> Playground</span>
+        <h3>Side experiments</h3>
+        <p class="sub">Placeholder — half-finished ideas, generative sketches, and things made just for fun.</p>
+        <span class="go">Poke around ↗</span>
+      </a>
     </div>
   </div></section>
 
