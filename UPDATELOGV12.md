@@ -1,5 +1,9 @@
 # REDESIGN — LOG V12: FOUNDATION + MOTION + PERSONAL BENTO
 
+> **Merge status (2026-07-02):** Stages 1–2 built and committed on `redesign-v12`
+> (`f29bd0a stage1v12`, `a9449b8 stage2v12`), then fast-forwarded into `main`
+> (0 behind, 4 ahead) and pushed to origin. Stages 3–4 not yet started.
+
 **First read `V3-REDESIGN.md`** (architecture, CSS-porting rules, data map,
 flower spec, constraints). This log stands up the `/v3` "mini app" and ports the
 first section. Source of truth for layout/CSS: `mockups/hellodani-mockup.html`.
@@ -173,7 +177,65 @@ classes**, wired to real data. Reference the mockup markup for `.pbento`,
   and `/preview` unchanged.
 
 # Stage 3 Report
-_TBD — fill after implementing._
+- [x] `components/v3/personal-bento.tsx` — one **server component** renders the
+  whole "A little more personal" section (so it can call the server-only
+  `getAllArticles()`), handing server-rendered children to the client `<Reveal>`
+  wrappers. Uses the mockup's classes verbatim (`.pbento`, `.pcard`, `.kick`,
+  `.pgrid`, `.wlist`, `.blist`, `.cj*`, `.ptile`). `app/v3/page.tsx` now renders
+  `<section id="personal"><div class="wrap"><PersonalBento/></div></section>` —
+  the Stage 2 temporary garden is gone.
+- [x] **Career Journey** (`.cj p-career`, tall left) — a `<Reveal as="article">`.
+  Year axis **derived from the real `entries`**: `min/max` of the numeric `start`
+  fields → **2026 (top) → 2025 (bottom)** (verified in the DOM: `cj-year` at
+  `top:0`→2026 and `top:292px`→2025), not the mockup's 2020–2027. All three real
+  roles render as `.role` chips (verified 3 in the DOM), each using the data's
+  `logo` / `logoBg` / `logoFg` for the mark, the title + `· org` (org span hidden
+  when `org===""`), and the real `dates` string in `.dt`. Chips are distributed
+  evenly down the 308px timeline (each carries its own date, so timing reads off
+  the chip rather than fragile same-year overlap math). Diagonal band labeled
+  "Ongoing & side projects" since every role is `end:null`.
+- [x] **Photography** (`.pcard p-photo` → `/photography`) — `photos.slice(0,4)`
+  as `next/image` with `fill` + `placeholder="blur"` (real `blurDataURL` from the
+  data) inside the `.pgrid i` cells, so the CSS `::after` halftone dots overlay
+  them. Verified 4 `<img>` from `photos/thumbs/*` in the DOM, real `alt` text.
+- [x] **Graphic design** (`.pcard p-graphic` → `/design`) — kept the mockup's 3
+  decorative gradient `.pgrid i` tiles (thumbnails are decorative; avoids reaching
+  into the client-only `DesignProjects` component). Charlie-voice head "Brand &
+  pitch decks".
+- [x] **Latest writing** (`.pcard p-writing` → `/writing`) — `getAllArticles()`
+  (already newest-first) `.slice(0,2)`: the `.wlist` shows each article's
+  `headerImage` thumbnail, the year parsed from its `date` string, and the serif
+  title. Verified the two newest ("The Hobby Hexagon…" Jul 2026, "When Bigger
+  Means…" May 2026) render.
+- [x] **From the blog** (`.pcard p-blog` → `/blog`) — `getAllPosts().slice(0,3)`
+  in a `.blist` with `title` + a short `Mon YY` date (verified "Building This
+  Portfolio · May 26").
+- [x] **Web projects** + **Gear** (`.pcard p-web` → `/web-projects`, `.pcard
+  p-gear` → `/gear`) — concise Charlie-voice blurbs (the real routes exist).
+- [x] **Slot map decision** — the mockup's 4×2 grid gives the tall career card +
+  6 right cells; Charlie has 6 right-hand sections (photo, graphic, writing, blog,
+  web, gear), so the mockup's placeholder "Playground" card is dropped and its
+  in-grid flower **tiles** move to a full-width **`.p-flowers`** strip below the
+  bento (four `<Flower>` `.ptile`s, wind-spinning — verified 4 flowers / 24
+  ellipses). This keeps every section its own cell while preserving the mockup's
+  proportions. New CSS: `.p-web` / `.p-gear` placement replaces `.p-tiles` /
+  `.p-play`; `.p-flowers` strip added; responsive block updated so all six cells
+  + the strip collapse to the 2-col mobile layout.
+- [x] Data-token fix — `@/data/experience` writes `logoBg: "var(--cobalt)"` /
+  `"var(--marigold)"` (live-site token names not in `.v3-root` scope). Added
+  `--cobalt: var(--blue)` and `--marigold: var(--yellow)` aliases on `.v3-root`
+  so the chips resolve to the v3 palette (`--red` was already defined).
+- [x] Verified: `npx tsc --noEmit` clean; `npx eslint components/v3/personal-bento.tsx
+  app/v3/page.tsx` clean. **Ran the dev server this time** (the crash issue is
+  resolved): `/v3` → HTTP 200 with the full bento (markers above); live `/` and
+  `/preview` → HTTP 200 (no live files touched — only `app/v3/*`, `v3.css`, and
+  `components/v3/*`).
+- Issues: `/photography` didn't finish within a 2-min curl during the smoke test —
+  it's the media-heavy page compiling on first hit in dev, not a regression (no
+  live files changed; it served fine in earlier sessions). Graphic-design
+  thumbnails are decorative gradients rather than real design images (the
+  `DesignProjects` projects array isn't exported; left untouched to keep the live
+  site zero-risk). Not committing Stage 3 unless asked.
 
 ---
 

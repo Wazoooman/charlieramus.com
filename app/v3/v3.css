@@ -47,6 +47,12 @@
   --pink: #ff8fca;
   --cyan: #84def9;
   --line: #cfcdc2;
+  /* Aliases for the live-site accent-token names that @/data/experience uses in
+     its logoBg values (e.g. "var(--cobalt)"). Mapped onto the v3 palette so the
+     Career Journey role chips resolve inside .v3-root (globals.css isn't in scope
+     here). --red is already defined above. */
+  --cobalt: var(--blue);
+  --marigold: var(--yellow);
   --serif: var(--font-v3-serif), Georgia, serif;
   --sans: var(--font-v3-sans), system-ui, sans-serif;
   --script: var(--font-v3-script), cursive;
@@ -678,16 +684,25 @@
     grid-column: 2;
     grid-row: 2;
   }
-  & .p-tiles {
+  & .p-web {
     grid-column: 3;
     grid-row: 2;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
   }
-  & .p-play {
+  & .p-gear {
     grid-column: 4;
     grid-row: 2;
+  }
+
+  /* Flower accent strip — a full-width row of wind-spinning daisy tiles below the
+     bento (echoes the mockup's flower tiles; the finale grid arrives in V15). */
+  & .p-flowers {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-top: 14px;
+  }
+  & .p-flowers .ptile {
+    min-height: 96px;
   }
 
   /* shared card system */
@@ -1180,11 +1195,16 @@
       grid-row: auto;
     }
     & .p-photo,
+    & .p-graphic,
     & .p-writing,
     & .p-blog,
-    & .p-tiles {
+    & .p-web,
+    & .p-gear {
       grid-column: auto;
       grid-row: auto;
+    }
+    & .p-flowers {
+      grid-template-columns: repeat(4, 1fr);
     }
   }
 }
