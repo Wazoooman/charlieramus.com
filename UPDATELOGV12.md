@@ -33,7 +33,49 @@ services, contact, and finale around this section.
   `.v3-root`).
 
 # Stage 1 Report
-_TBD — fill after implementing (see UPDATELOGV6.md for the expected style)._
+- [x] `/v3` route scaffolded as a self-contained mini app — new `app/v3/` folder
+  (normal folder → URL `/v3`, not a route group, so no collision with `/`).
+  `app/v3/layout.tsx` is a **nested** layout (no `<html>`/`<body>` — those stay
+  in the root layout): it loads **Libre Baskerville** (serif, weights 400/700 —
+  not a variable font so weights are explicit), **Inter** (sans, 400/500/600),
+  and **Caveat** (script, 600/700) via `next/font/google`, each exposed as a CSS
+  variable (`--font-v3-serif` / `--font-v3-sans` / `--font-v3-script`). These are
+  scoped here, **not** in `app/layout.tsx`. It imports `./v3.css` and wraps
+  children in `<div className="v3-root …fontVars">`. `metadata` sets
+  `robots: { index:false, follow:false }` so the WIP redesign stays out of search.
+- [x] Mockup CSS ported and fully namespaced — `app/v3/v3.css` reproduces the
+  entire `<style>` block from `mockups/hellodani-mockup.html`, wrapped in a single
+  `.v3-root { … }` rule using **native CSS nesting** (every descendant rule is
+  `& .selector`). The mockup's `:root` custom properties (`--paper`, `--ink`,
+  `--red`, `--serif`, `--edge`, etc.) sit directly on `.v3-root`; the mockup's
+  `body` base styles (paper bg, `--sans`, 16px/1.6, `overflow-x:hidden`) are
+  applied to `.v3-root` itself; the `* { reset }` and `a {}` rules became
+  descendant selectors (`& *`, `& a`) so they can't touch anything outside `/v3`.
+  Font tokens map onto the next/font vars: `--serif: var(--font-v3-serif), Georgia,
+  serif` (same for sans/script). The mockup's two `@media` blocks (max-width 1200
+  / 880) are nested inside `.v3-root` too, with `vw/vh` units kept as-is. No bare
+  `body`/`:root`/`html`/`.head`/`nav` selectors escape `.v3-root`.
+- [x] `app/v3/page.tsx` renders just the paper-background shell for now — a
+  `.wrap` main with a serif "V3 preview" heading + `.lede` note; the "A little
+  more personal" bento lands in Stage 3, hero/work/finale in V13–V15.
+- [x] Live-site chrome kept off `/v3` — `components/theme-toggle.tsx` now calls
+  `usePathname()` and returns `null` when the path starts with `/v3`;
+  `components/cursor-glow.tsx` adds `pathname.startsWith("/v3")` to its existing
+  `hidden` guard. Root `app/layout.tsx` is otherwise **untouched** (both remain
+  mounted globally), so the live homepage and `/preview` are zero-risk.
+- [x] Verified: `npx tsc --noEmit` clean; `npx eslint app/v3/layout.tsx
+  app/v3/page.tsx` clean.
+- Issues: `npx eslint` on the two *touched* chrome components reports a
+  pre-existing `react-hooks/set-state-in-effect` error each — both on the
+  unchanged `useEffect(() => setMounted(true), [])` mount lines, not on the lines
+  I added (the `usePathname` import + early return). It's a repo-wide pattern,
+  unrelated to Stage 1, and V3-REDESIGN says not to restructure the root chrome,
+  so I left it. Static verification only per the machine constraint (no dev
+  server / browser automation) — the `/v3` render itself is confirmed via
+  tsc/eslint, to be eyeballed on the Vercel preview once the branch is pushed.
+  Note: `git status` in this environment reports the tree clean despite the new
+  files existing on disk (tsc/eslint both read them) — the VCS layer looks
+  decoupled from the working copy here; nothing was committed.
 
 ---
 
