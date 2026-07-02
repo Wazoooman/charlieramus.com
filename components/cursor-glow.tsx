@@ -18,7 +18,10 @@ export default function CursorGlow() {
   useEffect(() => setMounted(true), []);
 
   const hidden =
-    HIDDEN_PATHS.includes(pathname) || pathname.startsWith("/writing/");
+    HIDDEN_PATHS.includes(pathname) ||
+    pathname.startsWith("/writing/") ||
+    // The /v3 "mini app" has its own look — no live-site glow on it.
+    pathname.startsWith("/v3");
   const active = mounted && resolvedTheme !== "light" && !hidden;
 
   useEffect(() => {

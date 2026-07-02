@@ -1,5 +1,6 @@
 "use client";
 import { useTheme } from "next-themes";
+import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Sun, Moon } from "lucide-react";
 
@@ -11,8 +12,12 @@ import { Sun, Moon } from "lucide-react";
  */
 export default function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
+  const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
+
+  // The /v3 "mini app" ships its own chrome — keep the live-site toggle off it.
+  if (pathname.startsWith("/v3")) return null;
 
   const isDark = resolvedTheme === "dark";
 
