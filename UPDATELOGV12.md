@@ -96,7 +96,53 @@ services, contact, and finale around this section.
   leave a tiny decorative cluster if it fits. `npx tsc --noEmit` + eslint clean.
 
 # Stage 2 Report
-_TBD — fill after implementing._
+- [x] `components/v3/flower.tsx` — React port of the mockup's `flowerSVG(petal,
+  core, n)`. It's a **server component** (pure render, no hooks, no inline
+  `<script>`, no `dangerouslySetInnerHTML`): the petal loop is the mockup's exact
+  math (`cx=50 cy=28`, `rx=12±`, `ry=19(+1.2 every 3rd)`, `rotate((360/n)*i)`)
+  emitted as JSX `<ellipse>`s + a central `<circle r=11>`, `viewBox 0 0 100 100`.
+  Props: `petal` (a NAMED key `red/blue/yellow/pink/cyan` **or** any CSS color —
+  same `NAMED` map as the mockup), `core`, `petals` (min-clamped to 3), `index`,
+  `className`, `style`. Renders a `<span class="flower">` (with `aria-hidden`
+  since it's decorative) so it matches the v3.css `.flower` / `.tile .flower` /
+  `.grid-flowers .flower` selectors.
+- [x] Wind-spin wired into `v3.css` — added the `@keyframes windspin` block
+  (top-level, since keyframe names are global) with the gust curve from
+  `V3-REDESIGN.md` (0°→24°@18% slow build → 300°@55% fast middle → 360°@82% ease
+  out → hold→loop), and extended `& .flower` with `animation: windspin
+  var(--spin-dur,8s) ease-in-out infinite; animation-delay: var(--spin-delay,0s)`.
+  Each `<Flower>` sets `--spin-dur` (6–11s) and `--spin-delay` (0–6s)
+  **deterministically from `index`** via a mulberry32 `hash01(index)` — computed
+  at render so SSR and client agree (no `Math.random()`, no hydration mismatch),
+  and varied per flower so the field never syncs.
+- [x] `components/v3/reveal.tsx` — `"use client"` wrapper that adds `.in` when the
+  element scrolls into view via `IntersectionObserver` (threshold `.12`,
+  `unobserve` after firing, `disconnect` on cleanup), reproducing the mockup's
+  `.reveal` fade-up. **Polymorphic** (`as` prop, default `div`, typed with
+  `ComponentPropsWithoutRef<T>`) so the reveal + layout classes can share one node
+  in Stage 3 (e.g. `<Reveal as="article" className="cj p-career">`) without an
+  extra wrapper div breaking grid placement.
+- [x] Reduced motion respected — handled in **CSS** via a
+  `@media (prefers-reduced-motion: reduce)` block nested in `.v3-root`: `.flower {
+  animation: none }` and `.reveal { opacity:1; transform:none; transition:none }`.
+  Doing reveal in CSS (rather than a JS branch) keeps the Reveal component's only
+  state change inside the async observer callback — so it introduces **no**
+  synchronous `setState` in an effect (the `react-hooks/set-state-in-effect` rule
+  stays clean).
+- [x] Both primitives exercised on `/v3` — `app/v3/page.tsx` now renders a small
+  temporary "garden": a `Reveal`-wrapped heading + a `Reveal`-wrapped 6-flower
+  grid (`GARDEN` array, varied petal/core/petals/index). This verifies the
+  wind-spin variance and the fade-up. **Marked temporary** — Stage 3 replaces it
+  with the personal bento.
+- [x] Verified: `npx tsc --noEmit` clean; `npx eslint components/v3/flower.tsx
+  components/v3/reveal.tsx app/v3/page.tsx` clean.
+- Issues: none new. Static verification only (no dev server / browser automation
+  per the machine constraint) — spin easing + fade-up to be eyeballed on the
+  Vercel preview once pushed. The temporary garden in `page.tsx` is intended to be
+  removed/replaced in Stage 3, not shipped as-is. Branch note carried over from
+  S1: the Stage 1 work was committed on `redesign-v12` (`stage1v12`); this session
+  resumed there after the working tree had been left on `main`. Not committing
+  Stage 2 unless asked.
 
 ---
 

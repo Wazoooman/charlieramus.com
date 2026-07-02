@@ -10,6 +10,32 @@
  * Source of truth: mockups/hellodani-mockup.html. Keep vw/vh units as-is.
  */
 
+/*
+ * Flower wind-spin (V12 S2) — replaces the mockup's tiny hover-shift with a full
+ * 360° rotation eased like a gust of wind: slow build → fast middle → ease out →
+ * brief rest → loop. Per-flower `--spin-dur` / `--spin-delay` (set on each
+ * <Flower> from its index) create the variance so the field looks flowy, never
+ * synchronized. Keyframe names are global, so this stays top-level; the
+ * animation itself is applied on `.v3-root .flower` below.
+ */
+@keyframes windspin {
+  0% {
+    transform: rotate(0deg);
+  } /* rest */
+  18% {
+    transform: rotate(24deg);
+  } /* slow build */
+  55% {
+    transform: rotate(300deg);
+  } /* gust — fast middle */
+  82% {
+    transform: rotate(360deg);
+  } /* ease out */
+  100% {
+    transform: rotate(360deg);
+  } /* hold, then loop */
+}
+
 .v3-root {
   --paper: #f4f3ee;
   --panel: #e4e3dd;
@@ -96,11 +122,31 @@
     display: inline-block;
     line-height: 0;
     transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.3, 1);
+    /* wind-spin (see @keyframes windspin above); vars set per-flower by index */
+    animation: windspin var(--spin-dur, 8s) ease-in-out infinite;
+    animation-delay: var(--spin-delay, 0s);
   }
   & .flower svg {
     width: 100%;
     height: 100%;
     display: block;
+  }
+
+  /*
+   * Reduced motion: kill the wind-spin, and force `.reveal` elements visible
+   * with no transition. Handling reveal here (rather than in JS) means the
+   * Reveal component never has to call setState synchronously in an effect —
+   * the IntersectionObserver path is the only place state changes.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    & .flower {
+      animation: none;
+    }
+    & .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
   }
 
   /* ---------- HERO ---------- */
