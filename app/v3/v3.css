@@ -187,6 +187,12 @@
   & .hero .bloom.right {
     right: -9vw;
   }
+  /* The mockup applied `.flower` directly to `.bloom` (which carries the clamp
+     width). Here <Flower> nests a span.flower inside .bloom, so size it to fill
+     the bleed area — otherwise the daisy collapses to its intrinsic size. */
+  & .hero .bloom .flower {
+    width: 100%;
+  }
   & .hero .inner {
     position: relative;
     z-index: 2;
