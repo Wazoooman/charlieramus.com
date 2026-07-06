@@ -26,7 +26,36 @@ tucked behind its bottom edge.
 - Verify `npx tsc --noEmit` + eslint clean.
 
 # Stage 1 Report
-_TBD — fill after implementing (see UPDATELOGV6.md style)._
+
+- [x] `components/v3/contact.tsx` — new server component porting the mockup's red
+  "Get in touch" card. Structure matches the mockup 1:1: `<section class="contact">
+  <div class="wrap">` → `.box` (peace-hand SVG `.peace`, "Think we vibe?" `.vibe`,
+  huge CTA `.huge`) + the `.pills` row tucked behind the card's bottom edge. All
+  layout/CSS was already ported to `app/v3/v3.css` in V12 (`.contact .box/.peace/
+  .vibe/.huge`, `.pills`, `.legal-min`), so this stage is content-only.
+- [x] Peace-hand SVG copied verbatim from the mockup (`viewBox 0 0 40 48`,
+  `stroke="#fff"`), marked `aria-hidden` (decorative).
+- [x] Big CTA is now a real `<a class="huge" href="mailto:charlie.ramus12@gmail.com">
+  Get in touch</a>` (inherits `#fff`, no underline, and the `:focus-visible` ring
+  from `& a` in v3.css). Kept "Think we vibe?" / "Get in touch" — already in
+  Charlie's voice.
+- [x] Pills wired to Charlie's **real** links via `socialHref(label)` reading
+  `components/social-links.tsx` (single source of truth). Mockup had
+  works/garden/x/linkedIn/dribbble; Charlie has no X or Dribbble so those dropped.
+  Final pills: `works`→`#work`, `garden`→`#garden` (real on-page anchors, verified
+  present in work.tsx/services.tsx), then `linkedIn`, `github`, `photography`
+  (Instagram Photography), `letterboxd`. Internal `#` anchors open in place;
+  socials get `target="_blank" rel="noreferrer noopener"`.
+- [x] Entry motion via `<Reveal>` on both `.box` and `.pills` (matches the mockup's
+  `.reveal` on those nodes; reduced-motion handled in v3.css).
+- [x] Wired into `app/v3/page.tsx` after the `#personal` bento — the last section
+  for now; the flower-grid finale (S2) will sit below it.
+- [x] `npx tsc --noEmit` clean; `npx eslint components/v3/contact.tsx app/v3/page.tsx`
+  clean.
+
+Issues: None. Could not view rendered output (dev server / browser automation
+crash this machine — static verification only); visual confirmation deferred to
+the Vercel preview per the V3 brief.
 
 ---
 
