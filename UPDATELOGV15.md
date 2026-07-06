@@ -124,7 +124,64 @@ voice — kept the mockup's for now.
   Charlie approves) → check the Vercel preview URL.
 
 # Stage 3 Report
-_TBD — fill after implementing._
+
+**Assembly** — `app/v3/page.tsx` now renders the final order, confirmed
+top-to-bottom against the mockup: hero → digital-home carousel → **personal bento**
+→ work bands → services → about collage → contact → finale.
+
+- [x] Order discrepancy resolved: the Stage-3 brief's linear list put the personal
+  bento *after* about, but `hellodani-mockup.html:337` places the personal/explore
+  bento *above* the work section ("sits above the work section"). Flagged to
+  Charlie — he chose the **mockup order** (personal before work). Page reassembled
+  accordingly; the `#personal` and `#work` anchors (used by the contact pills)
+  still resolve.
+
+**Responsive** — static audit only (dev server / browser automation crash this
+machine, per the V3 brief), reasoned per breakpoint against v3.css:
+
+- [x] Fixed a real overflow I introduced in S2: `.grid-flowers .flower` was a fixed
+  `92px`, so at ≤880px the grid's `repeat(5,1fr)` = 460px of flowers would spill
+  past a 375px viewport and get clipped by the `.v3-root { overflow-x:hidden }`
+  backstop. Changed it to `width:100%; max-width:92px; aspect-ratio:1` so each
+  daisy fills its `1fr` track (capped at 92px) and the grid fits cleanly at every
+  width.
+- [x] Confirmed the existing breakpoints cover the rest: bands → 1 col, stack →
+  2-up, about-grid → 1 col, svc-grid → 2 col, bento 4→2→1 (880/560px), fan scaled
+  0.64 on phones, collage reflows to 2-up (560px), contact `.box` → 90vw with
+  `.huge` un-nowrapped + shrunk. `.v3-root { overflow-x:hidden; box-sizing:
+  border-box }` is the global backstop. No `100vw`/fixed-px-wider-than-viewport
+  offenders remain.
+
+**A11y sweep:**
+
+- [x] Heading outline valid, no skipped levels: one `<h1>` (hero) → `<h2>` per
+  section (personal / work / services / about) → `<h3>` under the bento
+  (viewfinder / decks / shipped / gear). Contact + finale are CTA/decorative, no
+  heading (by design).
+- [x] Every `<Image>` has a real `alt` (work, bento, about collage, carousel);
+  decorative SVGs/flowers/emoji are `aria-hidden`.
+- [x] Every link has an accessible name: text on the pills + "Get in touch" CTA,
+  `aria-label` on the icon/image links (carousel shots, work bands, bento photo
+  link). `<nav aria-label="Primary">`.
+- [x] Visible focus: `& a:focus-visible, & button:focus-visible` ring (blue,
+  offset 3px) in v3.css covers all interactive elements.
+- [x] Motion: `prefers-reduced-motion` kills the flower windspin, forces `.reveal`
+  visible with no transition, and neutralizes hover lifts/slides.
+- [x] Contrast: contact card white on `--red` (#f32317) ≥4.5:1 (huge CTA is large
+  text); pills `--ink` on `--panel` and legal `--ink-soft` on paper both high.
+  The "dark" career card is actually light (`#efeee7` / `--ink`); the only true
+  dark panel (work band, `#111`) carries light text.
+
+- [x] `npx tsc --noEmit` clean; `npx eslint app/v3 components/v3` → ALL CLEAN.
+
+**Not done (needs Charlie):** did **not** push `redesign-v12` / open a Vercel
+preview — the brief gates that on Charlie's approval, and the repo is currently on
+`main`. Say the word and I'll branch + push so you get a preview URL. Live visual
+QA (spinning grid, responsive reflow at 1440/768/375) still needs that preview
+since this machine can't run a browser.
+
+Issues: None blocking. Static-only verification is the one caveat — everything
+above is reasoned from the CSS/markup, not observed in a browser.
 
 ---
 

@@ -1129,9 +1129,14 @@
     align-items: center;
     justify-items: center;
   }
+  /* Fill the 1fr track (capped at the mockup's 92px) rather than a fixed width,
+     so the grid never overflows as it drops 8 → 5 columns on narrow screens —
+     at 375px a fixed 92px would spill past the viewport and clip. */
   & .grid-flowers .flower {
-    width: 92px;
-    height: 92px;
+    width: 100%;
+    max-width: 92px;
+    height: auto;
+    aspect-ratio: 1;
   }
   & .grid-flowers .flower:hover {
     transform: rotate(24deg) scale(1.06);
