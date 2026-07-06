@@ -5,6 +5,7 @@ import Services from "@/components/v3/services";
 import AboutCollage from "@/components/v3/about-collage";
 import PersonalBento from "@/components/v3/personal-bento";
 import Contact from "@/components/v3/contact";
+import Finale from "@/components/v3/finale";
 
 // V3 homepage — V13 adds the nav + hero and the "Step into my digital home"
 // carousel; V14 adds the "Tiny fraction of my work" project bands (S1), the
@@ -32,9 +33,13 @@ export default function V3Page() {
         </div>
       </section>
 
-      {/* V15 S1 — red "Get in touch" card; sits above the flower-grid finale
-          (S2). Renders its own <section class="contact"> like the mockup. */}
+      {/* V15 S1 — red "Get in touch" card; sits above the flower-grid finale.
+          Renders its own <section class="contact"> like the mockup. */}
       <Contact />
+
+      {/* V15 S2 — full-bleed flower-grid finale + centered quote + legal line.
+          Full-bleed: NOT inside .wrap. Last thing on the page. */}
+      <Finale />
     </main>
   );
 }

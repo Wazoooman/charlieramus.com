@@ -75,7 +75,38 @@ is always hidden in the plain sight." + tiny legal line.
 - Verify `npx tsc --noEmit` + eslint clean.
 
 # Stage 2 Report
-_TBD — fill after implementing._
+
+- [x] `components/v3/finale.tsx` — new server component porting the mockup's
+  full-bleed flower-grid finale. Structure matches the mockup: `<section
+  class="finale">` → `.grid-flowers` (8-col grid, full-bleed, NOT inside `.wrap`)
+  + the centered `.center-text` quote floating over it, then a `.legal-min` line
+  below. All CSS (`.finale`, `.grid-flowers`, `.center-text`, `.legal-min`, and the
+  880px `repeat(5,1fr)` fallback) was already ported to v3.css in V12.
+- [x] Grid builder ported from the mockup's inline `<script>` to a render-time
+  `Array.from({length: 40})` — no `<script>`, no `dangerouslySetInnerHTML`. Same
+  index math: `PET`/`COR` palettes verbatim, petal `= PET[(i*3+(i%2))%5]`, core
+  `= COR[(i*5)%6]` with white fallback on collision, petals `= 5+(i%4)`. Each cell
+  is a `<Flower petal core petals index={i} />`.
+- [x] Spin performance: reuses the existing `<Flower>` (V12) — CSS `windspin`
+  transform only, per-flower `--spin-dur`/`--spin-delay` derived deterministically
+  from `index` (no hydration mismatch, no JS per frame), and disabled under
+  `prefers-reduced-motion` via v3.css. 40 spinning flowers = 40 cheap composited
+  transforms.
+- [x] Kept the mockup's quote "Great design is always / hidden in the plain sight."
+  (rendered as a `<p class="center-text">`, real `<br>`). No `<Reveal>` — the
+  mockup reveals neither the grid nor the quote, and a reveal `transform` would
+  clobber the quote's `translate(-50%,-50%)` centering.
+- [x] Real legal line: `© {new Date().getFullYear()} Charlie Ramus` (computed on
+  the server, so no client hydration mismatch) — replaces the mockup's "mockup
+  layout study · placeholder content" placeholder.
+- [x] Wired into `app/v3/page.tsx` as the final element, below `<Contact />`.
+- [x] `npx tsc --noEmit` clean; `npx eslint components/v3/finale.tsx app/v3/page.tsx`
+  clean.
+
+Issues: None. Static verification only (dev server / browser automation crash this
+machine); the spinning grid + quote overlay need a visual pass on the Vercel
+preview. Decision left open per the brief: swapping the quote for one in Charlie's
+voice — kept the mockup's for now.
 
 ---
 
