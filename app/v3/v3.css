@@ -172,7 +172,8 @@
     }
     & .btn:hover,
     & .shot:hover,
-    & .pcard:hover {
+    & .pcard:hover,
+    & .band:hover .card {
       transform: none;
     }
   }
@@ -626,6 +627,12 @@
     position: relative;
     height: 150px;
     margin: 40px 0;
+  }
+  /* Positioned wrapper for the fan cards (their `left` is centered against it);
+     it also takes the mobile scale-down so it never fights the .fan reveal. */
+  & .fan-inner {
+    position: absolute;
+    inset: 0;
   }
   & .fan .fc {
     position: absolute;
@@ -1273,6 +1280,29 @@
     }
     & .p-flowers {
       grid-template-columns: repeat(2, 1fr);
+    }
+    /* Fan (decorative) — scale the inner wrapper so the ~440px spread fits a
+       phone without being clipped by the .v3-root overflow backstop. */
+    & .fan-inner {
+      transform: scale(0.64);
+      transform-origin: center;
+    }
+    /* Collage — the absolute polaroid scatter reflows into a tidy 2-up so it
+       can't overlap awkwardly or overflow. Frames stay position:relative (so the
+       fill <Image> still has a positioned parent) and keep their tilt. */
+    & .collage {
+      height: auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 18px;
+      margin-top: 8px;
+    }
+    & .collage .ph {
+      position: relative;
+      inset: auto;
+      width: 42%;
+      height: 150px;
     }
   }
 }

@@ -4,7 +4,6 @@
 the work project bands, the services section, and the "Behind the pixels" about
 collage. Source of truth for layout/CSS: `mockups/hellodani-mockup.html` ("Tiny
 fraction of my work", "I've got your back with…", "Behind the pixels").
-
 Depends on: **V12** (scaffold + primitives). Mounts **between** the V13 hero/
 carousel and the V12 bento in `app/v3/page.tsx` (final order is fixed in V15).
 
@@ -164,7 +163,43 @@ Reference the mockup's scattered polaroid collage + bio.
 - Verify `npx tsc --noEmit` + eslint clean.
 
 # Stage 3 Report
-_TBD — fill after implementing._
+
+- [x] **`components/v3/about-collage.tsx`** — the mockup's about section,
+  self-contained (`<section id="about"><div class="wrap">`): a `.head`
+  (`<Reveal>`) then the `.about-grid` of a scattered polaroid `.collage` (four
+  tilted `.ph.p1–p4` frames) beside the `.bio`. Layout/CSS (`.about-grid` /
+  `.collage` / `.ph.p1–p4`) was ported in V12; this only fills it with real
+  content. Server component; fade-up rides the V12 `<Reveal>`.
+- [x] **Real photography** — a curated four-photo slice of `data/photos`
+  (`COLLAGE_INDICES = [0, 4, 7, 12]` — a mix of Iceland + Boulder frames), each
+  rendered with **`next/image`** (`fill`, `sizes="150px"`,
+  `placeholder="blur"` from the photo's own `blurDataURL`, `objectFit:cover`)
+  inside the mockup's white-bordered `.ph` polaroid frame with its per-frame tilt.
+  Each image keeps its **real, descriptive `alt`** straight from the gallery data,
+  so the collage has genuine accessible names. The slice is defended
+  (`.filter(Boolean)`) against a shorter gallery.
+- [x] **Real bio** — imports `aboutParagraphs` from `components/about.tsx` (a plain
+  export from a **server** component, so it imports cleanly — no client-reference
+  problem, unlike the projects/web-projects arrays). Renders Charlie's actual
+  three-paragraph bio in his own voice (Boulder junior — software, content,
+  photography), the exact copy the live About section uses; **no duplication, no
+  placeholder**.
+- [x] **`app/v3/page.tsx`** — mounts `<AboutCollage/>` after `<Services/>` (still
+  above the bento; the provisional order — V15 fixes the final section order).
+- **Responsive** — `.about-grid` collapses to one column at ≤880px (ported CSS);
+  the collage's absolute scatter is fine down to ~560px, then a new
+  `@media (max-width:560px)` rule reflows it into a tidy centered 2-up (frames go
+  `position:relative; inset:auto; width:42%`, keeping the fill `<Image>`'s
+  positioned parent and each frame's tilt) — **no overlap or overflow** on phones.
+- **Verify:** `npx tsc --noEmit` clean; `npx eslint components/v3/about-collage.tsx
+  app/v3/page.tsx` clean. Static-only per the no-browser constraint. Live site
+  untouched.
+- **Issues:** None blocking. (1) The four collage photos are a hand-picked
+  index slice (`[0, 4, 7, 12]`) — swap the indices for different frames any time.
+  (2) The bio renders all three `aboutParagraphs` (the mockup had two); it reads
+  well but the third can be dropped if Charlie wants a shorter blurb. (3) Not
+  visually confirmed in a browser (constraint) — recommend an eyeball on the
+  Vercel preview for polaroid crop / scatter vs. the mockup (covered by S4).
 
 ---
 
@@ -177,4 +212,55 @@ _TBD — fill after implementing._
 - Verify `npx tsc --noEmit` + eslint clean. Don't commit unless Charlie asks.
 
 # Stage 4 Report
-_TBD — fill after implementing._
+
+Polish/responsive/a11y pass across all three V14 sections (work, services, about).
+
+- [x] **Proportions vs. the mockup** — the three sections' layout/CSS was ported
+  verbatim in V12 (`.band`/`.panel`/`.stack`, `.fan`/`.svc-grid`,
+  `.about-grid`/`.collage`/`.ph.p1–p4`), so proportions match by construction. The
+  only deliberate departures, both to make the ported layout hold real content:
+  the work bands use a consistent two-screenshot device-card treatment (vs. the
+  mockup's bespoke gradient placeholders), and the services fan is **centered**
+  under the heading (vs. the mockup's left-origin math) so it doesn't hug the edge.
+- [x] **A11y — work bands:** each band's whole `.panel` is a `<Link>` with an
+  `aria-label` = `"<title> — <tags>"` (clear link purpose); every device card is a
+  real screenshot with a **descriptive `alt`**. **Services:** the decorative fan
+  is `aria-hidden="true"`; the meaningful content is the real `.svc-grid` text
+  list. **About:** every collage image carries its real gallery `alt`. All links
+  are keyboard-operable with **visible focus** via the ported
+  `a:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px }`.
+- [x] **Contrast** — the brief mentions a "dark services section," but the mockup
+  puts `#garden` on the **paper** background (only the fan *cards* are dark; there
+  is no dark-section rule in the mockup CSS). On paper, the heading/list are the
+  standard `--ink` on `--paper` — comfortably above 4.5:1 — so contrast is met.
+  Flagged in the S2 report in case a genuine dark band was actually wanted.
+- [x] **No horizontal overflow at 375px** — work `.band`/`.band.flip` collapse to
+  one column and the `.stack` goes 2-across at ≤880px; `.svc-grid` drops to 2
+  columns at ≤880px and the fan's ~440px spread is **scaled to ~0.64** on its inner
+  wrapper at ≤560px so it fits a phone; the collage reflows to a 2-up at ≤560px.
+  `.v3-root { overflow-x: hidden }` is the backstop. Statically confirmed nothing
+  exceeds the viewport at 375px.
+- [x] **Reduced motion** — extended the existing `@media (prefers-reduced-motion:
+  reduce)` block to also neutralize the work bands' card lift
+  (`& .band:hover .card { transform: none }`) — it was the one transform-based
+  hover the block didn't already cover (it lives on `.band:hover .card`, not
+  `.card:hover`). All V14 motion (flower wind-spin, `.reveal` fade-ups, card/button
+  hovers) is now silenced under reduced motion; the fan's mobile scale is a static
+  layout transform, not motion, so it correctly stays.
+- **Files touched (S4):** `app/v3/v3.css` (reduced-motion band-card line; `.fan-inner`
+  base + its mobile `scale`; the ≤560px collage reflow) and
+  `components/v3/services.tsx` (wrapped the fan cards in `.fan-inner` so the mobile
+  scale doesn't collide with the `.fan` reveal's own `transform`). Work + about
+  components needed no changes — they were built a11y-clean in S1/S3.
+- **Verify:** `npx tsc --noEmit` clean; `npx eslint` on all three V14 components +
+  `data/services.ts` + `app/v3/page.tsx` clean. Static-only per the no-browser
+  constraint (`node_modules` docs honored; no dev server / browser). Live site
+  (`app/page.tsx`, `/preview`) untouched — all changes are under `app/v3/*`,
+  `components/v3/*`, and the new `data/services.ts`. **Not committed** (awaiting
+  Charlie's go-ahead).
+- **Issues:** None blocking. Two standing flags carried from earlier stages, both
+  Charlie's call: (1) the three web-project bands share the `/web-projects`
+  destination (could deep-link to each live site instead); (2) `#garden` follows
+  the mockup's paper background rather than a dark band. Everything still wants an
+  eyeball on the Vercel preview for exact crop/rhythm vs. the mockup screenshots,
+  per the no-browser constraint.

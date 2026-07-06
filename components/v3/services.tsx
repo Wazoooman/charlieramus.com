@@ -36,22 +36,27 @@ function Fan() {
 
   return (
     <Reveal className="fan" aria-hidden="true">
-      {FAN_COLORS.map((color, i) => {
-        const angle = (i - FAN_COLORS.length / 2) * 7;
-        const left = `calc(50% - ${spread / 2}px + ${i * step}px)`;
-        return (
-          <div
-            key={i}
-            className="fc"
-            style={{
-              left,
-              transform: `rotate(${angle}deg)`,
-              zIndex: i,
-              background: color,
-            }}
-          />
-        );
-      })}
+      {/* Inner wrapper carries the mobile scale-down (`.fan` itself is the
+          <Reveal>, whose fade-up already animates `transform` — scaling here
+          instead keeps the two off each other's toes). */}
+      <div className="fan-inner">
+        {FAN_COLORS.map((color, i) => {
+          const angle = (i - FAN_COLORS.length / 2) * 7;
+          const left = `calc(50% - ${spread / 2}px + ${i * step}px)`;
+          return (
+            <div
+              key={i}
+              className="fc"
+              style={{
+                left,
+                transform: `rotate(${angle}deg)`,
+                zIndex: i,
+                background: color,
+              }}
+            />
+          );
+        })}
+      </div>
     </Reveal>
   );
 }
